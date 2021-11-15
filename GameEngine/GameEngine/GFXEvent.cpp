@@ -1,16 +1,12 @@
 #include "GFXEvent.h"
 
-GFXEvent::GFXEvent(std::string type, int modelType, vector<Event*>* queue)
+GFXEvent::GFXEvent(std::string type, vector<Event*>* queue)
 {
-	//eventSubsystem = GraphicsSub;
-	myData->modType = modelType;
+	eventSubsystem = GraphicsSub;
+	
+	eventType = GFXDefault;
 
-	if (type == "GFXDefault")
-	{
-		eventType = GFXDefault;
-	}
-
-	else if (type == "GFXQuit")
+	if (type == "GFXQuit")
 	{
 		eventType = GFXQuit;
 	}
@@ -65,9 +61,9 @@ GFXEvent::GFXEvent(std::string type, int modelType, vector<Event*>* queue)
 		eventType = GFXCamBackward;
 	}
 
-	else if (type == "GFXUseModel")
+	else if (type == "GFXSpawn")
 	{
-		eventType = GFXUseModel;
+		eventType = GFXSpawn;
 	}
 
 	else
@@ -76,75 +72,19 @@ GFXEvent::GFXEvent(std::string type, int modelType, vector<Event*>* queue)
 	}
 
 	EQueue = queue;
+
+	Throw();
 }
 
-GFXEvent::GFXEvent(std::string type, vector<Event*>* queue)
+GFXEvent::GFXEvent(std::string type, GameObject* obj, vector<Event*>* queue)
 {
-	cout << "Constructor for gfx used" << endl;
-	EventType myEventType;
-	//eventSubsystem = GraphicsSub;
+	myData = new EventData();
+	eventSubsystem = GraphicsSub;
+	eventType = GFXDefault;
 	
-	myEventType = GFXDefault;
-
-	if (type == "GFXQuit")
+	if (type == "GFXSpawn")
 	{
-		myEventType = GFXQuit;
-	}
-
-	else if (type == "GFXUp")
-	{
-		myEventType = GFXUp;
-	}
-
-	else if (type == "GFXDown")
-	{
-		myEventType = GFXDown;
-	}
-
-	else if (type == "GFXLeft")
-	{
-		myEventType = GFXLeft;
-		cout << "LEFT INNIT" << endl;
-	}
-
-	else if (type == "GFXRight")
-	{
-		myEventType = GFXRight;
-	}
-
-	else if (type == "GFXCamUp")
-	{
-		myEventType = GFXCamUp;
-	}
-
-	else if (type == "GFXCamDown")
-	{
-		myEventType = GFXCamDown;
-	}
-
-	else if (type == "GFXCamLeft")
-	{
-		myEventType = GFXCamLeft;
-	}
-
-	else if (type == "GFXCamRight")
-	{
-		myEventType = GFXCamRight;
-	}
-
-	else if (type == "GFXCamForward")
-	{
-		myEventType = GFXCamForward;
-	}
-
-	else if (type == "GFXCamBackward")
-	{
-		myEventType = GFXCamBackward;
-	}
-
-	else if (type == "GFXUseModel")
-	{
-		myEventType = GFXUseModel;
+		eventType = GFXSpawn;
 	}
 
 	else
@@ -152,7 +92,9 @@ GFXEvent::GFXEvent(std::string type, vector<Event*>* queue)
 		cout << "ERROR, unknown GFX event type!" << endl;
 	}
 
+	myData->targetObject = obj;
+
 	EQueue = queue;
 
-	Throw(myEventType, *this);
+	Throw();
 }

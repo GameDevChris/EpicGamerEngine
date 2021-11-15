@@ -26,25 +26,6 @@ AssetEvent::AssetEvent(std::string type, std::string modelPath, std::string text
 	myData->modType = modelType;
 
 	EQueue = queue;
-}
 
-AssetEvent::AssetEvent(std::string type)
-{
-	myData = new EventData();
-	eventSubsystem = AssetSub;
-
-	if (type == "ASSETLoad")
-	{
-		eventType = ASSETLoad;
-	}
-
-	else if (type == "ASSETAssign")
-	{
-		eventType = ASSETAssign;
-	}
-
-	else
-	{
-		cout << "ERROR, unknown Asset event type!" << endl;
-	}
+	Throw();
 }

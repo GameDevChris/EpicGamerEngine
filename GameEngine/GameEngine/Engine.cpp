@@ -37,7 +37,6 @@ void Engine::ThrowEvent(Event newEvent)
 	eventQueue.push_back(&newEvent);
 }
 
-
 void Engine::Start()
 {
 	eventQueue.clear();
@@ -67,6 +66,8 @@ void Engine::Start()
 	assets.driver = graphics.driver;
 	assets.smgr = graphics.smgr;
 
+	//Instantiate(0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
+
 	UseData();
 }
 
@@ -86,6 +87,23 @@ void Engine::Update()
 	graphics.Update();
 	assets.Update();
 
+	if (!eventQueue.empty())
+	{
+		for (int i = 0; i < eventQueue.size(); i++)
+		{
+			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
+			{
+				if (eventQueue[i]->eventType == eventQueue[i]->Instantiate)
+				{
+					cout << "Instantiating" << endl;
+					Instantiate(0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
+
+					delete (eventQueue[i]);
+				}
+			}
+		}
+	}
+
 	if (graphics.QuitCall)
 	{
 		finished = true;
@@ -97,4 +115,17 @@ void Engine::Update()
 	}
 
 	eventQueue.clear();
+}
+
+void Engine::Instantiate(int ID, Vec3 position, Vec3 scale, Vec3 rotation)
+{
+	GameObject newObject;
+	newObject.myModel = assets.models[ID];
+	newObject.Position = position;
+	newObject.Scale = scale;
+	newObject.Rotation = rotation;
+
+	objects.push_back(&newObject);
+
+	GFXEvent* newGFX = new GFXEvent("GFXSpawn", &newObject, &eventQueue);
 }

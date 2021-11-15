@@ -71,34 +71,8 @@ void IGraphicsSystem::Start()
 
 	WriteStaticText(L"This is comic sans, lmao", 0, 0, 1000, 100);
 
-	/*
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(-60, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(-40, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(-20, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(0, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(20, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(40, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(60, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
+	//AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(-60, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
 	
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureGreen.png", vector3df(-60, 0, 0), vector3df(7, 7, 7), vector3df(0,0,0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureGreen.png", vector3df(-40, 0, 0), vector3df(7, 7, 7), vector3df(0,0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureGreen.png", vector3df(-20, 0, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-
-	AddMesh("./Models/Chris/ChrisModel.obj", "./Models/Chris/ChrisTex.png", vector3df(0, 0, 0), vector3df(0.05, 0.05, 0.05), vector3df(0, 0, 0));
-
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureGreen.png", vector3df(20, 0, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureGreen.png", vector3df(40, 0, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureGreen.png", vector3df(60, 0, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTexture.png", vector3df(-60, -15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTexture.png", vector3df(-40, -15, 0), vector3df(7,7,7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTexture.png", vector3df(-20, -15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTexture.png", vector3df(0, -15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTexture.png", vector3df(20, -15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTexture.png", vector3df(40, -15, 0), vector3df(7,7,7), vector3df(0, 0, 0));
-	AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTexture.png", vector3df(60, -15, 0), vector3df(7,7,7), vector3df(0, 0, 0));
-	
-	*/
 
 	AddCamera(0, 10, -50, 0, 5, 0);
 }
@@ -109,10 +83,11 @@ void IGraphicsSystem::Update()
 	{
 		for (int i = 0; i < (*engineEventQueue).size(); i++)
 		{
-			if ((*engineEventQueue)[i]->eventSubsystem== (*engineEventQueue)[i]->GraphicsSub)
+			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->GraphicsSub)
 			{
+				cout << endl;
 				cout << "GFX Event found" << endl;
-				cout << (*engineEventQueue)[i]->ReturnEvent() << endl;
+				cout << "Event found: "<< (*engineEventQueue)[i]->ReturnEvent() << endl;
 
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXDefault)
 				{
@@ -206,10 +181,40 @@ void IGraphicsSystem::Update()
 					QuitCall = true;
 				}
 
+				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXSpawn)
+				{
+
+					cout << "Spawning..." << endl;
+
+					IAnimatedMeshSceneNode* newNode = smgr->addAnimatedMeshSceneNode((*engineEventQueue)[i]->myData->targetObject->myModel->mesh);
+						
+					if (newNode)
+					{
+						newNode->setPosition(vector3df((*engineEventQueue)[i]->myData->targetObject->Position.x,
+							(*engineEventQueue)[i]->myData->targetObject->Position.y,
+							(*engineEventQueue)[i]->myData->targetObject->Position.z));
+
+						newNode->setScale(vector3df((*engineEventQueue)[i]->myData->targetObject->Scale.x,
+							(*engineEventQueue)[i]->myData->targetObject->Scale.y,
+							(*engineEventQueue)[i]->myData->targetObject->Scale.z));
+
+						newNode->setRotation(vector3df((*engineEventQueue)[i]->myData->targetObject->Rotation.x,
+							(*engineEventQueue)[i]->myData->targetObject->Rotation.y,
+							(*engineEventQueue)[i]->myData->targetObject->Rotation.z));
+
+						newNode->setMaterialFlag(EMF_LIGHTING, false);
+						newNode->setMaterialTexture(0, driver->getTexture((*engineEventQueue)[i]->myData->targetObject->myModel->texture.c_str()));
+
+						nodes.push_back(newNode);
+					}			
+				}
+
 				else
 				{
 					cout << "ERROR! Unrecognised Graphics event" << endl;
 				}
+
+				delete ((*engineEventQueue)[i]);
 			}
 			
 		}

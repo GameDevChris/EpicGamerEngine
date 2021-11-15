@@ -140,6 +140,7 @@
     <ClCompile Include="DataInputSystem.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GFXEvent.cpp" />
     <ClCompile Include="IGraphicsSystem.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -154,12 +155,14 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventData.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GFXEvent.h" />
     <ClInclude Include="IGraphicsSystem.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="SubSystem.h" />
     <ClInclude Include="UserInterfaceSystem.h" />
+    <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

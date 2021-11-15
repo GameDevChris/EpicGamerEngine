@@ -49,8 +49,8 @@ std::string Event::ReturnEvent()
 		return "GFXRight";
 		break;
 
-	case GFXUseModel:
-		return "GFXUseModel";
+	case GFXSpawn:
+		return "GFXSpawn";
 		break;
 			
 	case GFXCamUp:
@@ -107,6 +107,24 @@ Event::Event(std::string type)
 	}
 }
 
+Event::Event(std::string type, vector<Event*>* queue)
+{
+	if (type == "Instantiate")
+	{
+		eventType = Instantiate;
+		eventSubsystem = General;
+	}
+
+	else
+	{
+		cout << "ERROR, unknown event type!" << endl;
+	}
+
+	EQueue = queue;
+
+	Throw();
+}
+
 Event::Event()
 {
 }
@@ -114,10 +132,4 @@ Event::Event()
 void Event::Throw()
 {
 	EQueue->push_back(this);
-}
-
-void Event::Throw(EventType myType, Event myEvent)
-{
-	myEvent.eventType = myType;
-	EQueue->push_back(&myEvent);
 }

@@ -17,11 +17,14 @@ public:
 	};
 
 	ModelType type;
-	IAnimatedMeshSceneNode* node;
+	//IAnimatedMeshSceneNode* node;
+	IAnimatedMesh* mesh;
+	std::string texture;
 
-	Model(IAnimatedMeshSceneNode* myNode, int myType)
+	Model(IAnimatedMesh* myMesh, std::string myTexture,  int myType)
 	{
-		node = myNode;
+		mesh = myMesh;
+		texture = myTexture;
 		type = ModelType(myType);
 	}
 };

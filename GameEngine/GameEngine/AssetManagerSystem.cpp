@@ -9,14 +9,9 @@ Model* AssetManagerSystem::LoadModel(std::string modelPath, std::string textureP
 		cout << "Failed to load mesh" << endl;
 	}
 
-	IAnimatedMeshSceneNode* node = smgr->addAnimatedMeshSceneNode(mesh);
-
-	if (node)
+	else
 	{
-		node->setMaterialFlag(EMF_LIGHTING, false);
-		node->setMaterialTexture(0, driver->getTexture(texturePath.c_str()));
-
-		Model newModel(node, modelType);
+		Model newModel(mesh, texturePath, modelType);
 		return(&newModel);
 	}
 
@@ -37,14 +32,6 @@ void AssetManagerSystem::Update()
 					cout << "Loading Asset" << endl;
 					Model* newModel = LoadModel((*engineEventQueue)[i]->myData->modPath, (*engineEventQueue)[i]->myData->texPath, (*engineEventQueue)[i]->myData->modType);
 					models.push_back(newModel);
-				}
-
-				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->ASSETAssign)
-				{
-					cout << "Assigning Asset" << endl;
-					GFXEvent newGFX("GFXUseModel", (*engineEventQueue)[i]->myData->modType, engineEventQueue);
-					newGFX.myData->myModel = models[(*engineEventQueue)[i]->myData->modType];
-					newGFX.Throw();
 				}
 			}
 		}

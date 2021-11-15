@@ -5,6 +5,7 @@
 #include "DataInputSystem.h"
 #include "UserInterfaceSystem.h"
 #include "AssetManagerSystem.h"
+#include "GameObject.h"
 
 using namespace std;
 class Engine
@@ -17,7 +18,7 @@ private:
 	AssetManagerSystem assets;
 
 	vector<Event*> eventQueue;
-
+	vector<GameObject*> objects;
 
 public:
 	bool finished = false;
@@ -26,5 +27,7 @@ public:
 	void ThrowEvent(Event newEvent);
 	void Start();
 	void Update();
+
+	void Instantiate(int ID, Vec3 position, Vec3 scale, Vec3 rotation);
 };
 

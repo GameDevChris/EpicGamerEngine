@@ -10,6 +10,7 @@ public:
 		GraphicsSub,
 		PhysicsSub,
 		AssetSub,
+		General
 	};
 
 	enum EventType
@@ -20,7 +21,7 @@ public:
 		GFXDown,
 		GFXLeft,
 		GFXRight,
-		GFXUseModel,
+		GFXSpawn,
 
 		GFXCamUp,
 		GFXCamDown,
@@ -32,7 +33,9 @@ public:
 		PHYSDefault,
 
 		ASSETLoad,
-		ASSETAssign
+		ASSETAssign,
+
+		Instantiate
 	};
 
 	EventData* myData;
@@ -42,9 +45,11 @@ public:
 	std::string ReturnEvent();
 
 	Event(std::string type);
+	Event(std::string type, vector<Event*>* queue);
 	Event();
+
 	void Throw();
-	void Throw(EventType myType, Event myEvent);
+	void Throw(EventType myType, Event* myEvent);
 
 	SubsystemType eventSubsystem;
 	EventType eventType;
