@@ -39,10 +39,12 @@ public:
 	vector<Event*>* EQueue;
 
 	std::string ReturnSubsystem();
+	std::string ReturnEvent();
 
 	Event(std::string type);
 	Event();
 	void Throw();
+	void Throw(EventType myType, Event myEvent);
 
 	SubsystemType eventSubsystem;
 	EventType eventType;

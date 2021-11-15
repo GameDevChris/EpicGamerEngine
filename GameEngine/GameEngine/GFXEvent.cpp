@@ -2,7 +2,7 @@
 
 GFXEvent::GFXEvent(std::string type, int modelType, vector<Event*>* queue)
 {
-	eventSubsystem = GraphicsSub;
+	//eventSubsystem = GraphicsSub;
 	myData->modType = modelType;
 
 	if (type == "GFXDefault")
@@ -80,71 +80,71 @@ GFXEvent::GFXEvent(std::string type, int modelType, vector<Event*>* queue)
 
 GFXEvent::GFXEvent(std::string type, vector<Event*>* queue)
 {
-	eventSubsystem = GraphicsSub;
+	cout << "Constructor for gfx used" << endl;
+	EventType myEventType;
+	//eventSubsystem = GraphicsSub;
+	
+	myEventType = GFXDefault;
 
-	if (type == "GFXDefault")
+	if (type == "GFXQuit")
 	{
-		eventType = GFXDefault;
-	}
-
-	else if (type == "GFXQuit")
-	{
-		eventType = GFXQuit;
+		myEventType = GFXQuit;
 	}
 
 	else if (type == "GFXUp")
 	{
-		eventType = GFXUp;
+		myEventType = GFXUp;
 	}
 
 	else if (type == "GFXDown")
 	{
-		eventType = GFXDown;
+		myEventType = GFXDown;
 	}
 
 	else if (type == "GFXLeft")
 	{
-		eventType = GFXLeft;
+		myEventType = GFXLeft;
+		cout << "LEFT INNIT" << endl;
 	}
 
 	else if (type == "GFXRight")
 	{
-		eventType = GFXRight;
+		myEventType = GFXRight;
 	}
 
 	else if (type == "GFXCamUp")
 	{
-		eventType = GFXCamUp;
+		myEventType = GFXCamUp;
 	}
 
 	else if (type == "GFXCamDown")
 	{
-		eventType = GFXCamDown;
+		myEventType = GFXCamDown;
 	}
 
 	else if (type == "GFXCamLeft")
 	{
-		eventType = GFXCamLeft;
+		myEventType = GFXCamLeft;
 	}
 
 	else if (type == "GFXCamRight")
 	{
-		eventType = GFXCamRight;
+		myEventType = GFXCamRight;
 	}
 
 	else if (type == "GFXCamForward")
 	{
-		eventType = GFXCamForward;
+		myEventType = GFXCamForward;
 	}
 
 	else if (type == "GFXCamBackward")
 	{
-		eventType = GFXCamBackward;
+		myEventType = GFXCamBackward;
 	}
 
 	else if (type == "GFXUseModel")
 	{
-		eventType = GFXUseModel;
+		myEventType = GFXUseModel;
 	}
 
 	else
@@ -153,5 +153,6 @@ GFXEvent::GFXEvent(std::string type, vector<Event*>* queue)
 	}
 
 	EQueue = queue;
-	Throw();
+
+	Throw(myEventType, *this);
 }

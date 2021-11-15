@@ -112,6 +112,7 @@ void IGraphicsSystem::Update()
 			if ((*engineEventQueue)[i]->eventSubsystem== (*engineEventQueue)[i]->GraphicsSub)
 			{
 				cout << "GFX Event found" << endl;
+				cout << (*engineEventQueue)[i]->ReturnEvent() << endl;
 
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXDefault)
 				{
