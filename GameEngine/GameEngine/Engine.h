@@ -6,7 +6,7 @@
 #include "UserInterfaceSystem.h"
 #include "AssetManagerSystem.h"
 #include "GameObject.h"
-
+#include <random>
 
 using namespace std;
 class Engine
@@ -30,6 +30,7 @@ public:
 	void Start();
 	void Update();
 
+	void InstantiateRandom();
 	void Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, Vec3 rotation);
 };
 

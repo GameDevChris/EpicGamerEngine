@@ -95,8 +95,14 @@ void Engine::Update()
 			{
 				if (eventQueue[i]->eventType == eventQueue[i]->Instantiate)
 				{
-					Instantiate(0, 0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
+					//Instantiate(0, 0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
 					
+					for (int i = 0; i < 1000; i++)
+					{
+						InstantiateRandom();
+					}
+					
+
 					delete(eventQueue[i]);
 					eventQueue.erase(eventQueue.begin() + i);
 				}
@@ -224,4 +230,34 @@ void Engine::Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
 
 	//GFXEvent* leftEvent = new GFXEvent("GFXLeft", &eventQueue);
+}
+
+void Engine::InstantiateRandom()
+{
+	int modelID = 1;
+	int textureID = 0;
+	
+	Vec3 position(0, 0, 0);
+
+	random_device rd;   
+	mt19937 gen(rd());
+	uniform_int_distribution<> dist(1, 1000); // distribute results between 1 and 6 inclusive.
+
+	position.x = dist(gen);
+	position.y = dist(gen);
+	position.z = dist(gen);
+
+	Vec3 scale(0.02, 0.02, 0.02);
+	Vec3 rotation(0, 0, 0);
+
+	cout << endl << "Instantiating..." << endl;
+
+	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type);
+
+	newModel->texturePath = (*newModel->texturePaths)[textureID];
+
+	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
+	objects.push_back(newObject);
+
+	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
 }
