@@ -80,6 +80,28 @@ void UserInterfaceSystem::Update()
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		Event* instantiateEvent = new Event("Instantiate", engineEventQueue);
+		if (canInstantiate)
+		{
+			Event* instantiateEvent = new Event("Instantiate", engineEventQueue);
+		
+			InputCooldown(canInstantiate, 1);
+		}
 	}
+}
+
+void UserInterfaceSystem::InputCooldown(bool value, int cooldown)
+{
+	value = false;
+
+	clock_t startTime = clock();
+	clock_t cooldownTime = cooldown * CLOCKS_PER_SEC;
+	clock_t elapsed = clock() - startTime;;
+
+	while (elapsed < cooldownTime)
+	{
+		elapsed = clock() - startTime;
+	}
+
+	value = true;
+	cout << "Can instantiate!" << endl;
 }

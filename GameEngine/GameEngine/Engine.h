@@ -7,6 +7,7 @@
 #include "AssetManagerSystem.h"
 #include "GameObject.h"
 
+
 using namespace std;
 class Engine
 {
@@ -19,6 +20,7 @@ private:
 
 	vector<Event*> eventQueue;
 	vector<GameObject*> objects;
+
 
 public:
 	bool finished = false;

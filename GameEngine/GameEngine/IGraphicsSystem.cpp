@@ -81,6 +81,7 @@ void IGraphicsSystem::Update()
 {
 	if (!(*engineEventQueue).empty())
 	{
+		cout << "There are " << (*engineEventQueue).size() << " events" << endl;
 		for (int i = 0; i < (*engineEventQueue).size(); i++)
 		{
 			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->GraphicsSub)
@@ -187,24 +188,25 @@ void IGraphicsSystem::Update()
 					cout << "Spawning..." << endl;
 
 					IAnimatedMeshSceneNode* newNode = smgr->addAnimatedMeshSceneNode((*engineEventQueue)[i]->myData->targetObject->myModel->mesh);
+
 						
 					if (newNode)
 					{
 						newNode->setPosition(vector3df((*engineEventQueue)[i]->myData->targetObject->Position.x,
 							(*engineEventQueue)[i]->myData->targetObject->Position.y,
 							(*engineEventQueue)[i]->myData->targetObject->Position.z));
-
+					
 						newNode->setScale(vector3df((*engineEventQueue)[i]->myData->targetObject->Scale.x,
 							(*engineEventQueue)[i]->myData->targetObject->Scale.y,
 							(*engineEventQueue)[i]->myData->targetObject->Scale.z));
-
+					
 						newNode->setRotation(vector3df((*engineEventQueue)[i]->myData->targetObject->Rotation.x,
 							(*engineEventQueue)[i]->myData->targetObject->Rotation.y,
 							(*engineEventQueue)[i]->myData->targetObject->Rotation.z));
-
+					
 						newNode->setMaterialFlag(EMF_LIGHTING, false);
 						newNode->setMaterialTexture(0, driver->getTexture((*engineEventQueue)[i]->myData->targetObject->myModel->texture.c_str()));
-
+					
 						nodes.push_back(newNode);
 					}			
 				}
@@ -214,7 +216,8 @@ void IGraphicsSystem::Update()
 					cout << "ERROR! Unrecognised Graphics event" << endl;
 				}
 
-				delete ((*engineEventQueue)[i]);
+				delete((*engineEventQueue)[i]);
+				engineEventQueue->erase(engineEventQueue->begin() + i);
 			}
 			
 		}

@@ -88,6 +88,10 @@ std::string Event::ReturnEvent()
 	case ASSETAssign:
 		return "ASSETAssign";
 		break;
+
+	case Instantiate:
+		return "Instantiate";
+		break;
 	}
 
 	return "Unknown Event";
@@ -131,5 +135,6 @@ Event::Event()
 
 void Event::Throw()
 {
+	cout << endl << "Throwing event of type " << ReturnEvent() << endl;;
 	EQueue->push_back(this);
 }

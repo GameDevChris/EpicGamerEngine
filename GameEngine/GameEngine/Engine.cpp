@@ -66,6 +66,7 @@ void Engine::Start()
 	assets.driver = graphics.driver;
 	assets.smgr = graphics.smgr;
 
+
 	//Instantiate(0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
 
 	UseData();
@@ -84,7 +85,6 @@ void Engine::Update()
 	
 	UI.Update();
 	physics.Update();
-	graphics.Update();
 	assets.Update();
 
 	if (!eventQueue.empty())
@@ -95,14 +95,16 @@ void Engine::Update()
 			{
 				if (eventQueue[i]->eventType == eventQueue[i]->Instantiate)
 				{
-					cout << "Instantiating" << endl;
 					Instantiate(0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
-
-					delete (eventQueue[i]);
+					
+					delete(eventQueue[i]);
+					eventQueue.erase(eventQueue.begin() + i);
 				}
 			}
 		}
 	}
+
+	graphics.Update();
 
 	if (graphics.QuitCall)
 	{
@@ -113,12 +115,21 @@ void Engine::Update()
 	{
 		graphics.Exit();
 	}
+	
+	//for(int i = 0; i < eventQueue.size(); i++)
+	//{
+	//	delete (eventQueue[i]);
+	//}
 
 	eventQueue.clear();
 }
 
+
+
 void Engine::Instantiate(int ID, Vec3 position, Vec3 scale, Vec3 rotation)
 {
+	cout << endl << "Instantiating" << endl;
+
 	GameObject newObject;
 	newObject.myModel = assets.models[ID];
 	newObject.Position = position;
@@ -128,4 +139,6 @@ void Engine::Instantiate(int ID, Vec3 position, Vec3 scale, Vec3 rotation)
 	objects.push_back(&newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", &newObject, &eventQueue);
+
+	//GFXEvent* leftEvent = new GFXEvent("GFXLeft", &eventQueue);
 }
