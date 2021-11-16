@@ -1,6 +1,6 @@
 #include "AssetManagerSystem.h"
 
-Model* AssetManagerSystem::LoadModel(std::string modelPath, std::string texturePath, int modelType)
+Model* AssetManagerSystem::LoadModel(std::string modelPath, vector<std::string>* myTexturePaths, int modelType)
 {
 	IAnimatedMesh* mesh = smgr->getMesh(modelPath.c_str());
 	if (!mesh)
@@ -11,8 +11,9 @@ Model* AssetManagerSystem::LoadModel(std::string modelPath, std::string textureP
 
 	else
 	{
-		Model newModel(mesh, texturePath, modelType);
-		return(&newModel);
+		Model* newModel = new Model(mesh, myTexturePaths, modelPath, modelType);
+
+		return(newModel);
 	}
 
 	return(0);
@@ -30,7 +31,7 @@ void AssetManagerSystem::Update()
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->ASSETLoad)
 				{
 					cout << "Loading Asset" << endl;
-					Model* newModel = LoadModel((*engineEventQueue)[i]->myData->modPath, (*engineEventQueue)[i]->myData->texPath, (*engineEventQueue)[i]->myData->modType);
+					Model* newModel = LoadModel((*engineEventQueue)[i]->myData->modPath, (*engineEventQueue)[i]->myData->texPaths, (*engineEventQueue)[i]->myData->modType);
 					models.push_back(newModel);
 				}
 			}

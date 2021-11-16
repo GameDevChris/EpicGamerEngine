@@ -30,6 +30,6 @@ public:
 	void Start();
 	void Update();
 
-	void Instantiate(int ID, Vec3 position, Vec3 scale, Vec3 rotation);
+	void Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, Vec3 rotation);
 };
 

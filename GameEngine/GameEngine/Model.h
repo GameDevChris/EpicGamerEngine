@@ -16,15 +16,30 @@ public:
 		Chris
 	};
 
+	std::string modelName = "";
 	ModelType type;
 	//IAnimatedMeshSceneNode* node;
 	IAnimatedMesh* mesh;
-	std::string texture;
+	std::string texturePath;
+	std::string modelPath;
 
-	Model(IAnimatedMesh* myMesh, std::string myTexture,  int myType)
+	vector<std::string>* texturePaths;
+
+	Model(IAnimatedMesh* myMesh, vector<std::string>* myTextures, std::string myModel, int myType)
 	{
 		mesh = myMesh;
-		texture = myTexture;
+		texturePaths = myTextures;
+		modelPath = myModel;
 		type = ModelType(myType);
+
+		if (myType == 0)
+		{
+			modelName = "Dragon";
+		}
+
+		else if (myType == 1)
+		{
+			modelName = "Chris";
+		}
 	}
 };

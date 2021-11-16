@@ -76,7 +76,7 @@ void IGraphicsSystem::Start()
 
 	AddCamera(0, 10, -50, 0, 5, 0);
 }
-
+//Le graphics pour baggette
 void IGraphicsSystem::Update()
 {
 	if (!(*engineEventQueue).empty())
@@ -187,9 +187,11 @@ void IGraphicsSystem::Update()
 
 					cout << "Spawning..." << endl;
 
+
+					//Le code
 					IAnimatedMeshSceneNode* newNode = smgr->addAnimatedMeshSceneNode((*engineEventQueue)[i]->myData->targetObject->myModel->mesh);
 
-						
+					//Une function de newNode	
 					if (newNode)
 					{
 						newNode->setPosition(vector3df((*engineEventQueue)[i]->myData->targetObject->Position.x,
@@ -205,7 +207,7 @@ void IGraphicsSystem::Update()
 							(*engineEventQueue)[i]->myData->targetObject->Rotation.z));
 					
 						newNode->setMaterialFlag(EMF_LIGHTING, false);
-						newNode->setMaterialTexture(0, driver->getTexture((*engineEventQueue)[i]->myData->targetObject->myModel->texture.c_str()));
+						newNode->setMaterialTexture(0, driver->getTexture((*engineEventQueue)[i]->myData->targetObject->myModel->texturePath.c_str()));
 					
 						nodes.push_back(newNode);
 					}			

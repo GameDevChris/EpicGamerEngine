@@ -95,7 +95,7 @@ void Engine::Update()
 			{
 				if (eventQueue[i]->eventType == eventQueue[i]->Instantiate)
 				{
-					Instantiate(0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
+					Instantiate(0, 0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
 					
 					delete(eventQueue[i]);
 					eventQueue.erase(eventQueue.begin() + i);
@@ -124,21 +124,104 @@ void Engine::Update()
 	eventQueue.clear();
 }
 
-
-
-void Engine::Instantiate(int ID, Vec3 position, Vec3 scale, Vec3 rotation)
+void Engine::Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, Vec3 rotation)
 {
-	cout << endl << "Instantiating" << endl;
+	cout << endl << "Welcome to instantiation! " << endl << "-----" << endl;
 
-	GameObject newObject;
-	newObject.myModel = assets.models[ID];
-	newObject.Position = position;
-	newObject.Scale = scale;
-	newObject.Rotation = rotation;
+	cout << "Please select a model from the following list: " << endl;
 
-	objects.push_back(&newObject);
+	for (int i = 0; i < assets.models.size(); i++)
+	{
+		cout << i << "-" << assets.models[i]->modelName << endl;
+	}
 
-	GFXEvent* newGFX = new GFXEvent("GFXSpawn", &newObject, &eventQueue);
+	bool modValid = false;
+	while (!modValid)
+	{
+		cout << "Please make your selection: " << endl;
+		cin >> modelID;
+
+		if (modelID >= 0 && modelID <= assets.models.size())
+		{
+			modValid = true;
+		}
+
+		else
+		{
+			cout << endl << "Incorrect input please make a new selection" << endl;
+		}
+	}
+
+
+	cout << "Please select texture from the following list: " << endl;
+
+	for(int i = 0; i < assets.models[modelID]->texturePaths->size(); i++)
+	{
+		cout << i << "-" << (*assets.models[modelID]->texturePaths)[i] << endl;
+	}
+
+	bool texValid = false;
+	while (!texValid)
+	{
+		cout << "Please make your selection: " << endl;
+		cin >> textureID;
+
+		if (textureID >= 0 && textureID <= assets.models[modelID]->texturePaths->size())
+		{
+			texValid = true;
+		}
+
+		else 
+		{ 
+			cout << endl << "Incorrect input please make a new selection" << endl;
+		}
+	}
+
+	cout << "-----" << endl;
+
+	cout << "Enter X Pos:" << endl;
+	cin >> position.x;
+
+	cout << "Enter Y Pos:" << endl;
+	cin >> position.y;
+
+	cout << "Enter Z Pos:" << endl;
+	cin >> position.z;
+
+	cout << "-----" << endl;
+
+	cout << "Enter X Scale:" << endl;
+	cin >> scale.x;
+
+	cout << "Enter Y Scale:" << endl;
+	cin >> scale.y;
+
+	cout << "Enter Z Scale:" << endl;
+	cin >> scale.z;
+
+	cout << "-----" << endl;
+
+	cout << "Enter X Rotation:" << endl;
+	cin >> rotation.x;
+
+	cout << "Enter Y Rotation:" << endl;
+	cin >> rotation.y;
+
+	cout << "Enter Z Rotation:" << endl;
+	cin >> rotation.z;
+
+	cout << "-----" << endl;
+
+	cout << endl << "Instantiating..." << endl;
+
+	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type);
+		
+	newModel->texturePath = (*newModel->texturePaths)[textureID];
+
+	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
+	objects.push_back(newObject);
+
+	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
 
 	//GFXEvent* leftEvent = new GFXEvent("GFXLeft", &eventQueue);
 }

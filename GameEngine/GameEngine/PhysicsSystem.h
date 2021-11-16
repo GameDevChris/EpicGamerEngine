@@ -9,15 +9,24 @@ class PhysicsSystem :
 {
 private:
 	PxDefaultErrorCallback defaultErrorCallback;
+	PxDefaultCpuDispatcher* dispatcher = NULL;
+	PxTolerancesScale toleranceScale;
 	PxDefaultAllocator defaultAllocator;
 
-	PxFoundation* foundation;
-	PxPhysics* physics;
+	PxFoundation* foundation = NULL;
+	PxPhysics* physics = NULL;
 	PxCooking* cooking;
+
+	PxScene* scene = NULL;
+	PxMaterial* material = NULL;
+
+	PxPvd* pvd = NULL;
 
 	bool doMemoryProfiling = true;
 
 	void StartPhysX();
+	void CreateSimulation();
+	void RunPhysX();
 
 public:
 	virtual void Start();

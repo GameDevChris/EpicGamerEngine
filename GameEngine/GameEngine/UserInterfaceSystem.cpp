@@ -4,9 +4,16 @@ void UserInterfaceSystem::Start()
 {
 	cout << "Subsystem " << name << " -started!" << endl;
 
-	AssetEvent* dragonAsset = new AssetEvent("ASSETLoad","./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTexture.png" , 0, engineEventQueue);
-	//AssetEvent* chrisAsset = new AssetEvent("ASSETLoad", "./Models/Chris/ChrisModel.obj", "./Models/Chris/ChrisTex.obj", 1, engineEventQueue);
-	//engineEventQueue->push_back(&chrisAsset);
+	vector<std::string> textures;
+	textures.clear();
+	textures.push_back("./Models/Dragon/DragonTextureBlue.png");
+	textures.push_back("./Models/Dragon/DragonTextureGreen.png");
+	textures.push_back("./Models/Dragon/DragonTextureRed.png");
+	AssetEvent* dragonAsset = new AssetEvent("ASSETLoad","./Models/Dragon/DragonModel.obj", &textures , 0, engineEventQueue);
+
+	textures.clear();
+	textures.push_back("./Models/Chris/ChrisTex.png");
+	AssetEvent* chrisAsset = new AssetEvent("ASSETLoad", "./Models/Chris/ChrisModel.obj", &textures, 1, engineEventQueue);
 
 }
 

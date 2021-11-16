@@ -93,7 +93,7 @@ GFXEvent::GFXEvent(std::string type, GameObject* obj, vector<Event*>* queue)
 		cout << "ERROR, unknown GFX event type!" << endl;
 	}
 	
-	//myData->targetObject = obj;
+	myData->targetObject = obj;
 	
 	EQueue = queue;
 	
