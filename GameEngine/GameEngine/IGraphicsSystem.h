@@ -33,16 +33,15 @@ private:
 	void StartIrrlicht();
 	
 	void WriteStaticText(const wchar_t* text, int startPosX, int startPosY, int endPosX, int endPosY);
-	void AddMesh(std::string modelPath, std::string texturePath, vector3df pos, vector3df scale, vector3df rot);
 	void AddCamera(float PosX, float PosY, float PosZ, float LookX, float LookY, float LookZ);
 	void DrawGUI();
 
 public:
-	IrrlichtDevice* device = NULL;
-	IVideoDriver* driver = NULL;
-	ISceneManager* smgr = NULL;
+	IrrlichtDevice* device;
+	IVideoDriver* driver;
+	ISceneManager* smgr;
 	IIMGUIHandle* handle;
-	CIMGUIEventReceiver* receiver;
+	CIMGUIEventReceiver receiver;
 
 	void RunIrrlicht();
 	bool QuitCall = false;

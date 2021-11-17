@@ -2,7 +2,6 @@
 
 void IGraphicsSystem::StartIrrlicht()
 {
-	// Irrlicht OpenGL Settings
 	SIrrlichtCreationParameters IrrlichtParams;
 	IrrlichtParams.DriverType = video::EDT_DIRECT3D9;
 	IrrlichtParams.WindowSize = core::dimension2d<u32>(ScreenW, ScreenH);
@@ -12,8 +11,7 @@ void IGraphicsSystem::StartIrrlicht()
 	IrrlichtParams.AntiAlias = 16;
 	IrrlichtParams.Vsync = false;
 
-	// Create standard event receiver for the IrrIMGUI
-	IrrlichtParams.EventReceiver = receiver;
+	IrrlichtParams.EventReceiver = &receiver;
 
 	device = createDeviceEx(IrrlichtParams);
 
@@ -24,26 +22,31 @@ void IGraphicsSystem::StartIrrlicht()
 	
 	device->setWindowCaption(L"Epic Gamer Engine - Extra Gamer Edition");
 
-	driver = device->getVideoDriver();
-	smgr = device->getSceneManager();
-	//guienv = device->getGUIEnvironment();
+	handle = createIMGUI(device, &receiver);
 
-	handle = createIMGUI(device, receiver);
-	//UIEvent* sendData = new UIEvent("CreateHandler", engineEventQueue, device, driver, smgr, receiver);
-	
+	smgr = device->getSceneManager();
+
+	driver = device->getVideoDriver();
+
+	guienv = device->getGUIEnvironment();
 }
 
 void IGraphicsSystem::RunIrrlicht()
 {
 	if (device->run())
 	{
-		driver->beginScene(true, true, SColor(255, BGColour.X, BGColour.Y, BGColour.Z));
-		smgr->drawAll();
-		//guienv->drawAll();
+		driver->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
+
 		DrawGUI();
-		
+
+		smgr->drawAll();
 
 		driver->endScene();
+	}
+
+	else 
+	{
+		Exit();
 	}
 }
 
@@ -58,29 +61,6 @@ void IGraphicsSystem::WriteStaticText(const wchar_t* text, int startPosX, int st
 	guienv->addStaticText(text, rect<s32>(startPosX, startPosY, endPosX, endPosY), true);
 }
 
-void IGraphicsSystem::AddMesh(std::string modelPath, std::string texturePath, vector3df pos, vector3df scale, vector3df rot)
-{
-	IAnimatedMesh* mesh = smgr->getMesh(modelPath.c_str());
-	if (!mesh) 
-	{
-		device->drop();
-		cout << "Failed to load mesh" << endl;
-	}
-
-	IAnimatedMeshSceneNode* node = smgr->addAnimatedMeshSceneNode(mesh);
-
-	if (node)
-	{
-		node->setPosition(pos);
-		node->setScale(scale);
-		node->setRotation(rot);
-		node->setMaterialFlag(EMF_LIGHTING, false);
-		node->setMaterialTexture(0, driver->getTexture(texturePath.c_str()));
-	
-		nodes.push_back(node);
-	}
-}
-
 void IGraphicsSystem::AddCamera(float PosX, float PosY, float PosZ, float LookX, float LookY, float LookZ)
 {
 	cam = smgr->addCameraSceneNode(0, vector3df(PosX, PosY, PosZ), vector3df(LookX, LookY, LookZ));
@@ -89,16 +69,14 @@ void IGraphicsSystem::AddCamera(float PosX, float PosY, float PosZ, float LookX,
 void IGraphicsSystem::DrawGUI()
 {
 	handle->startGUI();
-	ImGui::Begin("My first Window");
-	ImGui::Text("Hello World!");
+	ImGui::Begin("Settings");
+	ImGui::Text("Quit Game");
 
 	if (ImGui::Button("Exit", ImVec2(40, 20)))
 	{
-		device->closeDevice();
+		Exit();
 	}
 	ImGui::End();
-
-	smgr->drawAll();
 	handle->drawAll();
 }
 
@@ -108,10 +86,7 @@ void IGraphicsSystem::Start()
 
 	StartIrrlicht();
 
-	//WriteStaticText(L"This is comic sans, lmao", 0, 0, 1000, 100);
-
-	//AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(-60, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
-	
+	WriteStaticText(L"This is comic sans, lmao", 0, 0, 1000, 100);
 
 	AddCamera(0, 10, -50, 0, 5, 0);
 }
@@ -269,7 +244,12 @@ void IGraphicsSystem::Update()
 
 void IGraphicsSystem::Exit()
 {
+	device->closeDevice();
+
+	handle->drop();
 	device->drop();
+	
+	QuitCall = true;
 }
 
 

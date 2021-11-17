@@ -28,7 +28,6 @@ public:
 	virtual void Start();
 	virtual void Update();
 	virtual void LateUpdate();
-	void DrawGUI();
 
 	void InputCooldown(bool value, int cooldown);
 };
