@@ -40,26 +40,32 @@ void Engine::ThrowEvent(Event newEvent)
 void Engine::Start()
 {
 	eventQueue.clear();
+	lateEventQueue.clear();
 	cout << "Engine started, help" << endl;
 
 	physics.name = "EpicGamerPhysics";
 	physics.engineEventQueue = &eventQueue;
+	physics.lateEngineEventQueue = &lateEventQueue;
 	physics.Start();
 
 	graphics.name = "EpicGamerGraphics";
 	graphics.engineEventQueue = &eventQueue;
+	graphics.lateEngineEventQueue = &lateEventQueue;
 	graphics.Start();
 
 	dataInput.name = "EpicGamerDataInput";
 	dataInput.engineEventQueue = &eventQueue;
+	dataInput.lateEngineEventQueue = &lateEventQueue;
 	dataInput.Start();
 
 	UI.name = "EpicGamerUI";
 	UI.engineEventQueue = &eventQueue;
+	UI.lateEngineEventQueue = &lateEventQueue;
 	UI.Start();
 
 	assets.name = "EpicGamerAssets";
 	assets.engineEventQueue = &eventQueue;
+	assets.lateEngineEventQueue = &lateEventQueue;
 	assets.Start();
 
 	assets.device = graphics.device;
@@ -117,6 +123,8 @@ void Engine::Update()
 
 	graphics.Update();
 
+	UI.LateUpdate();
+
 	if (graphics.QuitCall)
 	{
 		finished = true;
@@ -133,6 +141,7 @@ void Engine::Update()
 	//}
 
 	eventQueue.clear();
+	lateEventQueue.clear();
 }
 
 void Engine::Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, Vec3 rotation)

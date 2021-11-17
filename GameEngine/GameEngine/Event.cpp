@@ -145,6 +145,6 @@ Event::Event()
 
 void Event::Throw()
 {
-	cout << endl << "Throwing event of type " << ReturnEvent() << endl;;
+	//cout << endl << "Throwing event of type " << ReturnEvent() << endl;;
 	EQueue->push_back(this);
 }

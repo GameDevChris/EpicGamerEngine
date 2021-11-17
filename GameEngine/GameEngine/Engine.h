@@ -19,6 +19,7 @@ private:
 	AssetManagerSystem assets;
 
 	vector<Event*> eventQueue;
+	vector<Event*> lateEventQueue;
 	vector<GameObject*> objects;
 
 

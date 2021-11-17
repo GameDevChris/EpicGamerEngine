@@ -9,6 +9,8 @@
 #include <IrrIMGUI/IrrIMGUIDebug.h>
 
 using namespace IrrIMGUI;
+using namespace scene;
+using namespace video;
 
 class UserInterfaceSystem :
 	public SubSystem
@@ -18,10 +20,15 @@ private:
 
 public:
 
+	IrrlichtDevice* device;
+	IVideoDriver* driver;
+	ISceneManager* smgr;
 	IIMGUIHandle* handle;
 
 	virtual void Start();
 	virtual void Update();
+	virtual void LateUpdate();
+	void DrawGUI();
 
 	void InputCooldown(bool value, int cooldown);
 };

@@ -10,11 +10,13 @@ public:
 		GraphicsSub,
 		PhysicsSub,
 		AssetSub,
+		UISub,
 		General
 	};
 
 	enum EventType
 	{
+		//GFX
 		GFXDefault,
 		GFXQuit,
 		GFXUp,
@@ -30,13 +32,20 @@ public:
 		GFXCamForward,
 		GFXCamBackward,
 
+		//PHYS
 		PHYSDefault,
 
+		//ASSET
 		ASSETLoad,
 		ASSETAssign,
 
+		//GENERAL
 		Instantiate,
-		ChrisLegion
+		ChrisLegion,
+
+		//UI
+		CreateHandler,
+		DrawUI
 	};
 
 	EventData* myData;

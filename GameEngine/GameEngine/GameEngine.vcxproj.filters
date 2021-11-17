@@ -75,15 +75,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lib_includes\IMGUI\imgui.cpp">
-      <Filter>Source Files\IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="lib_includes\IMGUI\imgui_demo.cpp">
-      <Filter>Source Files\IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="lib_includes\IMGUI\imgui_draw.cpp">
-      <Filter>Source Files\IMGUI</Filter>
-    </ClCompile>
     <ClCompile Include="lib_source\IrrIMGUI\CBasicMemoryLeakDetection.cpp">
       <Filter>Source Files\IrrIMGUI</Filter>
     </ClCompile>
@@ -122,6 +113,18 @@
     </ClCompile>
     <ClCompile Include="lib_source\IrrIMGUI\UnitTest.cpp">
       <Filter>Source Files\IrrIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lib_includes\IMGUI\imgui.cpp">
+      <Filter>Source Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="lib_includes\IMGUI\imgui_demo.cpp">
+      <Filter>Source Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="lib_includes\IMGUI\imgui_draw.cpp">
+      <Filter>Source Files\IMGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,24 +170,6 @@
     <ClInclude Include="Vec3.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="lib_includes\IMGUI\imconfig.h">
-      <Filter>Header Files\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="lib_includes\IMGUI\imgui.h">
-      <Filter>Header Files\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="lib_includes\IMGUI\imgui_internal.h">
-      <Filter>Header Files\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="lib_includes\IMGUI\imstb_rectpack.h">
-      <Filter>Header Files\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="lib_includes\IMGUI\imstb_textedit.h">
-      <Filter>Header Files\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="lib_includes\IMGUI\imstb_truetype.h">
-      <Filter>Header Files\IMGUI</Filter>
-    </ClInclude>
     <ClInclude Include="lib_source\IrrIMGUI\CIMGUIHandle.h">
       <Filter>Header Files\IrrIMGUI</Filter>
     </ClInclude>
@@ -205,6 +190,27 @@
     </ClInclude>
     <ClInclude Include="lib_source\IrrIMGUI\private\IrrIMGUIInject_priv.h">
       <Filter>Header Files\IrrIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib_includes\IMGUI\imconfig.h">
+      <Filter>Header Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="lib_includes\IMGUI\imgui.h">
+      <Filter>Header Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="lib_includes\IMGUI\imgui_internal.h">
+      <Filter>Header Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="lib_includes\IMGUI\stb_rect_pack.h">
+      <Filter>Header Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="lib_includes\IMGUI\stb_textedit.h">
+      <Filter>Header Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="lib_includes\IMGUI\stb_truetype.h">
+      <Filter>Header Files\IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

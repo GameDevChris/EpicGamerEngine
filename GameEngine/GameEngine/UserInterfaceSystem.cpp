@@ -4,16 +4,16 @@ void UserInterfaceSystem::Start()
 {
 	cout << "Subsystem " << name << " -started!" << endl;
 
-	vector<std::string> textures;
-	textures.clear();
-	textures.push_back("./Models/Dragon/DragonTextureBlue.png");
-	textures.push_back("./Models/Dragon/DragonTextureGreen.png");
-	textures.push_back("./Models/Dragon/DragonTextureRed.png");
-	AssetEvent* dragonAsset = new AssetEvent("ASSETLoad","./Models/Dragon/DragonModel.obj", &textures , 0, engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Chris/ChrisTex.png");
-	AssetEvent* chrisAsset = new AssetEvent("ASSETLoad", "./Models/Chris/ChrisModel.obj", &textures, 1, engineEventQueue);
+	//vector<std::string> textures;
+	//textures.clear();
+	//textures.push_back("./Models/Dragon/DragonTextureBlue.png");
+	//textures.push_back("./Models/Dragon/DragonTextureGreen.png");
+	//textures.push_back("./Models/Dragon/DragonTextureRed.png");
+	//AssetEvent* dragonAsset = new AssetEvent("ASSETLoad","./Models/Dragon/DragonModel.obj", &textures , 0, engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Chris/ChrisTex.png");
+	//AssetEvent* chrisAsset = new AssetEvent("ASSETLoad", "./Models/Chris/ChrisModel.obj", &textures, 1, engineEventQueue);
 
 }
 
@@ -104,6 +104,90 @@ void UserInterfaceSystem::Update()
 			InputCooldown(canInstantiate, 1);
 		}
 	}
+
+
+	if (!(*engineEventQueue).empty())
+	{
+		for (int i = 0; i < (*engineEventQueue).size(); i++)
+		{
+			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->UISub)
+			{
+				cout << "There is " << (*engineEventQueue).size() << " events!" << endl;
+
+				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->CreateHandler)
+				{
+					cout << "UI Handler creation started" << endl;
+
+					device = (*engineEventQueue)[i]->myData->myDevice;
+					driver = (*engineEventQueue)[i]->myData->myDriver;
+					smgr = (*engineEventQueue)[i]->myData->mySmgr;
+					handle = createIMGUI(device, (*engineEventQueue)[i]->myData->myEventReceiver);
+				}
+
+				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->DrawUI)
+				{
+					cout << "UI drawn, should be workin" << endl;
+
+					// create the GUI elements
+					//handle->startGUI();
+					//ImGui::Begin("My first Window");
+					//ImGui::Text("Hello World!");
+
+					//if (ImGui::Button("Exit", ImVec2(40, 20)))
+					//{
+					//	device->closeDevice();
+					//}
+					//ImGui::End();
+
+					// render the GUI
+					//handle->drawAll();
+				}
+
+				delete((*engineEventQueue)[i]);
+				engineEventQueue->erase(engineEventQueue->begin() + i);
+			}
+		}
+	}
+
+}
+
+void UserInterfaceSystem::LateUpdate()
+{
+	if (!(*lateEngineEventQueue).empty())
+	{
+		for (int i = 0; i < (*lateEngineEventQueue).size(); i++)
+		{
+			if ((*lateEngineEventQueue)[i]->eventSubsystem == (*lateEngineEventQueue)[i]->UISub)
+			{
+				if ((*lateEngineEventQueue)[i]->eventType == (*lateEngineEventQueue)[i]->DrawUI)
+				{
+					cout << "drawn ui innit" << endl;
+				
+					DrawGUI();
+					driver->endScene();
+				}
+				
+				delete((*lateEngineEventQueue)[i]);
+				lateEngineEventQueue->erase(lateEngineEventQueue->begin() + i);
+			}
+		}
+	}
+}
+
+void UserInterfaceSystem::DrawGUI()
+{
+	handle->startGUI();
+	ImGui::Begin("My first Window");
+	ImGui::Text("Hello World!");
+
+	if (ImGui::Button("Exit", ImVec2(40, 20)))
+	{
+		device->closeDevice();
+	}
+	ImGui::End();
+
+	smgr->drawAll();
+	handle->drawAll();
 }
 
 void UserInterfaceSystem::InputCooldown(bool value, int cooldown)

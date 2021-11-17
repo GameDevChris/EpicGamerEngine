@@ -15,6 +15,11 @@ void SubSystem::Update()
 	
 }
 
+void SubSystem::LateUpdate()
+{
+	cout << name << "Late updated" << endl;
+}
+
 void SubSystem::Exit()
 {
 }

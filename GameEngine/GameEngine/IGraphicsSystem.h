@@ -1,6 +1,12 @@
 #pragma once
-#include "irrlicht.h"
+//#include "irrlicht.h"
 #include "SubSystem.h"
+#include "UIEvent.h"
+
+#include <IrrIMGUI/IncludeIrrlicht.h>
+#include <IrrIMGUI/IrrIMGUI.h>
+#include <IrrIMGUI/IncludeIMGUI.h>
+#include <IrrIMGUI/IrrIMGUIDebug.h>
 
 using namespace irr;
 using namespace core;
@@ -9,12 +15,14 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
+using namespace IrrIMGUI;
+
 class IGraphicsSystem :
 	public SubSystem
 {
 private:
-	const int ScreenW = 1920;
-	const int ScreenH = 1080;
+	const int ScreenW = 1280;
+	const int ScreenH = 720;
 
 	IGUIEnvironment* guienv = NULL;
 	vector3df BGColour = vector3df(46, 109, 114);
@@ -27,11 +35,14 @@ private:
 	void WriteStaticText(const wchar_t* text, int startPosX, int startPosY, int endPosX, int endPosY);
 	void AddMesh(std::string modelPath, std::string texturePath, vector3df pos, vector3df scale, vector3df rot);
 	void AddCamera(float PosX, float PosY, float PosZ, float LookX, float LookY, float LookZ);
+	void DrawGUI();
 
 public:
 	IrrlichtDevice* device = NULL;
 	IVideoDriver* driver = NULL;
 	ISceneManager* smgr = NULL;
+	IIMGUIHandle* handle;
+	CIMGUIEventReceiver* receiver;
 
 	void RunIrrlicht();
 	bool QuitCall = false;

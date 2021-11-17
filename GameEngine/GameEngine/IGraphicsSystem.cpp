@@ -2,26 +2,49 @@
 
 void IGraphicsSystem::StartIrrlicht()
 {
-	device = createDevice(video::EDT_DIRECT3D9, core::dimension2d<u32>(ScreenW, ScreenH), 32, false, true, true, 0);
+	// Irrlicht OpenGL Settings
+	SIrrlichtCreationParameters IrrlichtParams;
+	IrrlichtParams.DriverType = video::EDT_DIRECT3D9;
+	IrrlichtParams.WindowSize = core::dimension2d<u32>(ScreenW, ScreenH);
+	IrrlichtParams.Bits = 32;
+	IrrlichtParams.Fullscreen = false;
+	IrrlichtParams.Stencilbuffer = true;
+	IrrlichtParams.AntiAlias = 16;
+	IrrlichtParams.Vsync = false;
+
+	// Create standard event receiver for the IrrIMGUI
+	IrrlichtParams.EventReceiver = receiver;
+
+	device = createDeviceEx(IrrlichtParams);
 
 	if (device == NULL) 
 	{
 		cout << "Failed to create Irrlicht device!" << endl;
 	}
-
+	
 	device->setWindowCaption(L"Epic Gamer Engine - Extra Gamer Edition");
 
 	driver = device->getVideoDriver();
 	smgr = device->getSceneManager();
-	guienv = device->getGUIEnvironment();
+	//guienv = device->getGUIEnvironment();
+
+	handle = createIMGUI(device, receiver);
+	//UIEvent* sendData = new UIEvent("CreateHandler", engineEventQueue, device, driver, smgr, receiver);
+	
 }
 
 void IGraphicsSystem::RunIrrlicht()
 {
-	driver->beginScene(true, true, SColor(255, BGColour.X, BGColour.Y, BGColour.Z));
-	smgr->drawAll();
-	guienv->drawAll();
-	driver->endScene();
+	if (device->run())
+	{
+		driver->beginScene(true, true, SColor(255, BGColour.X, BGColour.Y, BGColour.Z));
+		smgr->drawAll();
+		//guienv->drawAll();
+		DrawGUI();
+		
+
+		driver->endScene();
+	}
 }
 
 void IGraphicsSystem::WriteStaticText(const wchar_t* text, int startPosX, int startPosY, int endPosX, int endPosY)
@@ -63,13 +86,29 @@ void IGraphicsSystem::AddCamera(float PosX, float PosY, float PosZ, float LookX,
 	cam = smgr->addCameraSceneNode(0, vector3df(PosX, PosY, PosZ), vector3df(LookX, LookY, LookZ));
 }
 
+void IGraphicsSystem::DrawGUI()
+{
+	handle->startGUI();
+	ImGui::Begin("My first Window");
+	ImGui::Text("Hello World!");
+
+	if (ImGui::Button("Exit", ImVec2(40, 20)))
+	{
+		device->closeDevice();
+	}
+	ImGui::End();
+
+	smgr->drawAll();
+	handle->drawAll();
+}
+
 void IGraphicsSystem::Start()
 {
 	cout << "Subsystem " << name << " -started!" << endl;
 
 	StartIrrlicht();
 
-	WriteStaticText(L"This is comic sans, lmao", 0, 0, 1000, 100);
+	//WriteStaticText(L"This is comic sans, lmao", 0, 0, 1000, 100);
 
 	//AddMesh("./Models/Dragon/DragonModel.obj", "./Models/Dragon/DragonTextureRed.png", vector3df(-60, 15, 0), vector3df(7, 7, 7), vector3df(0, 0, 0));
 	

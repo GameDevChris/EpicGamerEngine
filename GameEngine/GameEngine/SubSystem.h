@@ -29,7 +29,9 @@ public:
 	SubSystem();
 	virtual void Start();
 	virtual void Update();
+	virtual void LateUpdate();
 	virtual void Exit();
 	vector<Event*>* engineEventQueue;
+	vector<Event*>* lateEngineEventQueue;
 };
 
