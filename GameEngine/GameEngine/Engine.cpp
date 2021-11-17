@@ -103,7 +103,7 @@ void Engine::Update()
 
 				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
 				{
-					for (int i = 0; i < 1000; i++)
+					for (int i = 0; i < 100000; i++)
 					{
 						InstantiateRandom();
 					}

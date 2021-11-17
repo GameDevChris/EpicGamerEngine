@@ -92,8 +92,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\LuaBridge\include\detail;.\SFML\include;.\SDL2_Image\include;.\Irrlicht\include;.\SDL2\include;.\PxShared\include;.\Lua\include;.\PhysX\include;.\LuaBridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\LuaBridge\include\detail;.\SFML\include;.\SDL2_Image\include;.\Irrlicht\include;.\SDL2\include;.\PxShared\include;.\Lua\include;.\PhysX\include;.\lib_includes;.\LuaBridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_IRRIMGUI_STATIC_LIB_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,6 +144,22 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GFXEvent.cpp" />
     <ClCompile Include="IGraphicsSystem.cpp" />
+    <ClCompile Include="lib_includes\IMGUI\imgui.cpp" />
+    <ClCompile Include="lib_includes\IMGUI\imgui_demo.cpp" />
+    <ClCompile Include="lib_includes\IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\CBasicMemoryLeakDetection.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\CChannelBuffer.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\CCharFifo.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\CGUITexture.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\CIMGUIEventReceiver.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\CIMGUIHandle.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\CIrrlichtIMGUIDriver.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\COpenGLIMGUIDriver.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\IIMGUIDriver.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\IMGUIHelper.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\IReferenceCounter.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\IrrIMGUIInject.cpp" />
+    <ClCompile Include="lib_source\IrrIMGUI\UnitTest.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="SubSystem.cpp" />
@@ -158,6 +175,19 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GFXEvent.h" />
     <ClInclude Include="IGraphicsSystem.h" />
+    <ClInclude Include="lib_includes\IMGUI\imconfig.h" />
+    <ClInclude Include="lib_includes\IMGUI\imgui.h" />
+    <ClInclude Include="lib_includes\IMGUI\imgui_internal.h" />
+    <ClInclude Include="lib_includes\IMGUI\imstb_rectpack.h" />
+    <ClInclude Include="lib_includes\IMGUI\imstb_textedit.h" />
+    <ClInclude Include="lib_includes\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="lib_source\IrrIMGUI\CIMGUIHandle.h" />
+    <ClInclude Include="lib_source\IrrIMGUI\CIrrlichtIMGUIDriver.h" />
+    <ClInclude Include="lib_source\IrrIMGUI\COpenGLIMGUIDriver.h" />
+    <ClInclude Include="lib_source\IrrIMGUI\IIMGUIDriver.h" />
+    <ClInclude Include="lib_source\IrrIMGUI\private\CGUITexture.h" />
+    <ClInclude Include="lib_source\IrrIMGUI\private\IrrIMGUIDebug_priv.h" />
+    <ClInclude Include="lib_source\IrrIMGUI\private\IrrIMGUIInject_priv.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="SubSystem.h" />

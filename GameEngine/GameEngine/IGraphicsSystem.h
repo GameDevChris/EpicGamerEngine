@@ -13,8 +13,8 @@ class IGraphicsSystem :
 	public SubSystem
 {
 private:
-	const int ScreenW = 1270;
-	const int ScreenH = 720;
+	const int ScreenW = 1920;
+	const int ScreenH = 1080;
 
 	IGUIEnvironment* guienv = NULL;
 	vector3df BGColour = vector3df(46, 109, 114);
