@@ -167,9 +167,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vec3.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="lib_source\IrrIMGUI\CIMGUIHandle.h">
       <Filter>Header Files\IrrIMGUI</Filter>
     </ClInclude>
@@ -211,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="lib_includes\IMGUI\stb_truetype.h">
       <Filter>Header Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MyVec3.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

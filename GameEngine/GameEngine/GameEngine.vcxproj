@@ -194,7 +194,7 @@
     <ClInclude Include="SubSystem.h" />
     <ClInclude Include="UIEvent.h" />
     <ClInclude Include="UserInterfaceSystem.h" />
-    <ClInclude Include="Vec3.h" />
+    <ClInclude Include="MyVec3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -69,13 +69,79 @@ void IGraphicsSystem::AddCamera(float PosX, float PosY, float PosZ, float LookX,
 void IGraphicsSystem::DrawGUI()
 {
 	handle->startGUI();
-	ImGui::Begin("Settings");
-	ImGui::Text("Quit Game");
 
-	if (ImGui::Button("Exit", ImVec2(40, 20)))
+	if (IsFirstLoop)
 	{
-		Exit();
+		ImGui::SetNextWindowPos(ImVec2(20.0f, 20.0f));
+		ImGui::SetNextWindowSize(ImVec2(400.0f, 100.0f));
+		IsFirstLoop = false;
 	}
+
+	ImGui::Begin("Settings", NULL, ImGuiWindowFlags_ShowBorders);
+
+	ImGui::BeginGroup();
+
+		ImGui::Text("Instantiation");
+		ImGui::Text("-----");
+
+		ImGui::Text("Which model?");
+		ImGui::RadioButton("Dragon", &UIIDModelHolder, 0);
+		ImGui::RadioButton("Chris", &UIIDModelHolder, 1);
+		ImGui::Text("-----");
+
+		if (UIIDModelHolder == 0)
+		{
+			ImGui::Text("Which texture?");
+			ImGui::RadioButton("Blue", &UIIDTexHolder, 0);
+			ImGui::RadioButton("Green", &UIIDTexHolder, 1);
+			ImGui::RadioButton("Red", &UIIDTexHolder, 2);
+			ImGui::Text("-----");
+		}
+
+		else
+		{
+			UIIDTexHolder = 0;
+		}
+
+		ImGui::Text("Position");
+
+		ImGui::SliderFloat("X:##Pos", &UIPosHolder.x, -100, 100.0f);
+		ImGui::SliderFloat("Y:##Pos", &UIPosHolder.y, -100, 100.0f);
+		ImGui::SliderFloat("Z:##Pos", &UIPosHolder.z, -100, 100.0f);
+		ImGui::Text("-----");
+
+		ImGui::Text("Scale");
+
+		ImGui::SliderFloat("X:##Scale", &UIScaleHolder.x, -100, 100.0f);
+		ImGui::SliderFloat("Y:##Scale", &UIScaleHolder.y, -100, 100.0f);
+		ImGui::SliderFloat("Z:##Scale", &UIScaleHolder.z, -100, 100.0f);
+		ImGui::Text("-----");
+
+		ImGui::Text("Rotation");
+
+		ImGui::SliderFloat("X:##Rot", &UIRotHolder.x, -100, 100.0f);
+		ImGui::SliderFloat("Y:##Rot", &UIRotHolder.y, -100, 100.0f);
+		ImGui::SliderFloat("Z:##Rot", &UIRotHolder.z, -100, 100.0f);
+		ImGui::Text("-----");
+
+		if (ImGui::Button("Instantiate", ImVec2(100, 20)))
+		{
+			Exit();
+		}
+
+	ImGui::EndGroup();
+
+	ImGui::SameLine(0.0f, 20.0f);
+
+	ImGui::BeginGroup();
+		ImGui::Text("Quit");
+		if (ImGui::Button("Exit", ImVec2(40, 20)))
+		{
+			Exit();
+		}
+	ImGui::EndGroup();
+
+
 	ImGui::End();
 	handle->drawAll();
 }

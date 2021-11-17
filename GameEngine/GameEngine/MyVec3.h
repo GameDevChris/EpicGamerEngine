@@ -1,18 +1,18 @@
 #pragma once
 
-struct Vec3
+struct MyVec3
 {
 	float x = 0;
 	float y = 0;
 	float z = 0;
 
-	Vec3()
+	MyVec3()
 	{
 	}
 
 
 
-	Vec3(float a, float b, float c)
+	MyVec3(float a, float b, float c)
 	{
 		x = a;
 		y = b;

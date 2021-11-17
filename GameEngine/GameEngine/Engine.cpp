@@ -73,7 +73,6 @@ void Engine::Start()
 	assets.smgr = graphics.smgr;
 
 
-	//Instantiate(0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
 
 	UseData();
 }
@@ -101,7 +100,7 @@ void Engine::Update()
 			{
 				if (eventQueue[i]->eventType == eventQueue[i]->Instantiate)
 				{
-					Instantiate(0, 0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
+					InstantiateRequest();
 					
 					delete(eventQueue[i]);
 					eventQueue.erase(eventQueue.begin() + i);
@@ -109,7 +108,7 @@ void Engine::Update()
 
 				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
 				{
-					for (int i = 0; i < 100000; i++)
+					for (int i = 0; i < 1000; i++)
 					{
 						InstantiateRandom();
 					}
@@ -144,8 +143,24 @@ void Engine::Update()
 	lateEventQueue.clear();
 }
 
-void Engine::Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, Vec3 rotation)
+void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation)
 {
+	cout << endl << "Instantiating..." << endl;
+
+	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type);
+
+	newModel->texturePath = (*newModel->texturePaths)[textureID];
+
+	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
+	objects.push_back(newObject);
+
+	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
+}
+
+void Engine::InstantiateRequest()
+{
+	int modelID; int textureID; MyVec3 position; MyVec3 scale; MyVec3 rotation;
+
 	cout << endl << "Welcome to instantiation! " << endl << "-----" << endl;
 
 	cout << "Please select a model from the following list: " << endl;
@@ -175,7 +190,7 @@ void Engine::Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, 
 
 	cout << "Please select texture from the following list: " << endl;
 
-	for(int i = 0; i < assets.models[modelID]->texturePaths->size(); i++)
+	for (int i = 0; i < assets.models[modelID]->texturePaths->size(); i++)
 	{
 		cout << i << "-" << (*assets.models[modelID]->texturePaths)[i] << endl;
 	}
@@ -191,8 +206,8 @@ void Engine::Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, 
 			texValid = true;
 		}
 
-		else 
-		{ 
+		else
+		{
 			cout << endl << "Incorrect input please make a new selection" << endl;
 		}
 	}
@@ -235,15 +250,13 @@ void Engine::Instantiate(int modelID, int textureID, Vec3 position, Vec3 scale, 
 	cout << endl << "Instantiating..." << endl;
 
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type);
-		
+
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
 
 	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
 	objects.push_back(newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
-
-	//GFXEvent* leftEvent = new GFXEvent("GFXLeft", &eventQueue);
 }
 
 void Engine::InstantiateRandom()
@@ -251,7 +264,7 @@ void Engine::InstantiateRandom()
 	int modelID = 1;
 	int textureID = 0;
 	
-	Vec3 position(0, 0, 0);
+	MyVec3 position(0, 0, 0);
 
 	random_device rd;   
 	mt19937 gen(rd());
@@ -261,8 +274,8 @@ void Engine::InstantiateRandom()
 	position.y = dist(gen);
 	position.z = dist(gen);
 
-	Vec3 scale(0.05, 0.05, 0.05);
-	Vec3 rotation(0, 0, 0);
+	MyVec3 scale(0.05, 0.05, 0.05);
+	MyVec3 rotation(0, 0, 0);
 
 	cout << endl << "Instantiating..." << endl;
 

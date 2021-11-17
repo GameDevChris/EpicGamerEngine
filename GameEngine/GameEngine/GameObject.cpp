@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject(Model* mod, Vec3 pos, Vec3 rot, Vec3 sca)
+GameObject::GameObject(Model* mod, MyVec3 pos, MyVec3 rot, MyVec3 sca)
 {
 	myModel = mod;
 	Position = pos;
