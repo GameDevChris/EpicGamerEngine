@@ -92,6 +92,10 @@ std::string Event::ReturnEvent()
 	case Instantiate:
 		return "Instantiate";
 		break;
+
+	case ChrisLegion:
+		return "ChrisLegion";
+		break;
 	}
 
 	return "Unknown Event";
@@ -116,6 +120,12 @@ Event::Event(std::string type, vector<Event*>* queue)
 	if (type == "Instantiate")
 	{
 		eventType = Instantiate;
+		eventSubsystem = General;
+	}
+
+	else if (type == "ChrisLegion")
+	{
+		eventType = ChrisLegion;
 		eventSubsystem = General;
 	}
 

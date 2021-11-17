@@ -94,6 +94,16 @@ void UserInterfaceSystem::Update()
 			InputCooldown(canInstantiate, 1);
 		}
 	}
+
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	{
+		if (canInstantiate)
+		{
+			Event* chrisEvent = new Event("ChrisLegion", engineEventQueue);
+
+			InputCooldown(canInstantiate, 1);
+		}
+	}
 }
 
 void UserInterfaceSystem::InputCooldown(bool value, int cooldown)

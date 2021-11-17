@@ -35,7 +35,8 @@ public:
 		ASSETLoad,
 		ASSETAssign,
 
-		Instantiate
+		Instantiate,
+		ChrisLegion
 	};
 
 	EventData* myData;

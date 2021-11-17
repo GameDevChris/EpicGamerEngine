@@ -95,13 +95,18 @@ void Engine::Update()
 			{
 				if (eventQueue[i]->eventType == eventQueue[i]->Instantiate)
 				{
-					//Instantiate(0, 0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
+					Instantiate(0, 0, Vec3(-60, 15, 0), Vec3(7, 7, 7), Vec3(0, 0, 0));
 					
+					delete(eventQueue[i]);
+					eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
+				{
 					for (int i = 0; i < 1000; i++)
 					{
 						InstantiateRandom();
 					}
-					
 
 					delete(eventQueue[i]);
 					eventQueue.erase(eventQueue.begin() + i);
@@ -241,13 +246,13 @@ void Engine::InstantiateRandom()
 
 	random_device rd;   
 	mt19937 gen(rd());
-	uniform_int_distribution<> dist(1, 1000); // distribute results between 1 and 6 inclusive.
+	uniform_int_distribution<> dist(-500, 500); // distribute results between 1 and 6 inclusive.
 
 	position.x = dist(gen);
 	position.y = dist(gen);
 	position.z = dist(gen);
 
-	Vec3 scale(0.02, 0.02, 0.02);
+	Vec3 scale(0.05, 0.05, 0.05);
 	Vec3 rotation(0, 0, 0);
 
 	cout << endl << "Instantiating..." << endl;
