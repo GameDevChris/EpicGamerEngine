@@ -1,6 +1,6 @@
 #include "AssetEvent.h"
 
-AssetEvent::AssetEvent(std::string type, std::string modelPath, vector<std::string>* texturePaths, int modelType, vector<Event*>* queue)
+AssetEvent::AssetEvent(std::string type, std::string modelPath, vector<std::string>* texturePaths, int modelType, std::string myName, vector<Event*>* queue)
 {
 	myData = new EventData();
 
@@ -22,7 +22,7 @@ AssetEvent::AssetEvent(std::string type, std::string modelPath, vector<std::stri
 	}
 
 	myData->modPath = modelPath;
-
+	myData->myName = myName;
 	myData->texPaths = new vector<std::string>;
 	myData->texPaths->clear();
 

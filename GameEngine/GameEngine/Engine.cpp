@@ -79,9 +79,10 @@ void Engine::Start()
 
 void Engine::Update()
 {
+	graphics.loadedModels = assets.models;
+
 	if (!eventQueue.empty())
 	{
-		cout << "There are "<< eventQueue.size() << " events!" << endl;
 		for (int i = 0; i < eventQueue.size(); i++)
 		{
 			cout << "Event to happen in subsystem " << eventQueue[i]->ReturnSubsystem() << endl;
@@ -131,7 +132,15 @@ void Engine::Update()
 				if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
 				{
 
-					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
+					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType);
+					delete(eventQueue[i]);
+					eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
+				{
+
+					InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
 					delete(eventQueue[i]);
 					eventQueue.erase(eventQueue.begin() + i);
 				}
@@ -170,23 +179,36 @@ void Engine::Update()
 	}
 }
 
-void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation)
+void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType)
 {
 	cout << endl << "Instantiating..." << endl;
 
-	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type);
+	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
-
-	cout << "Position:" << position.x << "," << position.y << "," << position.z << endl;
-	cout << "Scale:" << scale.x << "," << scale.y << "," << scale.z << endl;
-	cout << "Rotation:" << rotation.x << "," << rotation.y << "," << rotation.z << endl;
 
 	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
 	objects.push_back(newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
-	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic");
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, rbType);
+}
+
+void Engine::InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation)
+{
+	cout << endl << "Instantiating Player..." << endl;
+
+	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
+
+	newModel->texturePath = (*newModel->texturePaths)[textureID];
+
+	Player* newPlayer = new Player(newModel, position, rotation, scale);
+	objects.push_back(newPlayer);
+
+	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newPlayer, &eventQueue);
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newPlayer, "dynamic");
+
+	UI.myPlayer = newPlayer;
 }
 
 void Engine::InstantiateRequest()
@@ -281,7 +303,7 @@ void Engine::InstantiateRequest()
 
 	cout << endl << "Instantiating..." << endl;
 
-	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type);
+	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
 
@@ -316,13 +338,9 @@ void Engine::InstantiateRandom()
 
 	cout << endl << "Instantiating..." << endl;
 
-	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type);
+	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
-
-	cout << "Position:" << position.x << "," << position.y << "," << position.z << endl;
-	cout << "Scale:" << scale.x << "," << scale.y << "," << scale.z << endl;
-	cout << "Rotation:" << rotation.x << "," << rotation.y << "," << rotation.z << endl;
 
 	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
 	objects.push_back(newObject);

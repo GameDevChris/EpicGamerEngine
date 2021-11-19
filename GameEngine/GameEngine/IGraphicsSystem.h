@@ -44,8 +44,12 @@ private:
 	void AddCamera(float PosX, float PosY, float PosZ, float LookX, float LookY, float LookZ);
 	void DrawGUI();
 
+
+	int UIState = 0;
+
 	int UIIDTexHolder;
 	int UIIDModelHolder;
+	int UIRBTypeHolder = 0;
 
 	float UIGeneralScale = 0;
 	MyVec3 UIPosHolder;
@@ -53,6 +57,11 @@ private:
 	MyVec3 UIScaleHolder;
 
 public:
+
+	vector<Model*> loadedModels;
+
+
+
 	IrrlichtDevice* device;
 	IVideoDriver* driver;
 	ISceneManager* smgr;

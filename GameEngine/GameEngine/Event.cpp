@@ -143,6 +143,31 @@ Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* texture
 {
 	myData = new EventData();
 
+	if (type == "InstantiatePlayer")
+	{
+		eventType = InstantiatePlayer;
+		eventSubsystem = General;
+	}
+
+	else
+	{
+		cout << "ERROR, unknown event type!" << endl;
+	}
+
+	myData->myModID = modelID;
+	myData->myTexID = textureID;
+	myData->myPos = position;
+	myData->myScale = scale;
+	myData->myRot = rotation;
+	EQueue = queue;
+
+	Throw();
+}
+
+Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* textureID, std::string* rbType, MyVec3* position, MyVec3* scale, MyVec3* rotation)
+{
+	myData = new EventData();
+
 	if (type == "InstantiateCustom")
 	{
 		eventType = InstantiateCustom;
@@ -159,6 +184,7 @@ Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* texture
 	myData->myPos = position;
 	myData->myScale = scale;
 	myData->myRot = rotation;
+	myData->RBType = *rbType;
 
 	EQueue = queue;
 
@@ -171,6 +197,5 @@ Event::Event()
 
 void Event::Throw()
 {
-	//cout << endl << "Throwing event of type " << ReturnEvent() << endl;;
 	EQueue->push_back(this);
 }

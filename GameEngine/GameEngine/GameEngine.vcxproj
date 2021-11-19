@@ -163,6 +163,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysEvent.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SubSystem.cpp" />
     <ClCompile Include="UIEvent.cpp" />
     <ClCompile Include="UserInterfaceSystem.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="PhysEvent.h" />
     <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="SubSystem.h" />
     <ClInclude Include="UIEvent.h" />

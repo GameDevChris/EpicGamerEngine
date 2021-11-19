@@ -34,7 +34,9 @@ public:
 	void Update();
 
 	void InstantiateRandom();
-	void Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation);
+	void Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType);
+
+	void InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation);
 
 	void InstantiateRequest();
 };

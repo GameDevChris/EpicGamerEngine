@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "GameObject.h"
+#include "Player.h"
 
 #include <IrrIMGUI/IncludeIrrlicht.h>
 #include <IrrIMGUI/IrrIMGUI.h>
@@ -14,10 +15,16 @@ public:
 	std::string texPath = "";
 	vector<std::string>* texPaths;
 
+	std::string myName = "";
 	int modType = NULL;
 	std::string RBType = "";
 	Model* myModel = NULL;
 	GameObject* targetObject = NULL;
+	Player* targetPlayer = NULL;
+
+	MyVec3* myForce = NULL;
+
+
 
 	IrrlichtDevice* myDevice = NULL;
 	video::IVideoDriver* myDriver = NULL;

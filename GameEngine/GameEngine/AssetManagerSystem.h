@@ -16,7 +16,7 @@ public:
 	ISceneManager* smgr = NULL;
 
 	vector<Model*> models;
-	Model* LoadModel(std::string modelPath, vector<std::string>* myTexturePaths, int modelType);
+	Model* LoadModel(std::string modelPath, vector<std::string>* myTexturePaths, int modelType, std::string modelName);
 
 	virtual void Update();
 };

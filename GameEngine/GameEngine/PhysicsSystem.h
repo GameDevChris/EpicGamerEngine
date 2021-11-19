@@ -25,11 +25,30 @@ private:
 	bool doMemoryProfiling = true;
 
 	void StartPhysX();
-	void CreateSimulation();
 	void RunPhysX();
 	void AddRB(GameObject* obj, std::string type);
 
+	
+
 public:
+
+	struct FilterGroup
+	{
+		enum Enum
+		{
+			eGround = (1 << 0),
+			ePlayer = (1 << 1),
+			eButton = (1 << 2),
+			eEnemy = (1 << 3),
+		};
+	};
+
+	PxFilterFlags PhysicsFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+		PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+		PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize);
+
+	void setupFiltering(PxRigidActor* actor, PxU32 filterGroup, PxU32 filterMask);
+
 	virtual void Start();
 	virtual void Update();
 	virtual void Exit();

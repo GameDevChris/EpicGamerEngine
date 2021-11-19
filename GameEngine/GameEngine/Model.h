@@ -10,15 +10,11 @@ using namespace std;
 struct Model
 {
 public:
-	enum ModelType
-	{
-		Dragon,
-		Chris
-	};
 
 	std::string modelName = "";
-	ModelType type;
-	//IAnimatedMeshSceneNode* node;
+
+	int type;
+ 
 	IAnimatedMesh* mesh;
 	IAnimatedMeshSceneNode* myNode;
 	std::string texturePath;
@@ -30,21 +26,12 @@ public:
 
 	vector<std::string>* texturePaths;
 
-	Model(IAnimatedMesh* myMesh, vector<std::string>* myTextures, std::string myModel, int myType)
+	Model(IAnimatedMesh* myMesh, vector<std::string>* myTextures, std::string myModel, int myType, std::string name)
 	{
 		mesh = myMesh;
 		texturePaths = myTextures;
 		modelPath = myModel;
-		type = ModelType(myType);
-
-		if (myType == 0)
-		{
-			modelName = "Dragon";
-		}
-
-		else if (myType == 1)
-		{
-			modelName = "Chris";
-		}
+		type = myType;
+		modelName = name;
 	}
 };

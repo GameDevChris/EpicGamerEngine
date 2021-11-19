@@ -9,12 +9,35 @@ void UserInterfaceSystem::Start()
 	textures.push_back("./Models/Dragon/DragonTextureBlue.png");
 	textures.push_back("./Models/Dragon/DragonTextureGreen.png");
 	textures.push_back("./Models/Dragon/DragonTextureRed.png");
-	AssetEvent* dragonAsset = new AssetEvent("ASSETLoad","./Models/Dragon/DragonModel.obj", &textures , 0, engineEventQueue);
+	AssetEvent* newAsset0 = new AssetEvent("ASSETLoad","./Models/Dragon/DragonModel.obj", &textures , 0, "Dragon", engineEventQueue);
 
 	textures.clear();
 	textures.push_back("./Models/Chris/ChrisTex.png");
-	AssetEvent* chrisAsset = new AssetEvent("ASSETLoad", "./Models/Chris/ChrisModel.obj", &textures, 1, engineEventQueue);
+	AssetEvent* newAsset1 = new AssetEvent("ASSETLoad", "./Models/Chris/ChrisModel.obj", &textures, 1, "Chris", engineEventQueue);
 
+	textures.clear();
+	textures.push_back("./Models/Kermit/KermitTex.png");
+	AssetEvent* newAsset2 = new AssetEvent("ASSETLoad", "./Models/Kermit/KermitModel.obj", &textures, 2, "Kermit", engineEventQueue);
+
+	textures.clear();
+	textures.push_back("./Models/Trump/TrumpTex.jpeg");
+	AssetEvent* newAsset3 = new AssetEvent("ASSETLoad", "./Models/Trump/TrumpModel.obj", &textures, 3, "Trump", engineEventQueue);
+
+	textures.clear();
+	textures.push_back("./Models/Sword/SwordTex.png");
+	AssetEvent* newAsset4 = new AssetEvent("ASSETLoad", "./Models/Sword/SwordModel.obj", &textures, 4, "Sword", engineEventQueue);
+
+	textures.clear();
+	textures.push_back("./Models/Floor/FloorTex.jpg");
+	AssetEvent* newAsset5 = new AssetEvent("ASSETLoad", "./Models/Floor/FloorModel.obj", &textures, 5, "Floor", engineEventQueue);
+
+	textures.clear();
+	textures.push_back("./Models/Platform/PlatformTex.png");
+	AssetEvent* newAsset6 = new AssetEvent("ASSETLoad", "./Models/Platform/PlatformModel.obj", &textures, 6, "Platform", engineEventQueue);
+
+	textures.clear();
+	textures.push_back("./Models/Hat/HatTex.png");
+	AssetEvent* newAsset7 = new AssetEvent("ASSETLoad", "./Models/Hat/HatModel.obj", &textures, 7, "Hat", engineEventQueue);
 }
 
 void UserInterfaceSystem::Update()
@@ -22,45 +45,101 @@ void UserInterfaceSystem::Update()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		GFXEvent* forwardCamEvent = new GFXEvent("GFXCamForward", engineEventQueue);
-		//GFXEvent* upEvent = new GFXEvent("GFXUp", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		GFXEvent* backwardCamEvent = new GFXEvent("GFXCamBackward", engineEventQueue);
-		//GFXEvent* downEvent = new GFXEvent("GFXDown", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		GFXEvent* leftCamEvent = new GFXEvent("GFXCamLeft", engineEventQueue);
-		//GFXEvent* leftEvent = new GFXEvent("GFXLeft", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		GFXEvent* rightCamEvent = new GFXEvent("GFXCamRight", engineEventQueue);
-		//GFXEvent* rightEvent = new GFXEvent("GFXRight", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		//GFXEvent* leftCamEvent = new GFXEvent("GFXCamLeft", engineEventQueue);
+		if (myPlayer != NULL)
+		{
+			MyVec3* force = new MyVec3(-myPlayer->linearSpeed, 0, 0);
+			PhysEvent* playerBackwardEvent = new PhysEvent("PlayerMove", engineEventQueue, myPlayer, force);
+		}
+
+		else
+		{
+			cout << "No Player Set!" << endl;
+		}
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		//GFXEvent* rightCamEvent = new GFXEvent("GFXCamRight", engineEventQueue);
+		if (myPlayer != NULL)
+		{
+			MyVec3* force = new MyVec3(myPlayer->linearSpeed, 0, 0);
+			PhysEvent* playerBackwardEvent = new PhysEvent("PlayerMove", engineEventQueue, myPlayer, force);
+		}
+
+		else 
+		{
+			cout << "No Player Set!" << endl;
+		}
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		//GFXEvent* forwardCamEvent = new GFXEvent("GFXCamForward", engineEventQueue);
+		if (myPlayer != NULL)
+		{
+			MyVec3* force = new MyVec3(0, 0, myPlayer->linearSpeed);
+			PhysEvent* playerForwardEvent = new PhysEvent("PlayerMove", engineEventQueue, myPlayer, force);
+		}
+
+		else
+		{
+			cout << "No Player Set!" << endl;
+		}
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		//GFXEvent* backwardCamEvent = new GFXEvent("GFXCamBackward", engineEventQueue);
+		if (myPlayer != NULL)
+		{
+			MyVec3* force = new MyVec3(0, 0, -myPlayer->linearSpeed);
+			PhysEvent* playerBackwardEvent = new PhysEvent("PlayerMove", engineEventQueue, myPlayer, force);
+		}
+
+		else
+		{
+			cout << "No Player Set!" << endl;
+		}
+	}
+
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		if (myPlayer != NULL)
+		{
+			if (myPlayer->isGrounded)
+			{
+				MyVec3* force = new MyVec3(0, myPlayer->jumpHeight, 0);
+				PhysEvent* playerBackwardEvent = new PhysEvent("PlayerImpulse", engineEventQueue, myPlayer, force);
+
+				myPlayer->isGrounded = false;
+			}
+			
+			else
+			{
+				cout << "Player isn't grounded!" << endl;
+			}
+		}
+
+		else
+		{
+			cout << "No Player Set!" << endl;
+		}
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
@@ -79,7 +158,7 @@ void UserInterfaceSystem::Update()
 		GFXEvent* quitEvent = new GFXEvent("GFXQuit", engineEventQueue);
 	}
 
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
 	{
 		if (canInstantiate)
 		{
@@ -106,8 +185,6 @@ void UserInterfaceSystem::Update()
 		{
 			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->UISub)
 			{
-				cout << "UI Event" << endl;
-
 				delete((*engineEventQueue)[i]);
 				engineEventQueue->erase(engineEventQueue->begin() + i);
 			}
@@ -124,8 +201,6 @@ void UserInterfaceSystem::LateUpdate()
 		{
 			if ((*lateEngineEventQueue)[i]->eventSubsystem == (*lateEngineEventQueue)[i]->UISub)
 			{
-				cout << "Late UI Event" << endl;
-
 				delete((*lateEngineEventQueue)[i]);
 				lateEngineEventQueue->erase(lateEngineEventQueue->begin() + i);
 			}

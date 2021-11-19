@@ -5,6 +5,7 @@
 #include "Event.h"
 #include "GFXEvent.h"
 #include "AssetEvent.h"
+#include "PhysEvent.h"
 #include "GameObject.h"
 
 using namespace std;

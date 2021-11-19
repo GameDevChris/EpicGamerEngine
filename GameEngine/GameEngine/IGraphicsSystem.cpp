@@ -31,12 +31,12 @@ void IGraphicsSystem::StartIrrlicht()
 	guienv = device->getGUIEnvironment();
 
 
-	const IGeometryCreator* geoCreator = smgr->getGeometryCreator();
-
-	SMaterial* floorMat = new SMaterial();
-	floorMat->DiffuseColor = SColor(u32(1), u32(0), u32(100), u32(0));
-	IMesh* plane = geoCreator->createHillPlaneMesh(dimension2d<f32>(10, 10), dimension2d<u32>(100, 100), floorMat, 0, dimension2d<f32>(2, 2), dimension2d<f32>(1, 1));
-	ISceneNode* ground = smgr->addMeshSceneNode(plane);
+	//const IGeometryCreator* geoCreator = smgr->getGeometryCreator();
+	//
+	//SMaterial* floorMat = new SMaterial();
+	//floorMat->DiffuseColor = SColor(u32(255), u32(255), u32(255), u32(255));
+	//IMesh* plane = geoCreator->createHillPlaneMesh(dimension2d<f32>(10, 10), dimension2d<u32>(100, 100), floorMat, 0, dimension2d<f32>(2, 2), dimension2d<f32>(1, 1));
+	//ISceneNode* ground = smgr->addMeshSceneNode(plane);
 	//plane->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 
 }
@@ -82,91 +82,217 @@ void IGraphicsSystem::DrawGUI()
 {
 	handle->startGUI();
 
-	if (IsFirstLoop1)
+
+	if (UIState == 0)
 	{
-		ImGui::SetNextWindowPos(ImVec2(20.0f, 20.0f));
-		ImGui::SetNextWindowSize(ImVec2(400.0f, 100.0f));
-		IsFirstLoop1 = false;
-	}
-
-	ImGui::Begin("Settings", NULL, ImGuiWindowFlags_ShowBorders);
-
-	ImGui::BeginGroup();
-
-		ImGui::Text("Instantiation");
-		ImGui::Text("-----");
-
-		ImGui::Text("Which model?");
-		ImGui::RadioButton("Dragon", &UIIDModelHolder, 0);
-		ImGui::RadioButton("Chris", &UIIDModelHolder, 1);
-		ImGui::Text("-----");
-
-		if (UIIDModelHolder == 0)
+		if (IsFirstLoop1)
 		{
-			ImGui::Text("Which texture?");
-			ImGui::RadioButton("Blue", &UIIDTexHolder, 0);
-			ImGui::RadioButton("Green", &UIIDTexHolder, 1);
-			ImGui::RadioButton("Red", &UIIDTexHolder, 2);
+			ImGui::SetNextWindowPos(ImVec2(20.0f, 20.0f));
+			ImGui::SetNextWindowSize(ImVec2(400.0f, 100.0f));
+			IsFirstLoop1 = false;
+		}
+
+		ImGui::Begin("Settings", NULL, ImGuiWindowFlags_ShowBorders);
+
+		ImGui::BeginGroup();
+
+		ImGui::Text("Model Instantiation");
+		ImGui::Text("-----");
+
+		if (!loadedModels.empty())
+		{
+			//Name
+			ImGui::Text("Which model?");
+			for (int i = 0; i < loadedModels.size(); i++)
+			{
+				ImGui::RadioButton(loadedModels[i]->modelName.c_str(), &UIIDModelHolder, i);
+			}
+
 			ImGui::Text("-----");
+
+			//Texture
+
+			ImGui::Text("Which texture?");
+
+			for (int i = 0; i < loadedModels[UIIDModelHolder]->texturePaths->size(); i++)
+			{
+				std::string val = (*loadedModels[UIIDModelHolder]->texturePaths)[i];
+				ImGui::RadioButton(val.c_str(), &UIIDTexHolder, i);
+			}
+
+			ImGui::Text("-----");
+
+			ImGui::Text("Position");
+
+			ImGui::SliderFloat("X:##Pos", &UIPosHolder.x, -100, 100.0f);
+			ImGui::SliderFloat("Y:##Pos", &UIPosHolder.y, -100, 100.0f);
+			ImGui::SliderFloat("Z:##Pos", &UIPosHolder.z, -100, 100.0f);
+			ImGui::Text("-----");
+
+			ImGui::Text("Scale");
+
+			ImGui::SliderFloat("GeneralScale", &UIGeneralScale, 0.1f, 10.0f);
+
+			ImGui::SliderFloat("X:##Scale", &UIScaleHolder.x, 0.1f, 10.0f);
+			ImGui::SliderFloat("Y:##Scale", &UIScaleHolder.y, 0.1f, 10.0f);
+			ImGui::SliderFloat("Z:##Scale", &UIScaleHolder.z, 0.1f, 10.0f);
+
+			UIScaleHolder.x = UIGeneralScale;
+			UIScaleHolder.y = UIGeneralScale;
+			UIScaleHolder.z = UIGeneralScale;
+
+			ImGui::Text("-----");
+
+			ImGui::Text("Rotation");
+
+			ImGui::SliderFloat("X:##Rot", &UIRotHolder.x, -100, 100.0f);
+			ImGui::SliderFloat("Y:##Rot", &UIRotHolder.y, -100, 100.0f);
+			ImGui::SliderFloat("Z:##Rot", &UIRotHolder.z, -100, 100.0f);
+			ImGui::Text("-----");
+
+			ImGui::Text("Rigidbody type:");
+
+			ImGui::RadioButton("Static", &UIRBTypeHolder, 0);
+			ImGui::RadioButton("Dynamic", &UIRBTypeHolder, 1);
+
+			ImGui::Text("-----");
+
+			if (ImGui::Button("Instantiate", ImVec2(100, 20)))
+			{
+				std::string rbVal = "";
+
+				if (UIRBTypeHolder == 0)
+				{
+					rbVal = "static";
+				}
+
+				else if (UIRBTypeHolder == 1)
+				{
+					rbVal = "dynamic";
+				}
+
+				Event* instantiateEvent = new Event("InstantiateCustom", engineEventQueue, &UIIDModelHolder, &UIIDTexHolder, &rbVal, &UIPosHolder, &UIScaleHolder, &UIRotHolder);
+			}
 		}
 
 		else
 		{
-			UIIDTexHolder = 0;
+			ImGui::Text("No models loaded in memory");
 		}
 
-		ImGui::Text("Position");
+		ImGui::EndGroup();
 
-		ImGui::SliderFloat("X:##Pos", &UIPosHolder.x, -100, 100.0f);
-		ImGui::SliderFloat("Y:##Pos", &UIPosHolder.y, -100, 100.0f);
-		ImGui::SliderFloat("Z:##Pos", &UIPosHolder.z, -100, 100.0f);
-		ImGui::Text("-----");
+		ImGui::SameLine(0.0f, 20.0f);
 
-		ImGui::Text("Scale");
-
-		ImGui::SliderFloat("GeneralScale", &UIGeneralScale, 0.1f, 10.0f);
-
-		ImGui::SliderFloat("X:##Scale", &UIScaleHolder.x, 0.1f, 10.0f);
-		ImGui::SliderFloat("Y:##Scale", &UIScaleHolder.y, 0.1f, 10.0f);
-		ImGui::SliderFloat("Z:##Scale", &UIScaleHolder.z, 0.1f, 10.0f);
-
-		UIScaleHolder.x = UIGeneralScale;
-		UIScaleHolder.y = UIGeneralScale;
-		UIScaleHolder.z = UIGeneralScale;
-
-		ImGui::Text("-----");
-
-		ImGui::Text("Rotation");
-
-		ImGui::SliderFloat("X:##Rot", &UIRotHolder.x, -100, 100.0f);
-		ImGui::SliderFloat("Y:##Rot", &UIRotHolder.y, -100, 100.0f);
-		ImGui::SliderFloat("Z:##Rot", &UIRotHolder.z, -100, 100.0f);
-		ImGui::Text("-----");
-
-
-		if (ImGui::Button("Instantiate", ImVec2(100, 20)))
-		{
-			Event* instantiateEvent = new Event("InstantiateCustom", engineEventQueue, &UIIDModelHolder, &UIIDTexHolder, &UIPosHolder, &UIScaleHolder, &UIRotHolder);
-		}
-
-	ImGui::EndGroup();
-
-	ImGui::SameLine(0.0f, 20.0f);
-
-	ImGui::BeginGroup();
+		ImGui::BeginGroup();
 		ImGui::Text("Quit");
 		if (ImGui::Button("Exit", ImVec2(40, 20)))
 		{
 			Exit();
 		}
-	ImGui::EndGroup();
-	ImGui::End();
+		ImGui::EndGroup();
+		ImGui::End();
+	}
+
+	else if (UIState == 1)
+	{
+		if (IsFirstLoop1)
+		{
+			ImGui::SetNextWindowPos(ImVec2(20.0f, 20.0f));
+			ImGui::SetNextWindowSize(ImVec2(400.0f, 100.0f));
+			IsFirstLoop1 = false;
+		}
+
+		ImGui::Begin("Settings", NULL, ImGuiWindowFlags_ShowBorders);
+
+		ImGui::BeginGroup();
+
+		ImGui::Text("Player Instantiation");
+		ImGui::Text("-----");
+
+		if (!loadedModels.empty())
+		{
+			//Name
+			ImGui::Text("Which model?");
+			for (int i = 0; i < loadedModels.size(); i++)
+			{
+				ImGui::RadioButton(loadedModels[i]->modelName.c_str(), &UIIDModelHolder, i);
+			}
+
+			ImGui::Text("-----");
+
+			//Texture
+
+			ImGui::Text("Which texture?");
+
+			for (int i = 0; i < loadedModels[UIIDModelHolder]->texturePaths->size(); i++)
+			{
+				std::string val = (*loadedModels[UIIDModelHolder]->texturePaths)[i];
+				ImGui::RadioButton(val.c_str(), &UIIDTexHolder, i);
+			}
+
+			ImGui::Text("-----");
+
+			ImGui::Text("Position");
+
+			ImGui::SliderFloat("X:##Pos", &UIPosHolder.x, -100, 100.0f);
+			ImGui::SliderFloat("Y:##Pos", &UIPosHolder.y, -100, 100.0f);
+			ImGui::SliderFloat("Z:##Pos", &UIPosHolder.z, -100, 100.0f);
+			ImGui::Text("-----");
+
+			ImGui::Text("Scale");
+
+			ImGui::SliderFloat("GeneralScale", &UIGeneralScale, 0.1f, 10.0f);
+
+			ImGui::SliderFloat("X:##Scale", &UIScaleHolder.x, 0.1f, 10.0f);
+			ImGui::SliderFloat("Y:##Scale", &UIScaleHolder.y, 0.1f, 10.0f);
+			ImGui::SliderFloat("Z:##Scale", &UIScaleHolder.z, 0.1f, 10.0f);
+
+			UIScaleHolder.x = UIGeneralScale;
+			UIScaleHolder.y = UIGeneralScale;
+			UIScaleHolder.z = UIGeneralScale;
+
+			ImGui::Text("-----");
+
+			ImGui::Text("Rotation");
+
+			ImGui::SliderFloat("X:##Rot", &UIRotHolder.x, -100, 100.0f);
+			ImGui::SliderFloat("Y:##Rot", &UIRotHolder.y, -100, 100.0f);
+			ImGui::SliderFloat("Z:##Rot", &UIRotHolder.z, -100, 100.0f);
+			ImGui::Text("-----");
+
+
+			if (ImGui::Button("Instantiate", ImVec2(100, 20)))
+			{
+				Event* instantiatePlayerEvent = new Event("InstantiatePlayer", engineEventQueue, &UIIDModelHolder, &UIIDTexHolder, &UIPosHolder, &UIScaleHolder, &UIRotHolder);
+			}
+		}
+
+		else
+		{
+			ImGui::Text("No models loaded in memory");
+		}
+
+		ImGui::EndGroup();
+
+		ImGui::SameLine(0.0f, 20.0f);
+
+		ImGui::BeginGroup();
+		ImGui::Text("Quit");
+		if (ImGui::Button("Exit", ImVec2(40, 20)))
+		{
+			Exit();
+		}
+		ImGui::EndGroup();
+		ImGui::End();
+	}
+	
 
 
 	if (IsFirstLoop2)
 	{
-		ImGui::SetNextWindowPos(ImVec2(1100.0f, 20.0f));
-		ImGui::SetNextWindowSize(ImVec2(150.0f, 100.0f));
+		ImGui::SetNextWindowPos(ImVec2(1000.0f, 20.0f));
+		ImGui::SetNextWindowSize(ImVec2(200.0f, 250.0f));
 		IsFirstLoop2 = false;
 	}
 	ImGui::Begin("Info", NULL, ImGuiWindowFlags_ShowBorders);
@@ -183,6 +309,14 @@ void IGraphicsSystem::DrawGUI()
 
 	ImGui::Text(amountText.c_str());
 
+	ImGui::Text("Menu option");
+	ImGui::Text("-----");
+
+	ImGui::RadioButton("Model Instantiation", &UIState, 0);
+	ImGui::RadioButton("Player Instantiation", &UIState, 1);
+
+	ImGui::Text("-----");
+
 	ImGui::Text("Quit");
 	if (ImGui::Button("Exit", ImVec2(40, 20)))
 	{
@@ -198,6 +332,7 @@ void IGraphicsSystem::DrawGUI()
 
 void IGraphicsSystem::Start()
 {
+	loadedModels.clear();
 	cout << "Subsystem " << name << " -started!" << endl;
 
 	StartIrrlicht();
@@ -211,15 +346,10 @@ void IGraphicsSystem::Update()
 {
 	if (!(*engineEventQueue).empty())
 	{
-		cout << "There are " << (*engineEventQueue).size() << " events" << endl;
 		for (int i = 0; i < (*engineEventQueue).size(); i++)
 		{
 			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->GraphicsSub)
 			{
-				cout << endl;
-				cout << "GFX Event found" << endl;
-				cout << "Event found: "<< (*engineEventQueue)[i]->ReturnEvent() << endl;
-
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXDefault)
 				{
 					cout << "Default GFX event happened" << endl;
@@ -227,7 +357,6 @@ void IGraphicsSystem::Update()
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXUp)
 				{
-					cout << "Up GFX event happened" << endl;
 					for (i = 0; i < nodes.size(); i++)
 					{
 						vector3df originalRot = nodes[i]->getRotation();
@@ -237,7 +366,6 @@ void IGraphicsSystem::Update()
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXDown)
 				{
-					cout << "Down GFX event happened" << endl;
 					for (i = 0; i < nodes.size(); i++)
 					{
 						vector3df originalRot = nodes[i]->getRotation();
@@ -247,7 +375,6 @@ void IGraphicsSystem::Update()
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXLeft)
 				{
-					cout << "Left GFX event happened" << endl;
 					for (i = 0; i < nodes.size(); i++)
 					{
 						vector3df originalRot = nodes[i]->getRotation();
@@ -257,7 +384,6 @@ void IGraphicsSystem::Update()
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXRight)
 				{
-					cout << "Right GFX event happened" << endl;
 					for (i = 0; i < nodes.size(); i++)
 					{
 						vector3df originalRot = nodes[i]->getRotation();
@@ -267,42 +393,36 @@ void IGraphicsSystem::Update()
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXCamUp)
 				{
-					cout << "Up GFX Camera event happened" << endl;
 					vector3df originalPos = cam->getPosition();
 					cam->setPosition(vector3df(originalPos.X, originalPos.Y + 1, originalPos.Z));
 				}
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXCamDown)
 				{
-					cout << "Down GFX Camera event happened" << endl;
 					vector3df originalPos = cam->getPosition();
 					cam->setPosition(vector3df(originalPos.X, originalPos.Y - 1, originalPos.Z));
 				}
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXCamRight)
 				{
-					cout << "Right GFX Camera event happened" << endl;
 					vector3df originalPos = cam->getPosition();
 					cam->setPosition(vector3df(originalPos.X + 1, originalPos.Y, originalPos.Z));
 				}
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXCamLeft)
 				{
-					cout << "Left GFX Camera event happened" << endl;
 					vector3df originalPos = cam->getPosition();
 					cam->setPosition(vector3df(originalPos.X - 1, originalPos.Y, originalPos.Z));
 				}
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXCamForward)
 				{
-					cout << "Forward GFX Camera event happened" << endl;
 					vector3df originalPos = cam->getPosition();
 					cam->setPosition(vector3df(originalPos.X, originalPos.Y, originalPos.Z + 1));
 				}
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXCamBackward)
 				{
-					cout << "Backward GFX Camera event happened" << endl;
 					vector3df originalPos = cam->getPosition();
 					cam->setPosition(vector3df(originalPos.X, originalPos.Y, originalPos.Z - 1));
 				}
@@ -345,23 +465,17 @@ void IGraphicsSystem::Update()
 						boundingbox.getEdges(edges);
 
 						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeX = (edges[5].X - edges[1].X) * (*engineEventQueue)[i]->myData->targetObject->Scale.x;
-						std::cout << "width: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeX << std::endl;
+
+						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeX /= 3;
 
 						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeY = (edges[1].Y - edges[0].Y) * (*engineEventQueue)[i]->myData->targetObject->Scale.y;
-						std::cout << "height: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeY << std::endl;
+
+						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeY /= 4;
 
 						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ = (edges[2].Z - edges[0].Z) * (*engineEventQueue)[i]->myData->targetObject->Scale.z;
-						std::cout << "depth: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ << std::endl;
 
-						//vector3df extents =newNode->getTransformedBoundingBox().getExtent();
-						//(*engineEventQueue)[i]->myData->targetObject->myModel->sizeX = extents.X;
-						//std::cout << "sizeX: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeX << std::endl;
-						//
-						//(*engineEventQueue)[i]->myData->targetObject->myModel->sizeX = extents.Y;
-						//std::cout << "sizeY: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeY << std::endl;
-						//
-						//(*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ = extents.Z;
-						//std::cout << "sizeZ: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ << std::endl;
+						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ /= 3;
+
 
 						(*engineEventQueue)[i]->myData->targetObject->myModel->myNode = newNode;
 						nodes.push_back(newNode);

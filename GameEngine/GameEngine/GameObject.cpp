@@ -28,7 +28,7 @@ void GameObject::SyncTransform()
 	{
 		myModel->myNode->setPosition(vector3df(myRB->staticRB->getGlobalPose().p.x, myRB->staticRB->getGlobalPose().p.y, myRB->staticRB->getGlobalPose().p.z));
 
-		quaternion myRot(myRB->staticRB->getGlobalPose().q.w, myRB->staticRB->getGlobalPose().q.x, myRB->staticRB->getGlobalPose().q.y, myRB->staticRB->getGlobalPose().q.z);
+		quaternion myRot(myRB->staticRB->getGlobalPose().q.x, myRB->staticRB->getGlobalPose().q.y, myRB->staticRB->getGlobalPose().q.z, myRB->staticRB->getGlobalPose().q.w);
 
 		myRot.normalize();
 
@@ -42,7 +42,7 @@ void GameObject::SyncTransform()
 	{
 		myModel->myNode->setPosition(vector3df(myRB->dynamicRB->getGlobalPose().p.x, myRB->dynamicRB->getGlobalPose().p.y, myRB->dynamicRB->getGlobalPose().p.z));
 		
-		quaternion myRot(myRB->dynamicRB->getGlobalPose().q.w, myRB->dynamicRB->getGlobalPose().q.x, myRB->dynamicRB->getGlobalPose().q.y, myRB->dynamicRB->getGlobalPose().q.z);
+		quaternion myRot(myRB->dynamicRB->getGlobalPose().q.x, myRB->dynamicRB->getGlobalPose().q.y, myRB->dynamicRB->getGlobalPose().q.z, myRB->dynamicRB->getGlobalPose().q.w);
 		
 		myRot.normalize();
 
