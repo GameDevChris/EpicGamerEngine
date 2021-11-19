@@ -89,7 +89,6 @@ void Engine::Update()
 	}
 	
 	UI.Update();
-	physics.Update();
 	assets.Update();
 
 	if (!eventQueue.empty())
@@ -108,7 +107,7 @@ void Engine::Update()
 
 				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
 				{
-					for (int i = 0; i < 1000; i++)
+					for (int i = 0; i < 1; i++)
 					{
 						InstantiateRandom();
 					}
@@ -121,6 +120,27 @@ void Engine::Update()
 	}
 
 	graphics.Update();
+	physics.Update();
+
+	if (!eventQueue.empty())
+	{
+		for (int i = 0; i < eventQueue.size(); i++)
+		{
+			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
+			{
+				if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
+				{
+
+					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
+					delete(eventQueue[i]);
+					eventQueue.erase(eventQueue.begin() + i);
+				}
+			}
+		}
+	}
+
+	graphics.Update();
+	physics.Update();
 
 	UI.LateUpdate();
 
@@ -141,6 +161,13 @@ void Engine::Update()
 
 	eventQueue.clear();
 	lateEventQueue.clear();
+
+
+
+	for (int i = 0; i < objects.size(); i++)
+	{
+		objects[i]->SyncTransform();
+	}
 }
 
 void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation)
@@ -151,10 +178,15 @@ void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 sca
 
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
 
+	cout << "Position:" << position.x << "," << position.y << "," << position.z << endl;
+	cout << "Scale:" << scale.x << "," << scale.y << "," << scale.z << endl;
+	cout << "Rotation:" << rotation.x << "," << rotation.y << "," << rotation.z << endl;
+
 	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
 	objects.push_back(newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic");
 }
 
 void Engine::InstantiateRequest()
@@ -253,10 +285,15 @@ void Engine::InstantiateRequest()
 
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
 
+	cout << "Position:" << position.x << "," << position.y << "," << position.z << endl;
+	cout << "Scale:" << scale.x << "," << scale.y << "," << scale.z << endl;
+	cout << "Rotation:" << rotation.x << "," << rotation.y << "," << rotation.z << endl;
+
 	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
 	objects.push_back(newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic");
 }
 
 void Engine::InstantiateRandom()
@@ -268,7 +305,7 @@ void Engine::InstantiateRandom()
 
 	random_device rd;   
 	mt19937 gen(rd());
-	uniform_int_distribution<> dist(-500, 500); // distribute results between 1 and 6 inclusive.
+	uniform_int_distribution<> dist(-500, 500);
 
 	position.x = dist(gen);
 	position.y = dist(gen);
@@ -283,8 +320,13 @@ void Engine::InstantiateRandom()
 
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
 
+	cout << "Position:" << position.x << "," << position.y << "," << position.z << endl;
+	cout << "Scale:" << scale.x << "," << scale.y << "," << scale.z << endl;
+	cout << "Rotation:" << rotation.x << "," << rotation.y << "," << rotation.z << endl;
+
 	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
 	objects.push_back(newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic");
 }

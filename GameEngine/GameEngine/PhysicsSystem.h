@@ -27,6 +27,7 @@ private:
 	void StartPhysX();
 	void CreateSimulation();
 	void RunPhysX();
+	void AddRB(GameObject* obj, std::string type);
 
 public:
 	virtual void Start();

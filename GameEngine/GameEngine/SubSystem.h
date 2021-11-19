@@ -5,9 +5,7 @@
 #include "Event.h"
 #include "GFXEvent.h"
 #include "AssetEvent.h"
-
-
-
+#include "GameObject.h"
 
 using namespace std;
 class SubSystem

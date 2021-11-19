@@ -15,6 +15,7 @@ public:
 	vector<std::string>* texPaths;
 
 	int modType = NULL;
+	std::string RBType = "";
 	Model* myModel = NULL;
 	GameObject* targetObject = NULL;
 
@@ -23,6 +24,13 @@ public:
 	ISceneManager* mySmgr = NULL;
 	IrrIMGUI::IIMGUIHandle* myHandle = NULL;
 	IrrIMGUI::CIMGUIEventReceiver* myEventReceiver = NULL;
+
+	MyVec3* myPos = NULL;
+	MyVec3* myRot = NULL;
+	MyVec3* myScale = NULL;
+
+	int* myTexID = NULL;
+	int* myModID = NULL;
 
 
 	EventData(){}

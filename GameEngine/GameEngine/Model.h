@@ -20,8 +20,13 @@ public:
 	ModelType type;
 	//IAnimatedMeshSceneNode* node;
 	IAnimatedMesh* mesh;
+	IAnimatedMeshSceneNode* myNode;
 	std::string texturePath;
 	std::string modelPath;
+
+	float sizeX = 0;
+	float sizeY = 0;
+	float sizeZ = 0;
 
 	vector<std::string>* texturePaths;
 

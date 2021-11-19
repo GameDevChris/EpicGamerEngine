@@ -139,6 +139,32 @@ Event::Event(std::string type, vector<Event*>* queue)
 	Throw();
 }
 
+Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* textureID, MyVec3* position, MyVec3* scale, MyVec3* rotation)
+{
+	myData = new EventData();
+
+	if (type == "InstantiateCustom")
+	{
+		eventType = InstantiateCustom;
+		eventSubsystem = General;
+	}
+
+	else
+	{
+		cout << "ERROR, unknown event type!" << endl;
+	}
+
+	myData->myModID = modelID;
+	myData->myTexID = textureID;
+	myData->myPos = position;
+	myData->myScale = scale;
+	myData->myRot = rotation;
+
+	EQueue = queue;
+
+	Throw();
+}
+
 Event::Event()
 {
 }

@@ -29,6 +29,16 @@ void IGraphicsSystem::StartIrrlicht()
 	driver = device->getVideoDriver();
 
 	guienv = device->getGUIEnvironment();
+
+
+	const IGeometryCreator* geoCreator = smgr->getGeometryCreator();
+
+	SMaterial* floorMat = new SMaterial();
+	floorMat->DiffuseColor = SColor(u32(1), u32(0), u32(100), u32(0));
+	IMesh* plane = geoCreator->createHillPlaneMesh(dimension2d<f32>(10, 10), dimension2d<u32>(100, 100), floorMat, 0, dimension2d<f32>(2, 2), dimension2d<f32>(1, 1));
+	ISceneNode* ground = smgr->addMeshSceneNode(plane);
+	//plane->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+
 }
 
 void IGraphicsSystem::RunIrrlicht()
@@ -37,9 +47,11 @@ void IGraphicsSystem::RunIrrlicht()
 	{
 		driver->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 
-		DrawGUI();
+		
 
 		smgr->drawAll();
+
+		DrawGUI();
 
 		driver->endScene();
 	}
@@ -70,11 +82,11 @@ void IGraphicsSystem::DrawGUI()
 {
 	handle->startGUI();
 
-	if (IsFirstLoop)
+	if (IsFirstLoop1)
 	{
 		ImGui::SetNextWindowPos(ImVec2(20.0f, 20.0f));
 		ImGui::SetNextWindowSize(ImVec2(400.0f, 100.0f));
-		IsFirstLoop = false;
+		IsFirstLoop1 = false;
 	}
 
 	ImGui::Begin("Settings", NULL, ImGuiWindowFlags_ShowBorders);
@@ -112,9 +124,16 @@ void IGraphicsSystem::DrawGUI()
 
 		ImGui::Text("Scale");
 
-		ImGui::SliderFloat("X:##Scale", &UIScaleHolder.x, -100, 100.0f);
-		ImGui::SliderFloat("Y:##Scale", &UIScaleHolder.y, -100, 100.0f);
-		ImGui::SliderFloat("Z:##Scale", &UIScaleHolder.z, -100, 100.0f);
+		ImGui::SliderFloat("GeneralScale", &UIGeneralScale, 0.1f, 10.0f);
+
+		ImGui::SliderFloat("X:##Scale", &UIScaleHolder.x, 0.1f, 10.0f);
+		ImGui::SliderFloat("Y:##Scale", &UIScaleHolder.y, 0.1f, 10.0f);
+		ImGui::SliderFloat("Z:##Scale", &UIScaleHolder.z, 0.1f, 10.0f);
+
+		UIScaleHolder.x = UIGeneralScale;
+		UIScaleHolder.y = UIGeneralScale;
+		UIScaleHolder.z = UIGeneralScale;
+
 		ImGui::Text("-----");
 
 		ImGui::Text("Rotation");
@@ -124,9 +143,10 @@ void IGraphicsSystem::DrawGUI()
 		ImGui::SliderFloat("Z:##Rot", &UIRotHolder.z, -100, 100.0f);
 		ImGui::Text("-----");
 
+
 		if (ImGui::Button("Instantiate", ImVec2(100, 20)))
 		{
-			Exit();
+			Event* instantiateEvent = new Event("InstantiateCustom", engineEventQueue, &UIIDModelHolder, &UIIDTexHolder, &UIPosHolder, &UIScaleHolder, &UIRotHolder);
 		}
 
 	ImGui::EndGroup();
@@ -140,9 +160,39 @@ void IGraphicsSystem::DrawGUI()
 			Exit();
 		}
 	ImGui::EndGroup();
-
-
 	ImGui::End();
+
+
+	if (IsFirstLoop2)
+	{
+		ImGui::SetNextWindowPos(ImVec2(1100.0f, 20.0f));
+		ImGui::SetNextWindowSize(ImVec2(150.0f, 100.0f));
+		IsFirstLoop2 = false;
+	}
+	ImGui::Begin("Info", NULL, ImGuiWindowFlags_ShowBorders);
+	ImGui::BeginGroup();
+	ImGui::Text("Amount of OBJs");
+	ImGui::Text("-----");
+
+	int amountInt = nodes.size();
+	
+	stringstream ss;
+	ss << amountInt;
+	std::string amountText;
+	ss >> amountText;
+
+	ImGui::Text(amountText.c_str());
+
+	ImGui::Text("Quit");
+	if (ImGui::Button("Exit", ImVec2(40, 20)))
+	{
+		Exit();
+	}
+
+	ImGui::EndGroup();
+	ImGui::SameLine(0.0f, 20.0f);
+	ImGui::End();
+
 	handle->drawAll();
 }
 
@@ -154,9 +204,9 @@ void IGraphicsSystem::Start()
 
 	WriteStaticText(L"This is comic sans, lmao", 0, 0, 1000, 100);
 
-	AddCamera(0, 10, -50, 0, 5, 0);
+	AddCamera(0, 200, -200, 0, 0, 0);
 }
-//Le graphics pour baggette
+
 void IGraphicsSystem::Update()
 {
 	if (!(*engineEventQueue).empty())
@@ -277,7 +327,7 @@ void IGraphicsSystem::Update()
 						newNode->setPosition(vector3df((*engineEventQueue)[i]->myData->targetObject->Position.x,
 							(*engineEventQueue)[i]->myData->targetObject->Position.y,
 							(*engineEventQueue)[i]->myData->targetObject->Position.z));
-					
+
 						newNode->setScale(vector3df((*engineEventQueue)[i]->myData->targetObject->Scale.x,
 							(*engineEventQueue)[i]->myData->targetObject->Scale.y,
 							(*engineEventQueue)[i]->myData->targetObject->Scale.z));
@@ -289,6 +339,31 @@ void IGraphicsSystem::Update()
 						newNode->setMaterialFlag(EMF_LIGHTING, false);
 						newNode->setMaterialTexture(0, driver->getTexture((*engineEventQueue)[i]->myData->targetObject->myModel->texturePath.c_str()));
 					
+
+						vector3d<f32>* edges = new core::vector3d<f32>[8];
+						aabbox3d<f32> boundingbox = newNode->getTransformedBoundingBox();
+						boundingbox.getEdges(edges);
+
+						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeX = (edges[5].X - edges[1].X) * (*engineEventQueue)[i]->myData->targetObject->Scale.x;
+						std::cout << "width: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeX << std::endl;
+
+						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeY = (edges[1].Y - edges[0].Y) * (*engineEventQueue)[i]->myData->targetObject->Scale.y;
+						std::cout << "height: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeY << std::endl;
+
+						(*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ = (edges[2].Z - edges[0].Z) * (*engineEventQueue)[i]->myData->targetObject->Scale.z;
+						std::cout << "depth: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ << std::endl;
+
+						//vector3df extents =newNode->getTransformedBoundingBox().getExtent();
+						//(*engineEventQueue)[i]->myData->targetObject->myModel->sizeX = extents.X;
+						//std::cout << "sizeX: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeX << std::endl;
+						//
+						//(*engineEventQueue)[i]->myData->targetObject->myModel->sizeX = extents.Y;
+						//std::cout << "sizeY: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeY << std::endl;
+						//
+						//(*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ = extents.Z;
+						//std::cout << "sizeZ: " << (*engineEventQueue)[i]->myData->targetObject->myModel->sizeZ << std::endl;
+
+						(*engineEventQueue)[i]->myData->targetObject->myModel->myNode = newNode;
 						nodes.push_back(newNode);
 					}			
 				}

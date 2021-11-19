@@ -161,6 +161,7 @@
     <ClCompile Include="lib_source\IrrIMGUI\IrrIMGUIInject.cpp" />
     <ClCompile Include="lib_source\IrrIMGUI\UnitTest.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PhysEvent.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="SubSystem.cpp" />
     <ClCompile Include="UIEvent.cpp" />
@@ -190,7 +191,9 @@
     <ClInclude Include="lib_source\IrrIMGUI\private\IrrIMGUIDebug_priv.h" />
     <ClInclude Include="lib_source\IrrIMGUI\private\IrrIMGUIInject_priv.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="PhysEvent.h" />
     <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="SubSystem.h" />
     <ClInclude Include="UIEvent.h" />
     <ClInclude Include="UserInterfaceSystem.h" />

@@ -34,6 +34,7 @@ public:
 
 		//PHYS
 		PHYSDefault,
+		PHYSSpawn,
 
 		//ASSET
 		ASSETLoad,
@@ -41,6 +42,7 @@ public:
 
 		//GENERAL
 		Instantiate,
+		InstantiateCustom,
 		ChrisLegion,
 
 		//UI
@@ -56,6 +58,8 @@ public:
 
 	Event(std::string type);
 	Event(std::string type, vector<Event*>* queue);
+
+	Event(std::string type, vector<Event*>* queue, int* modelID, int* textureID, MyVec3* position, MyVec3* scale, MyVec3* rotation);
 	Event();
 
 	void Throw();

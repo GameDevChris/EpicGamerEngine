@@ -21,42 +21,46 @@ void UserInterfaceSystem::Update()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		GFXEvent* upEvent = new GFXEvent("GFXUp", engineEventQueue);
+		GFXEvent* forwardCamEvent = new GFXEvent("GFXCamForward", engineEventQueue);
+		//GFXEvent* upEvent = new GFXEvent("GFXUp", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		GFXEvent* downEvent = new GFXEvent("GFXDown", engineEventQueue);
+		GFXEvent* backwardCamEvent = new GFXEvent("GFXCamBackward", engineEventQueue);
+		//GFXEvent* downEvent = new GFXEvent("GFXDown", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		GFXEvent* leftEvent = new GFXEvent("GFXLeft", engineEventQueue);
+		GFXEvent* leftCamEvent = new GFXEvent("GFXCamLeft", engineEventQueue);
+		//GFXEvent* leftEvent = new GFXEvent("GFXLeft", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		GFXEvent* rightEvent = new GFXEvent("GFXRight", engineEventQueue);
+		GFXEvent* rightCamEvent = new GFXEvent("GFXCamRight", engineEventQueue);
+		//GFXEvent* rightEvent = new GFXEvent("GFXRight", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		GFXEvent* leftCamEvent = new GFXEvent("GFXCamLeft", engineEventQueue);
+		//GFXEvent* leftCamEvent = new GFXEvent("GFXCamLeft", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		GFXEvent* rightCamEvent = new GFXEvent("GFXCamRight", engineEventQueue);
+		//GFXEvent* rightCamEvent = new GFXEvent("GFXCamRight", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		GFXEvent* forwardCamEvent = new GFXEvent("GFXCamForward", engineEventQueue);
+		//GFXEvent* forwardCamEvent = new GFXEvent("GFXCamForward", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		GFXEvent* backwardCamEvent = new GFXEvent("GFXCamBackward", engineEventQueue);
+		//GFXEvent* backwardCamEvent = new GFXEvent("GFXCamBackward", engineEventQueue);
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))

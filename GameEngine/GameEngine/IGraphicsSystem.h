@@ -9,6 +9,9 @@
 #include <IrrIMGUI/IncludeIMGUI.h>
 #include <IrrIMGUI/IrrIMGUIDebug.h>
 
+#include <iostream>  
+#include<sstream>  
+
 using namespace irr;
 using namespace core;
 using namespace scene;
@@ -22,7 +25,9 @@ class IGraphicsSystem :
 	public SubSystem
 {
 private:
-	bool IsFirstLoop = true;
+	bool IsFirstLoop1 = true;
+
+	bool IsFirstLoop2 = true;
 
 	const int ScreenW = 1280;
 	const int ScreenH = 720;
@@ -42,6 +47,7 @@ private:
 	int UIIDTexHolder;
 	int UIIDModelHolder;
 
+	float UIGeneralScale = 0;
 	MyVec3 UIPosHolder;
 	MyVec3 UIRotHolder;
 	MyVec3 UIScaleHolder;

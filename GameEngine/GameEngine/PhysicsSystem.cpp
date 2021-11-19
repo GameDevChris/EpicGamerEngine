@@ -49,6 +49,7 @@ void PhysicsSystem::StartPhysX()
 
 void PhysicsSystem::CreateSimulation()
 {
+	cout << "Starting simulation..." << endl;
 	material = physics->createMaterial(0.5f, 0.5f, 0.6f);
 	PxRigidStatic* groundPlane = PxCreatePlane(*physics, PxPlane(0, 1, 0, 1), *material);
 	scene->addActor(*groundPlane);
@@ -60,15 +61,92 @@ void PhysicsSystem::RunPhysX()
 	scene->fetchResults(true);
 }
 
+void PhysicsSystem::AddRB(GameObject* obj, std::string type)
+{
+	if(obj->myRB == NULL)
+	{
+		obj->myRB = new Rigidbody(type);
+
+
+		if (type == "static" || type == "Static")
+		{
+
+			material = physics->createMaterial(0.5f, 0.5f, 0.6f);
+
+			PxRigidStatic* newRB = physics->createRigidStatic(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
+			PxRigidActorExt::createExclusiveShape(*newRB, PxBoxGeometry(obj->myModel->sizeX, obj->myModel->sizeY, obj->myModel->sizeZ), *material);
+
+			//PxRigidActorExt::createExclusiveShape(*newRB, PxBoxGeometry(1, 1, 1), *material);
+			
+			newRB->setGlobalPose(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
+			
+			obj->myRB->staticRB = newRB;
+			scene->addActor(*newRB);
+
+
+		}
+
+		else if (type == "dynamic" || type == "Dynamic")
+		{
+			material = physics->createMaterial(0.5f, 0.5f, 0.6f);
+
+			PxRigidDynamic* newRB = physics->createRigidDynamic(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
+			PxRigidActorExt::createExclusiveShape(*newRB, PxBoxGeometry(obj->myModel->sizeX, obj->myModel->sizeY, obj->myModel->sizeZ), *material);
+
+			//newRB->setMass(50.0f);
+			newRB->setGlobalPose(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
+
+
+			obj->myRB->dynamicRB = newRB;
+			scene->addActor(*newRB);
+		}
+
+		else
+		{
+			cout << "Unknown Rigidbody type!" << endl;
+		}
+	}
+}
+
 void PhysicsSystem::Start()
 {
 	cout << "Subsystem " << name << " -started!" << endl;
 
 	StartPhysX();
+	CreateSimulation();
 }
 
 void PhysicsSystem::Update()
 {
+	if (!(*engineEventQueue).empty())
+	{
+		for (int i = 0; i < (*engineEventQueue).size(); i++)
+		{
+			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->PhysicsSub)
+			{
+				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->PHYSDefault)
+				{
+					cout << "Default PHYS event happened" << endl;
+				}
+
+				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->PHYSSpawn)
+				{
+					cout << "Physics spawn event happened" << endl;
+
+					AddRB((*engineEventQueue)[i]->myData->targetObject, (*engineEventQueue)[i]->myData->RBType);
+				}
+
+				else
+				{
+					cout << "ERROR! Unrecognised Graphics event" << endl;
+				}
+
+				delete((*engineEventQueue)[i]);
+				engineEventQueue->erase(engineEventQueue->begin() + i);
+			}
+
+		}
+	}
 
 	//Event Checks
 

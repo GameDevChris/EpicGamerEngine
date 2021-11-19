@@ -34,6 +34,9 @@ void AssetManagerSystem::Update()
 					Model* newModel = LoadModel((*engineEventQueue)[i]->myData->modPath, (*engineEventQueue)[i]->myData->texPaths, (*engineEventQueue)[i]->myData->modType);
 					models.push_back(newModel);
 				}
+
+				//delete((*engineEventQueue)[i]);
+				//engineEventQueue->erase(engineEventQueue->begin() + i);
 			}
 		}
 	}
