@@ -10,6 +10,7 @@ public:
 		GraphicsSub,
 		PhysicsSub,
 		AssetSub,
+		NetworkSub,
 		UISub,
 		General
 	};

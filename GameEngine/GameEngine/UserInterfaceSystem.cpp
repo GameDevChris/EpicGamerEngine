@@ -38,6 +38,10 @@ void UserInterfaceSystem::Start()
 	textures.clear();
 	textures.push_back("./Models/Hat/HatTex.png");
 	AssetEvent* newAsset7 = new AssetEvent("ASSETLoad", "./Models/Hat/HatModel.obj", &textures, 7, "Hat", engineEventQueue);
+
+	textures.clear();
+	textures.push_back("./Models/Doge/dogeTex.jpg");
+	AssetEvent* newAsset8 = new AssetEvent("ASSETLoad", "./Models/Doge/dogeModel.obj", &textures, 8, "Doge", engineEventQueue);
 }
 
 void UserInterfaceSystem::Update()
@@ -127,7 +131,7 @@ void UserInterfaceSystem::Update()
 				MyVec3* force = new MyVec3(0, myPlayer->jumpHeight, 0);
 				PhysEvent* playerBackwardEvent = new PhysEvent("PlayerImpulse", engineEventQueue, myPlayer, force);
 
-				myPlayer->isGrounded = false;
+				//myPlayer->isGrounded = false;
 			}
 			
 			else

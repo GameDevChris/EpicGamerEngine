@@ -5,6 +5,7 @@
 #include "DataInputSystem.h"
 #include "UserInterfaceSystem.h"
 #include "AssetManagerSystem.h"
+#include "NetworkSystem.h"
 #include "GameObject.h"
 #include "PhysEvent.h"
 
@@ -19,6 +20,7 @@ private:
 	DataInputSystem dataInput;
 	UserInterfaceSystem UI;
 	AssetManagerSystem assets;
+	NetworkSystem network;
 
 	vector<Event*> eventQueue;
 	vector<Event*> lateEventQueue;

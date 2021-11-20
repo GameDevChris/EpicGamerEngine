@@ -72,6 +72,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>.\SDL2_Image\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>.\DPP\include\dpp-9.0;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>.\Libs\DPP\lib\dpp-9.0;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -92,14 +96,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\LuaBridge\include\detail;.\SFML\include;.\SDL2_Image\include;.\Irrlicht\include;.\SDL2\include;.\PxShared\include;.\Lua\include;.\PhysX\include;.\lib_includes;.\LuaBridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\LuaBridge\include\detail;.\SFML\include;.\SDL2_Image\include;.\Irrlicht\include;.\SDL2\include;.\PxShared\include;.\Lua\include;.\PhysX\include;.\lib_includes;.\LuaBridge;.\DPP\include\dpp-9.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>_IRRIMGUI_STATIC_LIB_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>.\Libs\PhysX;.\Libs\SFML\lib;.\Libs\SDL2_image.lib;.\Libs\Lua52.lib;.\Libs\SDL2main.lib;.\Libs\SDL2.lib;.\Libs\Lua51.lib;.\Libs\lua54.lib;.\Libs\Irrlicht.lib;.\Libs\gmock_maind.lib;.\Libs\JuceLibraryCode.lib;.\Libs\gmockd.lib;.\Libs\gtestd.lib;.\Libs\gtest_maind.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>.\Libs\PhysX\PhysXCooking_64.lib;.\Libs\PhysX\PhysX_64.lib;.\Libs\PhysX\PhysXCommon_64.lib;.\Libs\PhysX\PhysXExtensions_static_64.lib;.\Libs\PhysX\PhysXFoundation_64.lib;.\Libs\PhysX\PhysXPvdSDK_static_64.lib;.\Libs\Irrlicht.lib;.\Libs\SDL2.lib;.\Libs\SDL2main.lib;.\Libs\SDL2_image.lib;.\Libs\SFML\lib\sfml-audio.lib;.\Libs\SFML\lib\sfml-graphics.lib;.\Libs\SFML\lib\sfml-main.lib;.\Libs\SFML\lib\sfml-network.lib;.\Libs\SFML\lib\sfml-system.lib;.\Libs\SFML\lib\sfml-window.lib;.\Libs\lua54.lib;.\Libs\Lua52.lib;.\Libs\Lua51.lib;.\Libs\gmock_maind.lib;.\Libs\JuceLibraryCode.lib;.\Libs\gmockd.lib;.\Libs\gtestd.lib;.\Libs\gtest_maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\Libs\PhysX;.\Libs\SFML\lib;.\Libs\SDL2_image.lib;.\Libs\Lua52.lib;.\Libs\SDL2main.lib;.\Libs\SDL2.lib;.\Libs\Lua51.lib;.\Libs\lua54.lib;.\Libs\Irrlicht.lib;.\Libs\gmock_maind.lib;.\Libs\JuceLibraryCode.lib;.\Libs\gmockd.lib;.\Libs\gtestd.lib;.\Libs\gtest_maind.lib;.\Libs\dpp.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>.\Libs\PhysX\PhysXCooking_64.lib;.\Libs\PhysX\PhysX_64.lib;.\Libs\PhysX\PhysXCommon_64.lib;.\Libs\PhysX\PhysXExtensions_static_64.lib;.\Libs\PhysX\PhysXFoundation_64.lib;.\Libs\PhysX\PhysXPvdSDK_static_64.lib;.\Libs\Irrlicht.lib;.\Libs\SDL2.lib;.\Libs\SDL2main.lib;.\Libs\SDL2_image.lib;.\Libs\SFML\lib\sfml-audio.lib;.\Libs\SFML\lib\sfml-graphics.lib;.\Libs\SFML\lib\sfml-main.lib;.\Libs\SFML\lib\sfml-network.lib;.\Libs\SFML\lib\sfml-system.lib;.\Libs\SFML\lib\sfml-window.lib;.\Libs\lua54.lib;.\Libs\Lua52.lib;.\Libs\Lua51.lib;.\Libs\gmock_maind.lib;.\Libs\JuceLibraryCode.lib;.\Libs\gmockd.lib;.\Libs\gtestd.lib;.\Libs\gtest_maind.lib;.\Libs\dpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -161,6 +166,7 @@
     <ClCompile Include="lib_source\IrrIMGUI\IrrIMGUIInject.cpp" />
     <ClCompile Include="lib_source\IrrIMGUI\UnitTest.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NetworkSystem.cpp" />
     <ClCompile Include="PhysEvent.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -192,6 +198,7 @@
     <ClInclude Include="lib_source\IrrIMGUI\private\IrrIMGUIDebug_priv.h" />
     <ClInclude Include="lib_source\IrrIMGUI\private\IrrIMGUIInject_priv.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="NetworkSystem.h" />
     <ClInclude Include="PhysEvent.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Player.h" />

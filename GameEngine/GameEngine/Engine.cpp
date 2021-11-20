@@ -72,7 +72,10 @@ void Engine::Start()
 	assets.driver = graphics.driver;
 	assets.smgr = graphics.smgr;
 
-
+	network.name = "EpicGamerNetwork";
+	network.engineEventQueue = &eventQueue;
+	network.lateEngineEventQueue = &lateEventQueue;
+	network.Start();
 
 	UseData();
 }
