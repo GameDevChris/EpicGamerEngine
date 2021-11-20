@@ -10,7 +10,7 @@
 #include <IrrIMGUI/IrrIMGUIDebug.h>
 
 #include <iostream>  
-#include<sstream>  
+#include <sstream>  
 
 using namespace irr;
 using namespace core;
