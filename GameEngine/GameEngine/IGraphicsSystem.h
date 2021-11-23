@@ -10,7 +10,6 @@
 #include <IrrIMGUI/IrrIMGUIDebug.h>
 
 #include <iostream>  
-#include <sstream>  
 
 using namespace irr;
 using namespace core;
@@ -44,6 +43,7 @@ private:
 	void AddCamera(float PosX, float PosY, float PosZ, float LookX, float LookY, float LookZ);
 	void DrawGUI();
 
+	int UIScore = 0;
 
 	int UIState = 0;
 

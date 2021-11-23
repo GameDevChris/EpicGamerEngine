@@ -6,7 +6,9 @@
 #include "GFXEvent.h"
 #include "AssetEvent.h"
 #include "PhysEvent.h"
+#include "NetworkEvent.h"
 #include "GameObject.h"
+#include <sstream>  
 
 using namespace std;
 class SubSystem

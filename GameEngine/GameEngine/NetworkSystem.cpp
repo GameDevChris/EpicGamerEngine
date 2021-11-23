@@ -31,7 +31,30 @@ void NetworkSystem::Update()
 		{
 			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->NetworkSub)
 			{
-				cout << "Network event happened" << endl;
+				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->BotAddScore)
+				{
+					ofstream score_file(scoreFilePath);
+
+					//stringstream ss;
+					//ss << *((*engineEventQueue)[i]->myData->myScore);
+					//std::string scoreText;
+					//ss >> scoreText;
+
+					int score = (*engineEventQueue)[i]->myData->myScore;
+
+					cout << score;
+					score_file << score;
+					
+					score_file.close();
+
+
+
+					ofstream job_file(jobFilePath);
+					job_file << "newScore";
+					job_file.close();
+
+				}
+
 
 				delete((*engineEventQueue)[i]);
 				engineEventQueue->erase(engineEventQueue->begin() + i);

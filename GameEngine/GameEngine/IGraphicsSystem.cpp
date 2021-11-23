@@ -292,7 +292,7 @@ void IGraphicsSystem::DrawGUI()
 	if (IsFirstLoop2)
 	{
 		ImGui::SetNextWindowPos(ImVec2(1000.0f, 20.0f));
-		ImGui::SetNextWindowSize(ImVec2(200.0f, 250.0f));
+		ImGui::SetNextWindowSize(ImVec2(200.0f, 400.0f));
 		IsFirstLoop2 = false;
 	}
 	ImGui::Begin("Info", NULL, ImGuiWindowFlags_ShowBorders);
@@ -317,6 +317,31 @@ void IGraphicsSystem::DrawGUI()
 
 	ImGui::Text("-----");
 
+	ImGui::Text("Score");
+
+	stringstream ss2;
+	ss2 << UIScore;
+	std::string scoreText;
+	ss2 >> scoreText;
+
+	ImGui::Text(scoreText.c_str());
+
+	if (ImGui::Button("+", ImVec2(40, 20)))
+	{
+		UIScore++;
+	}
+
+	if (ImGui::Button("-", ImVec2(40, 20)))
+	{
+		UIScore--;
+	}
+
+	if (ImGui::Button("Add Score", ImVec2(60, 20)))
+	{
+		NetworkEvent* addScoreEvent = new NetworkEvent("BotAddScore", UIScore, engineEventQueue);
+	}
+
+	ImGui::Text("-----");
 	ImGui::Text("Quit");
 	if (ImGui::Button("Exit", ImVec2(40, 20)))
 	{

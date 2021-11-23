@@ -5,10 +5,11 @@
 
 
 using namespace std;
-dpp::snowflake* globalChannel;
 
+dpp::snowflake* leaderboardChannel = new dpp::snowflake(uint64_t(912656966487269406));
+dpp::snowflake* newScoreChannel = new dpp::snowflake(uint64_t(912657008027648020));
 
-void PrintAllScores(dpp::cluster* bot, dpp::snowflake* channel)
+void PrintAllScores(dpp::cluster* bot)
 {
 
 	vector<int>* dataVector = new vector<int>;
@@ -27,8 +28,9 @@ void PrintAllScores(dpp::cluster* bot, dpp::snowflake* channel)
 
 	sort(dataVector->begin(), dataVector->end(), greater<int>());
 
-	bot->message_create(dpp::message(*channel, "All Scores:"));
-	bot->message_create(dpp::message(*channel, "-----"));
+	bot->message_create(dpp::message(*newScoreChannel, "-----"));
+	bot->message_create(dpp::message(*newScoreChannel, "Scores:"));
+	bot->message_create(dpp::message(*newScoreChannel, "-----"));
 
 	for (int i = 0; i < dataVector->size(); i++)
 	{
@@ -40,11 +42,11 @@ void PrintAllScores(dpp::cluster* bot, dpp::snowflake* channel)
 		ss >> scoreText;
 
 
-		bot->message_create(dpp::message(*channel, scoreText));
+		bot->message_create(dpp::message(*newScoreChannel, scoreText));
 	}
 }
 
-void Print5Scores(dpp::cluster* bot, dpp::snowflake* channel)
+void PrintHighScores(dpp::cluster* bot)
 {
 	vector<int>* dataVector = new vector<int>;
 	dataVector->clear();
@@ -62,43 +64,8 @@ void Print5Scores(dpp::cluster* bot, dpp::snowflake* channel)
 
 	sort(dataVector->begin(), dataVector->end(), greater<int>());
 
-	bot->message_create(dpp::message(*channel, "Top 5 Scores:"));
-	bot->message_create(dpp::message(*channel, "-----"));
-
-	for (int i = 0; i < 5; i++)
-	{
-		int val = (*dataVector)[i];
-		stringstream ss;
-
-		ss << val;
-		std::string scoreText;
-		ss >> scoreText;
-
-
-		bot->message_create(dpp::message(*channel, scoreText));
-	}
-}
-
-void PrintHighScores(dpp::cluster* bot, dpp::snowflake* channel)
-{
-	vector<int>* dataVector = new vector<int>;
-	dataVector->clear();
-
-	string filename("../scoreData.txt");
-	int number;
-	ifstream input_file(filename);
-
-	while (input_file >> number) {
-		dataVector->push_back(number);
-	}
-
-	cout << endl;
-	input_file.close();
-
-	sort(dataVector->begin(), dataVector->end(), greater<int>());
-
-	bot->message_create(dpp::message(*channel, "Highscore:"));
-	bot->message_create(dpp::message(*channel, "-----"));
+	bot->message_create(dpp::message(*leaderboardChannel, "Highscore:"));
+	bot->message_create(dpp::message(*leaderboardChannel, "-----"));
 
 	int val = (*dataVector)[0];
 	stringstream ss;
@@ -107,37 +74,9 @@ void PrintHighScores(dpp::cluster* bot, dpp::snowflake* channel)
 	std::string scoreText;
 	ss >> scoreText;
 
-	bot->message_create(dpp::message(*channel, scoreText));
+	bot->message_create(dpp::message(*leaderboardChannel, scoreText));
 }
 
-void PrintNewestScore(dpp::cluster* bot, dpp::snowflake* channel)
-{
-	vector<int>* dataVector = new vector<int>;
-	dataVector->clear();
-
-	string filename("../scoreData.txt");
-	int number;
-	ifstream input_file(filename);
-
-	while (input_file >> number) {
-		dataVector->push_back(number);
-	}
-
-	cout << endl;
-	input_file.close();
-
-	bot->message_create(dpp::message(*channel, "New score:"));
-	bot->message_create(dpp::message(*channel, "-----"));
-
-	int val = (*dataVector)[dataVector->size()];
-	stringstream ss;
-
-	ss << val;
-	std::string scoreText;
-	ss >> scoreText;
-
-	bot->message_create(dpp::message(*channel, scoreText));
-}
 
 std::string GetJob()
 {
@@ -160,13 +99,18 @@ std::string GetJob()
 	}
 }
 
-void doJob(dpp::cluster* bot, dpp::snowflake* channel)
+void doJob(dpp::cluster* bot)
 {
 	std::string myJob = GetJob();
 
-	if (myJob == "newScore")
+	if (myJob == "printNewScore")
 	{
-		PrintNewestScore(bot, channel);
+		PrintAllScores(bot);
+	}
+
+	else if (myJob == "printTop5")
+	{
+		PrintHighScores(bot);
 	}
 
 	else
@@ -183,47 +127,9 @@ int main()
 		{
 			std::cout << "Logged in as " << bot.me.username << "!\n";
 
-			dpp::snowflake myChannel = dpp::snowflake("838441750611230723");
+			doJob(&bot);
 
-			bot.message_create(dpp::message(myChannel, "Am alive!"));
 
-			//doJob(&bot, &myChannel);
-		});
-
-	bot.on_message_create([&bot](const dpp::message_create_t& event)
-		{
-			if (event.msg->content == "!scores")
-			{
-				cout << event.msg->channel_id << endl;
-				PrintAllScores(&bot, &(event.msg->channel_id));
-			}
-
-			else if (event.msg->content == "!getChannel")
-			{
-				cout << event.msg->channel_id << endl;
-				globalChannel = &event.msg->channel_id;
-
-				bot.message_create(dpp::message(*globalChannel, "Am alive!"));
-			}
-
-			else if (event.msg->content == "!top5")
-			{
-				Print5Scores(&bot, &(event.msg->channel_id));
-			}
-
-			else if (event.msg->content == "!highscore")
-			{
-				PrintHighScores(&bot, &(event.msg->channel_id));
-			}
-
-			else if (event.msg->content == "!help")
-			{
-				bot.message_create(dpp::message(event.msg->channel_id, "Commands"));
-				bot.message_create(dpp::message(event.msg->channel_id, "-----"));
-				bot.message_create(dpp::message(event.msg->channel_id, "Use !scores to get all stored scores"));
-				bot.message_create(dpp::message(event.msg->channel_id, "Use !top5 to get top 5 stored scores"));
-				bot.message_create(dpp::message(event.msg->channel_id, "Use !highscore to get highscore"));
-			}
 		});
 
 	bot.start(false);

@@ -52,7 +52,10 @@ public:
 
 		//UI
 		CreateHandler,
-		DrawUI
+		DrawUI,
+
+		//Network
+		BotAddScore
 	};
 
 	EventData* myData;

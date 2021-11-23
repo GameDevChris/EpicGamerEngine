@@ -154,6 +154,8 @@ void Engine::Update()
 	graphics.Update();
 	physics.Update();
 
+	network.Update();
+
 	UI.LateUpdate();
 
 	if (graphics.QuitCall)

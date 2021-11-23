@@ -39,6 +39,7 @@ public:
 	int* myTexID = NULL;
 	int* myModID = NULL;
 
+	int myScore = NULL;
 
 	EventData(){}
 };
