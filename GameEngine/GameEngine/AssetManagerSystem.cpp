@@ -1,12 +1,12 @@
 #include "AssetManagerSystem.h"
 
-Model* AssetManagerSystem::LoadModel(std::string modelPath, vector<std::string>* myTexturePaths, int modelType, std::string modelName)
+Model* AssetManagerSystem::LoadModel(std::string modelPath, std::vector<std::string>* myTexturePaths, int modelType, std::string modelName)
 {
 	IAnimatedMesh* mesh = smgr->getMesh(modelPath.c_str());
 	if (!mesh)
 	{
 		device->drop();
-		cout << "Failed to load mesh" << endl;
+		std::cout << "Failed to load mesh" << std::endl;
 	}
 
 	else
@@ -27,10 +27,10 @@ void AssetManagerSystem::Update()
 		{
 			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->AssetSub)
 			{
-				cout << "Asset Event found" << endl;
+				std::cout << "Asset Event found" << std::endl;
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->ASSETLoad)
 				{
-					cout << "Loading Asset" << endl;
+					std::cout << "Loading Asset" << std::endl;
 					Model* newModel = LoadModel((*engineEventQueue)[i]->myData->modPath, (*engineEventQueue)[i]->myData->texPaths, (*engineEventQueue)[i]->myData->modType, (*engineEventQueue)[i]->myData->myName);
 					models.push_back(newModel);
 				}

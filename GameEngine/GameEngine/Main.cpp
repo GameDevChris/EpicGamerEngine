@@ -16,8 +16,8 @@ int main(int argc, char* args[])
 
 		if (myEngine.finished)
 		{
-			cout << endl;
-			cout << "Engine Finished" << endl;
+			std::cout << std::endl;
+			std::cout << "Engine Finished" << std::endl;
 			runEngine = false;
 		}
 	}

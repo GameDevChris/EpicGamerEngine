@@ -6,7 +6,7 @@ class PhysEvent :
 {
 public:
 
-	PhysEvent(std::string type, vector<Event*>* queue, GameObject* object, std::string rbType);
-	PhysEvent(std::string type, vector<Event*>* queue, Player* player, MyVec3* force);
+	PhysEvent(std::string type, std::vector<Event*>* queue, GameObject* object, std::string rbType);
+	PhysEvent(std::string type, std::vector<Event*>* queue, Player* player, MyVec3* force);
 };
 

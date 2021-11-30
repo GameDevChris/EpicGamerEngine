@@ -34,7 +34,7 @@ private:
 	IGUIEnvironment* guienv = NULL;
 	vector3df BGColour = vector3df(46, 109, 114);
 
-	vector<IAnimatedMeshSceneNode*> nodes;
+	std::vector<IAnimatedMeshSceneNode*> nodes;
 	ICameraSceneNode* cam;
 
 	void StartIrrlicht();
@@ -58,7 +58,7 @@ private:
 
 public:
 
-	vector<Model*> loadedModels;
+	std::vector<Model*> loadedModels;
 
 
 

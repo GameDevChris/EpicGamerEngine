@@ -5,7 +5,7 @@
 using namespace irr;
 using namespace core;
 using namespace scene;
-using namespace std;
+//using namespace std;
 
 struct Model
 {
@@ -24,9 +24,9 @@ public:
 	float sizeY = 0;
 	float sizeZ = 0;
 
-	vector<std::string>* texturePaths;
+	std::vector<std::string>* texturePaths;
 
-	Model(IAnimatedMesh* myMesh, vector<std::string>* myTextures, std::string myModel, int myType, std::string name)
+	Model(IAnimatedMesh* myMesh, std::vector<std::string>* myTextures, std::string myModel, int myType, std::string name)
 	{
 		mesh = myMesh;
 		texturePaths = myTextures;

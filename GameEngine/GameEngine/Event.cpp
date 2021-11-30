@@ -111,11 +111,11 @@ Event::Event(std::string type)
 
 	else 
 	{
-		cout << "ERROR, unknown event type!" << endl;
+		std::cout << "ERROR, unknown event type!" << std::endl;
 	}
 }
 
-Event::Event(std::string type, vector<Event*>* queue)
+Event::Event(std::string type, std::vector<Event*>* queue)
 {
 	if (type == "Instantiate")
 	{
@@ -131,7 +131,7 @@ Event::Event(std::string type, vector<Event*>* queue)
 
 	else
 	{
-		cout << "ERROR, unknown event type!" << endl;
+		std::cout << "ERROR, unknown event type!" << std::endl;
 	}
 
 	EQueue = queue;
@@ -139,7 +139,7 @@ Event::Event(std::string type, vector<Event*>* queue)
 	Throw();
 }
 
-Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* textureID, MyVec3* position, MyVec3* scale, MyVec3* rotation)
+Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID, MyVec3* position, MyVec3* scale, MyVec3* rotation)
 {
 	myData = new EventData();
 
@@ -151,7 +151,7 @@ Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* texture
 
 	else
 	{
-		cout << "ERROR, unknown event type!" << endl;
+		std::cout << "ERROR, unknown event type!" << std::endl;
 	}
 
 	myData->myModID = modelID;
@@ -164,7 +164,7 @@ Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* texture
 	Throw();
 }
 
-Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* textureID, std::string* rbType, MyVec3* position, MyVec3* scale, MyVec3* rotation)
+Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID, std::string* rbType, MyVec3* position, MyVec3* scale, MyVec3* rotation)
 {
 	myData = new EventData();
 
@@ -176,7 +176,7 @@ Event::Event(std::string type, vector<Event*>* queue, int* modelID, int* texture
 
 	else
 	{
-		cout << "ERROR, unknown event type!" << endl;
+		std::cout << "ERROR, unknown event type!" << std::endl;
 	}
 
 	myData->myModID = modelID;

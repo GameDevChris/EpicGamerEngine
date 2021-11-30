@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 #include <fstream>
+#include <windows.h>
+//#include <dpp/dpp.h>
+
 #include <thread>
 #include "Event.h"
 #include "GFXEvent.h"
@@ -10,20 +13,10 @@
 #include "GameObject.h"
 #include <sstream>  
 
-using namespace std;
+//using namespace std;
 class SubSystem
 {
 public:
-	thread startThread()
-	{
-		return thread([=] {Start(); });
-	};
-
-	thread updateThread()
-	{
-		return thread([=] {Update(); });
-	};
-
 	std::string name;
 	void* data;
 
@@ -32,7 +25,7 @@ public:
 	virtual void Update();
 	virtual void LateUpdate();
 	virtual void Exit();
-	vector<Event*>* engineEventQueue;
-	vector<Event*>* lateEngineEventQueue;
+	std::vector<Event*>* engineEventQueue;
+	std::vector<Event*>* lateEngineEventQueue;
 };
 

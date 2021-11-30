@@ -33,26 +33,26 @@ void NetworkSystem::Update()
 			{
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->BotAddScore)
 				{
-					ofstream score_file(scoreFilePath);
-
-					//stringstream ss;
-					//ss << *((*engineEventQueue)[i]->myData->myScore);
-					//std::string scoreText;
-					//ss >> scoreText;
-
-					int score = (*engineEventQueue)[i]->myData->myScore;
-
-					cout << score;
-					score_file << score;
+					std::ofstream score_file(scoreFilePath);
 					
+					int score = (*engineEventQueue)[i]->myData->myScore;
+					score_file << score;
 					score_file.close();
-
-
-
-					ofstream job_file(jobFilePath);
-					job_file << "newScore";
+					
+					std::ofstream job_file(jobFilePath);
+					job_file << "printNewScore";
 					job_file.close();
 
+					ShellExecute(NULL, "open", "..\\..\\EngineBot.exe", NULL, NULL, SW_SHOWDEFAULT);
+				}
+
+				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->BotPrintTop5)
+				{
+					std::ofstream job_file(jobFilePath);
+					job_file << "printTop5";
+					job_file.close();
+
+					ShellExecute(NULL, "open", "..\\..\\EngineBot.exe", NULL, NULL, SW_SHOWDEFAULT);
 				}
 
 

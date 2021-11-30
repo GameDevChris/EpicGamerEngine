@@ -7,14 +7,14 @@ Engine::Engine()
 
 void Engine::UseData()
 {
-	cout << endl;
+	std::cout << std::endl;
 	for (int i = 0; i < dataInput.dataVector.size(); i++) 
 	{
 		switch (dataInput.dataVector[i])
 		{
 			case '0':
 			{
-				cout << "adding physics event" << endl;
+				std::cout << "adding physics event" << std::endl;
 				Event newPhysEvent("PHYSDefault");
 				ThrowEvent(newPhysEvent);
 			}
@@ -23,7 +23,7 @@ void Engine::UseData()
 
 			case '1':
 			{
-				cout << "adding graphics event" << endl;
+				std::cout << "adding graphics event" << std::endl;
 				Event newGraphEvent("GFXDefault");
 				ThrowEvent(newGraphEvent);
 			}
@@ -41,7 +41,7 @@ void Engine::Start()
 {
 	eventQueue.clear();
 	lateEventQueue.clear();
-	cout << "Engine started, help" << endl;
+	std::cout << "Engine started, help" << std::endl;
 
 	physics.name = "EpicGamerPhysics";
 	physics.engineEventQueue = &eventQueue;
@@ -88,7 +88,7 @@ void Engine::Update()
 	{
 		for (int i = 0; i < eventQueue.size(); i++)
 		{
-			cout << "Event to happen in subsystem " << eventQueue[i]->ReturnSubsystem() << endl;
+			std::cout << "Event to happen in subsystem " << eventQueue[i]->ReturnSubsystem() << std::endl;
 		}
 	}
 	
@@ -186,7 +186,7 @@ void Engine::Update()
 
 void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType)
 {
-	cout << endl << "Instantiating..." << endl;
+	std::cout << std::endl << "Instantiating..." << std::endl;
 
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
@@ -201,7 +201,7 @@ void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 sca
 
 void Engine::InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation)
 {
-	cout << endl << "Instantiating Player..." << endl;
+	std::cout << std::endl << "Instantiating Player..." << std::endl;
 
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
@@ -220,20 +220,20 @@ void Engine::InstantiateRequest()
 {
 	int modelID; int textureID; MyVec3 position; MyVec3 scale; MyVec3 rotation;
 
-	cout << endl << "Welcome to instantiation! " << endl << "-----" << endl;
+	std::cout << std::endl << "Welcome to instantiation! " << std::endl << "-----" << std::endl;
 
-	cout << "Please select a model from the following list: " << endl;
+	std::cout << "Please select a model from the following list: " << std::endl;
 
 	for (int i = 0; i < assets.models.size(); i++)
 	{
-		cout << i << "-" << assets.models[i]->modelName << endl;
+		std::cout << i << "-" << assets.models[i]->modelName << std::endl;
 	}
 
 	bool modValid = false;
 	while (!modValid)
 	{
-		cout << "Please make your selection: " << endl;
-		cin >> modelID;
+		std::cout << "Please make your selection: " << std::endl;
+		std::cin >> modelID;
 
 		if (modelID >= 0 && modelID <= assets.models.size())
 		{
@@ -242,23 +242,23 @@ void Engine::InstantiateRequest()
 
 		else
 		{
-			cout << endl << "Incorrect input please make a new selection" << endl;
+			std::cout << std::endl << "Incorrect input please make a new selection" << std::endl;
 		}
 	}
 
 
-	cout << "Please select texture from the following list: " << endl;
+	std::cout << "Please select texture from the following list: " << std::endl;
 
 	for (int i = 0; i < assets.models[modelID]->texturePaths->size(); i++)
 	{
-		cout << i << "-" << (*assets.models[modelID]->texturePaths)[i] << endl;
+		std::cout << i << "-" << (*assets.models[modelID]->texturePaths)[i] << std::endl;
 	}
 
 	bool texValid = false;
 	while (!texValid)
 	{
-		cout << "Please make your selection: " << endl;
-		cin >> textureID;
+		std::cout << "Please make your selection: " << std::endl;
+		std::cin >> textureID;
 
 		if (textureID >= 0 && textureID <= assets.models[modelID]->texturePaths->size())
 		{
@@ -267,54 +267,54 @@ void Engine::InstantiateRequest()
 
 		else
 		{
-			cout << endl << "Incorrect input please make a new selection" << endl;
+			std::cout << std::endl << "Incorrect input please make a new selection" << std::endl;
 		}
 	}
 
-	cout << "-----" << endl;
+	std::cout << "-----" << std::endl;
 
-	cout << "Enter X Pos:" << endl;
-	cin >> position.x;
+	std::cout << "Enter X Pos:" << std::endl;
+	std::cin >> position.x;
 
-	cout << "Enter Y Pos:" << endl;
-	cin >> position.y;
+	std::cout << "Enter Y Pos:" << std::endl;
+	std::cin >> position.y;
 
-	cout << "Enter Z Pos:" << endl;
-	cin >> position.z;
+	std::cout << "Enter Z Pos:" << std::endl;
+	std::cin >> position.z;
 
-	cout << "-----" << endl;
+	std::cout << "-----" << std::endl;
 
-	cout << "Enter X Scale:" << endl;
-	cin >> scale.x;
+	std::cout << "Enter X Scale:" << std::endl;
+	std::cin >> scale.x;
 
-	cout << "Enter Y Scale:" << endl;
-	cin >> scale.y;
+	std::cout << "Enter Y Scale:" << std::endl;
+	std::cin >> scale.y;
 
-	cout << "Enter Z Scale:" << endl;
-	cin >> scale.z;
+	std::cout << "Enter Z Scale:" << std::endl;
+	std::cin >> scale.z;
 
-	cout << "-----" << endl;
+	std::cout << "-----" << std::endl;
 
-	cout << "Enter X Rotation:" << endl;
-	cin >> rotation.x;
+	std::cout << "Enter X Rotation:" << std::endl;
+	std::cin >> rotation.x;
 
-	cout << "Enter Y Rotation:" << endl;
-	cin >> rotation.y;
+	std::cout << "Enter Y Rotation:" << std::endl;
+	std::cin >> rotation.y;
 
-	cout << "Enter Z Rotation:" << endl;
-	cin >> rotation.z;
+	std::cout << "Enter Z Rotation:" << std::endl;
+	std::cin >> rotation.z;
 
-	cout << "-----" << endl;
+	std::cout << "-----" << std::endl;
 
-	cout << endl << "Instantiating..." << endl;
+	std::cout << std::endl << "Instantiating..." << std::endl;
 
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
 
-	cout << "Position:" << position.x << "," << position.y << "," << position.z << endl;
-	cout << "Scale:" << scale.x << "," << scale.y << "," << scale.z << endl;
-	cout << "Rotation:" << rotation.x << "," << rotation.y << "," << rotation.z << endl;
+	std::cout << "Position:" << position.x << "," << position.y << "," << position.z << std::endl;
+	std::cout << "Scale:" << scale.x << "," << scale.y << "," << scale.z << std::endl;
+	std::cout << "Rotation:" << rotation.x << "," << rotation.y << "," << rotation.z << std::endl;
 
 	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
 	objects.push_back(newObject);
@@ -330,9 +330,9 @@ void Engine::InstantiateRandom()
 	
 	MyVec3 position(0, 0, 0);
 
-	random_device rd;   
-	mt19937 gen(rd());
-	uniform_int_distribution<> dist(-500, 500);
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dist(-500, 500);
 
 	position.x = dist(gen);
 	position.y = dist(gen);
@@ -341,7 +341,7 @@ void Engine::InstantiateRandom()
 	MyVec3 scale(0.05, 0.05, 0.05);
 	MyVec3 rotation(0, 0, 0);
 
-	cout << endl << "Instantiating..." << endl;
+	std::cout << std::endl << "Instantiating..." << std::endl;
 
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 

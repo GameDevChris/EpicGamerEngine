@@ -2,9 +2,9 @@
 
 void UserInterfaceSystem::Start()
 {
-	cout << "Subsystem " << name << " -started!" << endl;
+	std::cout << "Subsystem " << name << " -started!" << std::endl;
 
-	vector<std::string> textures;
+	std::vector<std::string> textures;
 	textures.clear();
 	textures.push_back("./Models/Dragon/DragonTextureBlue.png");
 	textures.push_back("./Models/Dragon/DragonTextureGreen.png");
@@ -76,7 +76,7 @@ void UserInterfaceSystem::Update()
 
 		else
 		{
-			cout << "No Player Set!" << endl;
+			std::cout << "No Player Set!" << std::endl;
 		}
 	}
 
@@ -90,7 +90,7 @@ void UserInterfaceSystem::Update()
 
 		else 
 		{
-			cout << "No Player Set!" << endl;
+			std::cout << "No Player Set!" << std::endl;
 		}
 	}
 
@@ -104,7 +104,7 @@ void UserInterfaceSystem::Update()
 
 		else
 		{
-			cout << "No Player Set!" << endl;
+			std::cout << "No Player Set!" << std::endl;
 		}
 	}
 
@@ -118,7 +118,7 @@ void UserInterfaceSystem::Update()
 
 		else
 		{
-			cout << "No Player Set!" << endl;
+			std::cout << "No Player Set!" << std::endl;
 		}
 	}
 
@@ -136,13 +136,13 @@ void UserInterfaceSystem::Update()
 			
 			else
 			{
-				cout << "Player isn't grounded!" << endl;
+				std::cout << "Player isn't grounded!" << std::endl;
 			}
 		}
 
 		else
 		{
-			cout << "No Player Set!" << endl;
+			std::cout << "No Player Set!" << std::endl;
 		}
 	}
 
@@ -226,5 +226,5 @@ void UserInterfaceSystem::InputCooldown(bool value, int cooldown)
 	}
 
 	value = true;
-	cout << "Can instantiate!" << endl;
+	std::cout << "Can instantiate!" << std::endl;
 }

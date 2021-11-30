@@ -15,8 +15,8 @@ public:
 	IVideoDriver* driver = NULL;
 	ISceneManager* smgr = NULL;
 
-	vector<Model*> models;
-	Model* LoadModel(std::string modelPath, vector<std::string>* myTexturePaths, int modelType, std::string modelName);
+	std::vector<Model*> models;
+	Model* LoadModel(std::string modelPath, std::vector<std::string>* myTexturePaths, int modelType, std::string modelName);
 
 	virtual void Update();
 };

@@ -13,7 +13,7 @@ struct EventData
 public:
 	std::string modPath = "confusion noises";
 	std::string texPath = "";
-	vector<std::string>* texPaths;
+	std::vector<std::string>* texPaths;
 
 	std::string myName = "";
 	int modType = NULL;

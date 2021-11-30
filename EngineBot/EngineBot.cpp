@@ -2,20 +2,53 @@
 #include <iostream>  
 #include <sstream>  
 #include <vector>
-
+#include <stdlib.h>
 
 using namespace std;
 
 dpp::snowflake* leaderboardChannel = new dpp::snowflake(uint64_t(912656966487269406));
 dpp::snowflake* newScoreChannel = new dpp::snowflake(uint64_t(912657008027648020));
 
-void PrintAllScores(dpp::cluster* bot)
+void GetScores(dpp::cluster* bot)
 {
+	dpp::snowflake after = 0;
+	dpp::snowflake channel = *newScoreChannel;
+	std::function<void(dpp::confirmation_callback_t)> f = [channel, after, &bot](const dpp::confirmation_callback_t& cc)
+	{
+		string filename("./scoreData.txt");
+		ofstream score_file(filename);
 
+		if (!cc.is_error())
+		{
+			dpp::message_map um = std::get<dpp::message_map>(cc.value);
+
+			for (auto& m : um)
+			{
+				std::cout << "MESSAGE FOUND: " << m.second.id << ", " << m.second.content << std::endl;
+				
+				stringstream ss;
+				ss << m.second.content;
+				std::string messageText;
+				ss >> messageText;
+
+				score_file << messageText << " ";
+			}
+		}
+
+		score_file.close();
+		exit(0);
+	};
+
+	bot->messages_get(channel, 0, 0, after, 100, f);
+
+}
+
+void Print5Scores(dpp::cluster* bot)
+{
 	vector<int>* dataVector = new vector<int>;
 	dataVector->clear();
 
-	string filename("../scoreData.txt");
+	string filename("./scoreData.txt");
 	int number;
 	ifstream input_file(filename);
 
@@ -28,11 +61,11 @@ void PrintAllScores(dpp::cluster* bot)
 
 	sort(dataVector->begin(), dataVector->end(), greater<int>());
 
-	bot->message_create(dpp::message(*newScoreChannel, "-----"));
-	bot->message_create(dpp::message(*newScoreChannel, "Scores:"));
-	bot->message_create(dpp::message(*newScoreChannel, "-----"));
+	bot->message_create(dpp::message(*leaderboardChannel, "-----"));
+	bot->message_create(dpp::message(*leaderboardChannel, "Top 5 Scores:"));
+	bot->message_create(dpp::message(*leaderboardChannel, "-----"));
 
-	for (int i = 0; i < dataVector->size(); i++)
+	for (int i = 0; i < 5; i++)
 	{
 		int val = (*dataVector)[i];
 		stringstream ss;
@@ -42,16 +75,18 @@ void PrintAllScores(dpp::cluster* bot)
 		ss >> scoreText;
 
 
-		bot->message_create(dpp::message(*newScoreChannel, scoreText));
+		bot->message_create(dpp::message(*leaderboardChannel, scoreText));
 	}
+
+	GetScores(bot);
 }
 
-void PrintHighScores(dpp::cluster* bot)
+void PrintNewScore(dpp::cluster* bot)
 {
 	vector<int>* dataVector = new vector<int>;
 	dataVector->clear();
 
-	string filename("../scoreData.txt");
+	string filename("./scoreData.txt");
 	int number;
 	ifstream input_file(filename);
 
@@ -62,19 +97,16 @@ void PrintHighScores(dpp::cluster* bot)
 	cout << endl;
 	input_file.close();
 
-	sort(dataVector->begin(), dataVector->end(), greater<int>());
-
-	bot->message_create(dpp::message(*leaderboardChannel, "Highscore:"));
-	bot->message_create(dpp::message(*leaderboardChannel, "-----"));
-
-	int val = (*dataVector)[0];
+	int val = (*dataVector)[dataVector->size()-1];
 	stringstream ss;
 
 	ss << val;
 	std::string scoreText;
 	ss >> scoreText;
 
-	bot->message_create(dpp::message(*leaderboardChannel, scoreText));
+	bot->message_create(dpp::message(*newScoreChannel, scoreText));
+
+	GetScores(bot);
 }
 
 
@@ -82,7 +114,7 @@ std::string GetJob()
 {
 	std::string job = "";
 
-	string filename("../jobData.txt");
+	string filename("./jobData.txt");
 
 	ifstream input_file(filename);
 
@@ -105,12 +137,14 @@ void doJob(dpp::cluster* bot)
 
 	if (myJob == "printNewScore")
 	{
-		PrintAllScores(bot);
+		cout << "Printing new score" << endl;
+		PrintNewScore(bot);
 	}
 
 	else if (myJob == "printTop5")
 	{
-		PrintHighScores(bot);
+		cout << "Printing top 5 scores" << endl;
+		Print5Scores(bot);
 	}
 
 	else
@@ -131,6 +165,7 @@ int main()
 
 
 		});
+
 
 	bot.start(false);
 	return 0;

@@ -1,6 +1,6 @@
 #include "AssetEvent.h"
 
-AssetEvent::AssetEvent(std::string type, std::string modelPath, vector<std::string>* texturePaths, int modelType, std::string myName, vector<Event*>* queue)
+AssetEvent::AssetEvent(std::string type, std::string modelPath, std::vector<std::string>* texturePaths, int modelType, std::string myName, std::vector<Event*>* queue)
 {
 	myData = new EventData();
 
@@ -18,12 +18,12 @@ AssetEvent::AssetEvent(std::string type, std::string modelPath, vector<std::stri
 
 	else
 	{
-		cout << "ERROR, unknown Asset event type!" << endl;
+		std::cout << "ERROR, unknown Asset event type!" << std::endl;
 	}
 
 	myData->modPath = modelPath;
 	myData->myName = myName;
-	myData->texPaths = new vector<std::string>;
+	myData->texPaths = new std::vector<std::string>;
 	myData->texPaths->clear();
 
 	for (int i = 0; i < texturePaths->size(); i++)

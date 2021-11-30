@@ -1,6 +1,6 @@
 #include "GFXEvent.h"
 
-GFXEvent::GFXEvent(std::string type, vector<Event*>* queue)
+GFXEvent::GFXEvent(std::string type, std::vector<Event*>* queue)
 {
 	eventSubsystem = GraphicsSub;
 	
@@ -68,7 +68,7 @@ GFXEvent::GFXEvent(std::string type, vector<Event*>* queue)
 
 	else
 	{
-		cout << "ERROR, unknown GFX event type!" << endl;
+		std::cout << "ERROR, unknown GFX event type!" << std::endl;
 	}
 
 	EQueue = queue;
@@ -76,7 +76,7 @@ GFXEvent::GFXEvent(std::string type, vector<Event*>* queue)
 	Throw();
 }
 
-GFXEvent::GFXEvent(std::string type, GameObject* obj, vector<Event*>* queue)
+GFXEvent::GFXEvent(std::string type, GameObject* obj, std::vector<Event*>* queue)
 {
 	myData = new EventData();
 	eventSubsystem = GraphicsSub;
@@ -85,12 +85,12 @@ GFXEvent::GFXEvent(std::string type, GameObject* obj, vector<Event*>* queue)
 	if (type == "GFXSpawn")
 	{
 		eventType = GFXSpawn;
-		cout << "New spawn event executed" << endl;
+		std::cout << "New spawn event executed" << std::endl;
 	}
 	
 	else
 	{
-		cout << "ERROR, unknown GFX event type!" << endl;
+		std::cout << "ERROR, unknown GFX event type!" << std::endl;
 	}
 	
 	myData->targetObject = obj;

@@ -1,6 +1,6 @@
 #include "PhysEvent.h"
 
-PhysEvent::PhysEvent(std::string type, vector<Event*>* queue, GameObject* object, std::string rbType)
+PhysEvent::PhysEvent(std::string type, std::vector<Event*>* queue, GameObject* object, std::string rbType)
 {
 	myData = new EventData();
 	eventSubsystem = PhysicsSub;
@@ -13,7 +13,7 @@ PhysEvent::PhysEvent(std::string type, vector<Event*>* queue, GameObject* object
 
 	else
 	{
-		cout << "ERROR, unknown PHYS event type!" << endl;
+		std::cout << "ERROR, unknown PHYS event type!" << std::endl;
 	}
 
 	myData->targetObject = object;
@@ -24,7 +24,7 @@ PhysEvent::PhysEvent(std::string type, vector<Event*>* queue, GameObject* object
 	Throw();
 }
 
-PhysEvent::PhysEvent(std::string type, vector<Event*>* queue, Player* player, MyVec3* force)
+PhysEvent::PhysEvent(std::string type, std::vector<Event*>* queue, Player* player, MyVec3* force)
 {
 	myData = new EventData();
 	eventSubsystem = PhysicsSub;
@@ -47,7 +47,7 @@ PhysEvent::PhysEvent(std::string type, vector<Event*>* queue, Player* player, My
 
 	else
 	{
-		cout << "ERROR, unknown PHYS event type!" << endl;
+		std::cout << "ERROR, unknown PHYS event type!" << std::endl;
 	}
 
 	myData->targetPlayer = player;

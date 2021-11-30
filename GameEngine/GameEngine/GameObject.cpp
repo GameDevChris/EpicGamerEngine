@@ -54,6 +54,6 @@ void GameObject::SyncTransform()
 
 	else
 	{
-		cout << "No RigidBody found!" << endl;
+		std::cout << "No RigidBody found!" << std::endl;
 	}
 }

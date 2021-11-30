@@ -17,7 +17,7 @@ void IGraphicsSystem::StartIrrlicht()
 
 	if (device == NULL) 
 	{
-		cout << "Failed to create Irrlicht device!" << endl;
+		std::cout << "Failed to create Irrlicht device!" << std::endl;
 	}
 	
 	device->setWindowCaption(L"Epic Gamer Engine - Extra Gamer Edition");
@@ -302,7 +302,7 @@ void IGraphicsSystem::DrawGUI()
 
 	int amountInt = nodes.size();
 	
-	stringstream ss;
+	std::stringstream ss;
 	ss << amountInt;
 	std::string amountText;
 	ss >> amountText;
@@ -319,7 +319,7 @@ void IGraphicsSystem::DrawGUI()
 
 	ImGui::Text("Score");
 
-	stringstream ss2;
+	std::stringstream ss2;
 	ss2 << UIScore;
 	std::string scoreText;
 	ss2 >> scoreText;
@@ -341,6 +341,11 @@ void IGraphicsSystem::DrawGUI()
 		NetworkEvent* addScoreEvent = new NetworkEvent("BotAddScore", UIScore, engineEventQueue);
 	}
 
+	if (ImGui::Button("Print Top 5", ImVec2(60, 20)))
+	{
+		NetworkEvent* printScoreEvent = new NetworkEvent("BotPrintTop5", UIScore, engineEventQueue);
+	}
+
 	ImGui::Text("-----");
 	ImGui::Text("Quit");
 	if (ImGui::Button("Exit", ImVec2(40, 20)))
@@ -358,7 +363,7 @@ void IGraphicsSystem::DrawGUI()
 void IGraphicsSystem::Start()
 {
 	loadedModels.clear();
-	cout << "Subsystem " << name << " -started!" << endl;
+	std::cout << "Subsystem " << name << " -started!" << std::endl;
 
 	StartIrrlicht();
 
@@ -377,7 +382,7 @@ void IGraphicsSystem::Update()
 			{
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXDefault)
 				{
-					cout << "Default GFX event happened" << endl;
+					std::cout << "Default GFX event happened" << std::endl;
 				}
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXUp)
@@ -460,7 +465,7 @@ void IGraphicsSystem::Update()
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->GFXSpawn)
 				{
 
-					cout << "Spawning..." << endl;
+					std::cout << "Spawning..." << std::endl;
 
 
 					//Le code
@@ -509,7 +514,7 @@ void IGraphicsSystem::Update()
 
 				else
 				{
-					cout << "ERROR! Unrecognised Graphics event" << endl;
+				std::cout << "ERROR! Unrecognised Graphics event" << std::endl;
 				}
 
 				delete((*engineEventQueue)[i]);

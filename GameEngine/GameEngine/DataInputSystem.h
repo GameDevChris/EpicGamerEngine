@@ -15,10 +15,10 @@ class DataInputSystem :
 	public SubSystem
 {
 private:
-	void ParseTextData(vector<char>* dataVector);
+	void ParseTextData(std::vector<char>* dataVector);
 
 public:
-	vector<char> dataVector;
+	std::vector<char> dataVector;
 	void ShowData();
 	virtual void Start();
 };

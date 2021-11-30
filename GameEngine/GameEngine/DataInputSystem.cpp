@@ -1,9 +1,9 @@
 #include "DataInputSystem.h"
 
-void DataInputSystem::ParseTextData(vector<char>* dataVector)
+void DataInputSystem::ParseTextData(std::vector<char>* dataVector)
 {
 	char dataValue;
-	ifstream dataFile;
+	std::ifstream dataFile;
 	dataFile.open("data.txt");
 	while (dataFile >> dataValue)
 	{
@@ -16,12 +16,12 @@ void DataInputSystem::ShowData()
 {
 	for (int i = 0; i < dataVector.size(); i++) 
 	{
-		cout << dataVector[i] << endl;
+		std::cout << dataVector[i] << std::endl;
 	}
 }
 
 void DataInputSystem::Start()
 { 
-	cout << "Subsystem " << name << " -started!" << endl;
+	std::cout << "Subsystem " << name << " -started!" << std::endl;
 	ParseTextData(&dataVector);
 }

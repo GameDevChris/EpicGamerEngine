@@ -1,6 +1,6 @@
 #pragma once
 #include "EventData.h"
-using namespace std;
+//using namespace std;
 
 class Event
 {
@@ -55,20 +55,21 @@ public:
 		DrawUI,
 
 		//Network
-		BotAddScore
+		BotAddScore,
+		BotPrintTop5
 	};
 
 	EventData* myData;
-	vector<Event*>* EQueue;
+	std::vector<Event*>* EQueue;
 
 	std::string ReturnSubsystem();
 	std::string ReturnEvent();
 
 	Event(std::string type);
-	Event(std::string type, vector<Event*>* queue);
+	Event(std::string type, std::vector<Event*>* queue);
 
-	Event(std::string type, vector<Event*>* queue, int* modelID, int* textureID,  MyVec3* position, MyVec3* scale, MyVec3* rotation);
-	Event(std::string type, vector<Event*>* queue, int* modelID, int* textureID, std::string* rbType, MyVec3* position, MyVec3* scale, MyVec3* rotation);
+	Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID,  MyVec3* position, MyVec3* scale, MyVec3* rotation);
+	Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID, std::string* rbType, MyVec3* position, MyVec3* scale, MyVec3* rotation);
 	Event();
 
 	void Throw();

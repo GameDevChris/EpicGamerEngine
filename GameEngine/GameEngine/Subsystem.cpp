@@ -7,7 +7,7 @@ SubSystem::SubSystem()
 void SubSystem::Start()
 {
 	//eventQueue.clear();
-	cout << "Subsystem " << name << " -started!" << endl;
+	std::cout << "Subsystem " << name << " -started!" << std::endl;
 }
 
 void SubSystem::Update()
@@ -17,7 +17,7 @@ void SubSystem::Update()
 
 void SubSystem::LateUpdate()
 {
-	cout << name << "Late updated" << endl;
+	std::cout << name << "Late updated" << std::endl;
 }
 
 void SubSystem::Exit()

@@ -11,7 +11,7 @@
 
 #include <random>
 
-using namespace std;
+//using namespace std;
 class Engine
 {
 private:
@@ -22,9 +22,9 @@ private:
 	AssetManagerSystem assets;
 	NetworkSystem network;
 
-	vector<Event*> eventQueue;
-	vector<Event*> lateEventQueue;
-	vector<GameObject*> objects;
+	std::vector<Event*> eventQueue;
+	std::vector<Event*> lateEventQueue;
+	std::vector<GameObject*> objects;
 
 
 public:

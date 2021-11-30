@@ -1,6 +1,6 @@
 #include "UIEvent.h"
 
-UIEvent::UIEvent(std::string type, vector<Event*>* queue, IrrlichtDevice* dev, video::IVideoDriver* driv, ISceneManager* man, IrrIMGUI::CIMGUIEventReceiver* evRec)
+UIEvent::UIEvent(std::string type, std::vector<Event*>* queue, IrrlichtDevice* dev, video::IVideoDriver* driv, ISceneManager* man, IrrIMGUI::CIMGUIEventReceiver* evRec)
 {
 	myData = new EventData();
 
@@ -12,7 +12,7 @@ UIEvent::UIEvent(std::string type, vector<Event*>* queue, IrrlichtDevice* dev, v
 	}
 	else
 	{
-		cout << "ERROR, unknown Asset event type!" << endl;
+		std::cout << "ERROR, unknown Asset event type!" << std::endl;
 	}
 
 	myData->myEventReceiver = evRec;
@@ -25,7 +25,7 @@ UIEvent::UIEvent(std::string type, vector<Event*>* queue, IrrlichtDevice* dev, v
 	Throw();
 }
 
-UIEvent::UIEvent(std::string type, vector<Event*>* queue)
+UIEvent::UIEvent(std::string type, std::vector<Event*>* queue)
 {
 	eventSubsystem = UISub;
 
@@ -36,7 +36,7 @@ UIEvent::UIEvent(std::string type, vector<Event*>* queue)
 	}
 	else
 	{
-		cout << "ERROR, unknown Asset event type!" << endl;
+		std::cout << "ERROR, unknown Asset event type!" << std::endl;
 	}
 
 	EQueue = queue;

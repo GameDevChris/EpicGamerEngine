@@ -6,7 +6,7 @@ void PhysicsSystem::StartPhysX()
 
 	if (!foundation)
 	{
-		cout << "Failed to create Foundation!" << endl;
+		std::cout << "Failed to create Foundation!" << std::endl;
 	}
 
 	pvd = PxCreatePvd(*foundation);
@@ -18,13 +18,13 @@ void PhysicsSystem::StartPhysX()
 	physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, toleranceScale, doMemoryProfiling, pvd);
 	if (!physics)
 	{
-		cout << "Failed to create Physics!" << endl;
+		std::cout << "Failed to create Physics!" << std::endl;
 	}
 
 	cooking = PxCreateCooking(PX_PHYSICS_VERSION, *foundation, PxCookingParams(PxTolerancesScale()));
 	if (!cooking)
 	{
-		cout << "Failed to create Cooking!" << endl;
+		std::cout << "Failed to create Cooking!" << std::endl;
 	}
 
 	PxSceneDesc sceneDesc(physics->getTolerancesScale());
@@ -97,7 +97,7 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type)
 
 			else
 			{
-				cout << "Unknow filter type" << endl;
+				std::cout << "Unknow filter type" << std::endl;
 			}
 
 			obj->myRB->staticRB = newRB;
@@ -137,7 +137,7 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type)
 
 			else
 			{
-				cout << "Unknow filter type" << endl;
+				std::cout << "Unknow filter type" << std::endl;
 			}
 
 			obj->myRB->dynamicRB = newRB;
@@ -146,7 +146,7 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type)
 
 		else
 		{
-			cout << "Unknown Rigidbody type!" << endl;
+			std::cout << "Unknown Rigidbody type!" << std::endl;
 		}
 	}
 }
@@ -189,7 +189,7 @@ void PhysicsSystem::setupFiltering(PxRigidActor* actor, PxU32 filterGroup, PxU32
 
 void PhysicsSystem::Start()
 {
-	cout << "Subsystem " << name << " -started!" << endl;
+	std::cout << "Subsystem " << name << " -started!" << std::endl;
 
 	StartPhysX();
 }
@@ -204,7 +204,7 @@ void PhysicsSystem::Update()
 			{
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->PHYSDefault)
 				{
-					cout << "Default PHYS event happened" << endl;
+					std::cout << "Default PHYS event happened" << std::endl;
 				}
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->PHYSSpawn)
@@ -238,7 +238,7 @@ void PhysicsSystem::Update()
 
 				else
 				{
-					cout << "ERROR! Unrecognised Graphics event" << endl;
+					std::cout << "ERROR! Unrecognised Graphics event" << std::endl;
 				}
 
 				delete((*engineEventQueue)[i]);
