@@ -49,6 +49,7 @@ public:
 		Instantiate,
 		InstantiateCustom,
 		InstantiatePlayer,
+		LoadLevel,
 		ChrisLegion,
 
 		//UI
@@ -71,6 +72,8 @@ public:
 
 	Event(std::string type);
 	Event(std::string type, std::vector<Event*>* queue);
+	Event(std::string type, std::vector<Event*>* queue, int levelNumber);
+
 
 	Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID,  MyVec3* position, MyVec3* scale, MyVec3* rotation);
 	Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID, std::string* rbType, std::string* colFilterType, MyVec3* position, MyVec3* scale, MyVec3* rotation);

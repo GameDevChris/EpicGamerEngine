@@ -38,6 +38,8 @@ void IGraphicsSystem::StartIrrlicht()
 	guienv = device->getGUIEnvironment();
 
 
+	WriteStaticText(gameTitle, 0, 0, 100, 100);
+
 	//const IGeometryCreator* geoCreator = smgr->getGeometryCreator();
 	//
 	//SMaterial* floorMat = new SMaterial();
@@ -62,6 +64,7 @@ void IGraphicsSystem::RunIrrlicht()
 
 		driver->endScene();
 	}
+
 
 	else 
 	{
@@ -379,9 +382,9 @@ void IGraphicsSystem::DrawGUI()
 		NetworkEvent* printScoreEvent = new NetworkEvent("BotPrintTop5", UIScore, engineEventQueue);
 	}
 
-	if (ImGui::Button("Load Level", ImVec2(60, 20)))
+	if (ImGui::Button("Load Level 1", ImVec2(60, 20)))
 	{
-		DataEvent* loadLevelEvent = new DataEvent("DataLoadLevel", engineEventQueue);
+		Event* loadLevelEvent = new Event("LoadLevel", engineEventQueue, 1);
 	}
 
 	ImGui::Text("-----");
@@ -404,6 +407,8 @@ void IGraphicsSystem::Start()
 	std::cout << "Subsystem " << name << " -started!" << std::endl;
 
 	StartIrrlicht();
+
+
 
 	WriteStaticText(L"This is comic sans, lmao", 0, 0, 1000, 100);
 

@@ -32,64 +32,7 @@ void DataInputSystem::GetData()
 	ScreenHeight = windowData["height"].cast<int>();
 }
 
-void DataInputSystem::LoadDataObjects()
-{
-	std::vector<std::string> objList = loadObjects("gameObjectList", lvl1);
-	LuaRef objectsData = getGlobal(lvl1, "gameObjectList");
 
-
-	for (int i = 0; i < objList.size(); i++)
-	{
-		LuaRef object = objectsData[objList[i]];
-		LuaRef Pos = object["objPosition"];
-		LuaRef Scale = object["objScale"];
-		LuaRef Rot = object["objRot"];
-
-		//int modelID = object["modID"].cast<int>();
-		//int textureID = object["textureID"].cast<int>();
-		//std::string rbType = object["rigidType"].cast<std::string>();
-		//std::string cfType = object["filterType"].cast<std::string>();
-		//MyVec3 position = MyVec3(Pos["X"].cast<float>(), Pos["Y"].cast<float>(), Pos["Z"].cast<float>());
-		//MyVec3 scale = MyVec3(Scale["X"].cast<float>(), Scale["Y"].cast<float>(), Scale["Z"].cast<float>());
-		//MyVec3 rotation = MyVec3(Rot["X"].cast<float>(), Rot["Y"].cast<float>(), Rot["Z"].cast<float>());
-
-
-
-		int UIIDTexHolder = 0;
-		int UIIDModelHolder = 6;
-
-		std::string rbVal = "static";
-		std::string colVal = "Ground";
-
-		MyVec3 UIPosHolder(0.0f,0.0f,0.0f);
-		MyVec3 UIRotHolder(0.0f,0.0f,0.0f);
-		MyVec3 UIScaleHolder(1.0f,1.0f,1.0f);
-
-		Event* instantiateEvent = new Event("InstantiateCustom", engineEventQueue, &UIIDModelHolder, &UIIDTexHolder, &rbVal, &colVal, &UIPosHolder, &UIScaleHolder, &UIRotHolder);
-
-
-
-		//int modelID = 6;
-		//int textureID = 0;
-		//std::string rbType = "static";
-		//std::string cfType = "Ground";
-		//MyVec3 position = MyVec3(0.0f, 0.0f, 0.0f);
-		//MyVec3 scale = MyVec3(1.0f, 1.0f, 1.0f);
-		//MyVec3 rotation = MyVec3(0.0f, 0.0f, 0.0f);
-		//
-		//
-		//Event* instantiate =
-		//	new Event("InstantiateCustom",
-		//		engineEventQueue,
-		//		&modelID,
-		//		&textureID,
-		//		&rbType,
-		//		&cfType,
-		//		&position,
-		//		&scale,
-		//		&rotation);
-	}
-}
 
 void DataInputSystem::DataToManager()
 {
@@ -162,22 +105,62 @@ void DataInputSystem::Start()
 
 void DataInputSystem::Update()
 {
-	if (!(*engineEventQueue).empty())
+	//if (!(*engineEventQueue).empty())
+	//{
+	//	for (int i = 0; i < (*engineEventQueue).size(); i++)
+	//	{
+	//		if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->DataSub)
+	//		{
+	//
+	//			delete((*engineEventQueue)[i]);
+	//			engineEventQueue->erase(engineEventQueue->begin() + i);
+	//		}
+	//	}
+	//}
+}
+
+void DataInputSystem::LoadDataObjects(std::vector<SpawnData*>* myData, int levelNum, bool* flag)
+{
+	if (levelNum == 1)
 	{
-		for (int i = 0; i < (*engineEventQueue).size(); i++)
+		myData->clear();
+		std::vector<std::string> objList = loadObjects("gameObjectList", lvl1);
+		LuaRef objectsData = getGlobal(lvl1, "gameObjectList");
+	
+		for (int i = 0; i < objList.size(); i++)
 		{
-			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->DataSub)
-			{
-
-				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->DataLoadLevel)
-				{
-
-					LoadDataObjects();
-				}
-
-				delete((*engineEventQueue)[i]);
-				engineEventQueue->erase(engineEventQueue->begin() + i);
-			}
+			LuaRef object = objectsData[objList[i]];
+			LuaRef Pos = object["objPosition"];
+			LuaRef Scale = object["objScale"];
+			LuaRef Rot = object["objRot"];
+	
+			int modelID = object["modID"].cast<int>();
+			int textureID = object["textureID"].cast<int>();
+			std::string rbType = object["rigidType"].cast<std::string>();
+			std::string cfType = object["filterType"].cast<std::string>();
+			MyVec3 position = MyVec3(Pos["X"].cast<float>(), Pos["Y"].cast<float>(), Pos["Z"].cast<float>());
+			MyVec3 scale = MyVec3(Scale["X"].cast<float>(), Scale["Y"].cast<float>(), Scale["Z"].cast<float>());
+			MyVec3 rotation = MyVec3(Rot["X"].cast<float>(), Rot["Y"].cast<float>(), Rot["Z"].cast<float>());
+			
+			SpawnData* myNewData = new SpawnData();
+			
+			myNewData->modelID = modelID;
+			myNewData->textureID = textureID;
+			myNewData->rbType = rbType;
+			myNewData->cfType = cfType;
+			myNewData->position = position;
+			myNewData->scale = scale;
+			myNewData->rotation = rotation;
+			
+			*flag = true;
+			myData->push_back(myNewData);
 		}
 	}
+	
+	else
+	{
+		std::cout << "Error, unknown level" << std::endl;
+		*flag = false;
+	}
+
 }

@@ -254,5 +254,8 @@
     <ClInclude Include="DataEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpawnData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

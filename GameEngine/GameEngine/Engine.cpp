@@ -132,7 +132,9 @@ void Engine::Update()
 	}
 
 	graphics.Update();
-	dataInput.Update();
+
+	//dataInput.Update();
+	
 	
 	physics.Update();
 
@@ -157,6 +159,13 @@ void Engine::Update()
 				{
 
 					InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
+					delete(eventQueue[i]);
+					eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
+				{
+					LoadLevel(*(eventQueue[i]->myData->levelNumber));
 					delete(eventQueue[i]);
 					eventQueue.erase(eventQueue.begin() + i);
 				}
@@ -343,6 +352,32 @@ void Engine::InstantiateRequest()
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
 	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic", "Player");
+}
+
+void Engine::LoadLevel(int number)
+{
+	number = 1;
+	std::vector<SpawnData*> spawnData;
+	bool success = false;
+
+	dataInput.LoadDataObjects(&spawnData, number, &success);
+
+	if (success)
+	{
+		for (int i = 0; i < spawnData.size(); i++)
+		{
+			std::cout << "Instantiating scene element " << i << std::endl;
+			Instantiate(spawnData[i]->modelID, spawnData[i]->textureID, spawnData[i]->position, spawnData[i]->scale, spawnData[i]->rotation, spawnData[i]->rbType, spawnData[i]->cfType);
+		}
+	}
+
+	else 
+	{
+		std::cout << "Failed to load level " << number << std::endl;
+	}
+
+	std::vector<std::string> objList = dataInput.loadObjects("gameObjectList", dataInput.lvl1);
+
 }
 
 void Engine::InstantiateRandom()

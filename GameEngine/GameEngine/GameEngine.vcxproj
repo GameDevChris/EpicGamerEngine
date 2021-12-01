@@ -210,6 +210,7 @@
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rigidbody.h" />
+    <ClInclude Include="SpawnData.h" />
     <ClInclude Include="SubSystem.h" />
     <ClInclude Include="UIEvent.h" />
     <ClInclude Include="UserInterfaceSystem.h" />

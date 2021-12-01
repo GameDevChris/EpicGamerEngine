@@ -139,6 +139,28 @@ Event::Event(std::string type, std::vector<Event*>* queue)
 	Throw();
 }
 
+Event::Event(std::string type, std::vector<Event*>* queue, int levelNumber)
+{
+	myData = new EventData();
+	eventSubsystem = General;
+
+	if (type == "LoadLevel")
+	{
+		eventType = LoadLevel;
+	}
+
+	else
+	{
+		std::cout << "ERROR, unknown event type!" << std::endl;
+	}
+
+	myData->levelNumber = &levelNumber;
+
+	EQueue = queue;
+
+	Throw();
+}
+
 Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID, MyVec3* position, MyVec3* scale, MyVec3* rotation)
 {
 	myData = new EventData();
@@ -196,6 +218,7 @@ Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* te
 
 Event::Event()
 {
+	
 }
 
 void Event::Throw()

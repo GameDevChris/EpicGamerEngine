@@ -43,5 +43,7 @@ public:
 	void InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation);
 
 	void InstantiateRequest();
+
+	void LoadLevel(int number);
 };
 

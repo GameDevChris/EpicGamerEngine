@@ -1,7 +1,8 @@
 #pragma once
 #include "SubSystem.h"
 #include "MyVec3.h"
- 
+#include "SpawnData.h" 
+
 extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
@@ -15,7 +16,7 @@ using namespace luabridge;
 class DataInputSystem :
 	public SubSystem
 {
-private:
+public:
 	std::string dirPath = "directory.lua";
 	lua_State* dir;
 
@@ -29,15 +30,13 @@ private:
 	void StartLua();
 	void GetDirectories();
 	void GetData();
-	void LoadDataObjects();
+	void LoadDataObjects(std::vector<SpawnData*>* myData, int levelNum, bool* flag);
 	void DataToManager();
 
 	std::vector<std::string> loadObjects(const std::string& table, lua_State* state);
 
 	void ParseTextData(std::vector<char>* dataVector);
 
-
-public:
 	std::vector<char> dataVector;
 	void ShowData();
 	virtual void Start();

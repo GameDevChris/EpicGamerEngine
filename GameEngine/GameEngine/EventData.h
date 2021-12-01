@@ -37,6 +37,8 @@ public:
 	MyVec3* myRot = NULL;
 	MyVec3* myScale = NULL;
 
+	int* levelNumber = NULL;
+
 	int* myTexID = NULL;
 	int* myModID = NULL;
 
