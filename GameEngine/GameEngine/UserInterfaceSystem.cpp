@@ -131,7 +131,7 @@ void UserInterfaceSystem::Update()
 				MyVec3* force = new MyVec3(0, myPlayer->jumpHeight, 0);
 				PhysEvent* playerBackwardEvent = new PhysEvent("PlayerImpulse", engineEventQueue, myPlayer, force);
 
-				//myPlayer->isGrounded = false;
+				myPlayer->isGrounded = false;
 			}
 			
 			else

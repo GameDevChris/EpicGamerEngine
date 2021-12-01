@@ -1,6 +1,6 @@
 #include "PhysEvent.h"
 
-PhysEvent::PhysEvent(std::string type, std::vector<Event*>* queue, GameObject* object, std::string rbType)
+PhysEvent::PhysEvent(std::string type, std::vector<Event*>* queue, GameObject* object, std::string rbType, std::string cfType)
 {
 	myData = new EventData();
 	eventSubsystem = PhysicsSub;
@@ -18,6 +18,7 @@ PhysEvent::PhysEvent(std::string type, std::vector<Event*>* queue, GameObject* o
 
 	myData->targetObject = object;
 	myData->RBType = rbType;
+	myData->CFType = cfType;
 
 	EQueue = queue;
 

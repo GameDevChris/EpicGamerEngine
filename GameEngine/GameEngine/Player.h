@@ -11,7 +11,7 @@ public:
 	float linearSpeed = 30;
 	float angularSpeed = 10;
 
-	float jumpHeight = 2;
+	float jumpHeight = 3;
 
 	Player(Model* mod, MyVec3 pos, MyVec3 rot, MyVec3 sca);
 

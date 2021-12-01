@@ -1,7 +1,8 @@
 #pragma once
 #include "SubSystem.h"
+#include "Player.h"
 #include <PxPhysicsAPI.h>
-
+#include "ContactCallback.h"
 using namespace physx;
 
 class PhysicsSystem :
@@ -26,11 +27,14 @@ private:
 
 	void StartPhysX();
 	void RunPhysX();
-	void AddRB(GameObject* obj, std::string type);
+	void CheckColisions();
+	void AddRB(GameObject* obj, std::string type, std::string filterType);
 
-	
 
 public:
+	Player* myPlayer = NULL;
+
+	ContactCallback myContactReportCallback;
 
 	struct FilterGroup
 	{
@@ -43,9 +47,6 @@ public:
 		};
 	};
 
-	PxFilterFlags PhysicsFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
-		PxFilterObjectAttributes attributes1, PxFilterData filterData1,
-		PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize);
 
 	void setupFiltering(PxRigidActor* actor, PxU32 filterGroup, PxU32 filterMask);
 

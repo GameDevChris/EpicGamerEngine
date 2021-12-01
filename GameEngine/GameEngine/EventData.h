@@ -18,6 +18,7 @@ public:
 	std::string myName = "";
 	int modType = NULL;
 	std::string RBType = "";
+	std::string CFType = "";
 	Model* myModel = NULL;
 	GameObject* targetObject = NULL;
 	Player* targetPlayer = NULL;

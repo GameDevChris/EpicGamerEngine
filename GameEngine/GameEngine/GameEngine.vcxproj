@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="AssetEvent.cpp" />
     <ClCompile Include="AssetManagerSystem.cpp" />
+    <ClCompile Include="ContactCallback.cpp" />
     <ClCompile Include="DataInputSystem.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Event.cpp" />
@@ -178,6 +179,7 @@
   <ItemGroup>
     <ClInclude Include="AssetEvent.h" />
     <ClInclude Include="AssetManagerSystem.h" />
+    <ClInclude Include="ContactCallback.h" />
     <ClInclude Include="DataInputSystem.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Event.h" />

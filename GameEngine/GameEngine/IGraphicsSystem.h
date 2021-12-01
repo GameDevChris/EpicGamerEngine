@@ -50,6 +50,7 @@ private:
 	int UIIDTexHolder;
 	int UIIDModelHolder;
 	int UIRBTypeHolder = 0;
+	int UICollisionTypeHolder = 0;
 
 	float UIGeneralScale = 0;
 	MyVec3 UIPosHolder;

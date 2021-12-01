@@ -164,7 +164,7 @@ Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* te
 	Throw();
 }
 
-Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID, std::string* rbType, MyVec3* position, MyVec3* scale, MyVec3* rotation)
+Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* textureID, std::string* rbType, std::string* colFilterType,MyVec3* position, MyVec3* scale, MyVec3* rotation)
 {
 	myData = new EventData();
 
@@ -185,6 +185,8 @@ Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* te
 	myData->myScale = scale;
 	myData->myRot = rotation;
 	myData->RBType = *rbType;
+	myData->CFType = *colFilterType;
+
 
 	EQueue = queue;
 

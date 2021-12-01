@@ -1,5 +1,39 @@
 #include "PhysicsSystem.h"
 
+PxFilterFlags PhysicsFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0, PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
+{
+	//// let triggers through
+	//if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+	//{
+	//	pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+	//	return PxFilterFlag::eDEFAULT;
+	//}
+	//
+	//// generate contacts for all that were not filtered above
+	//pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+	//
+	//// trigger the contact callback for pairs (A,B) where
+	//// the filtermask of A contains the ID of B and vice versa.
+	//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+	//	pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
+	//
+	//return PxFilterFlag::eDEFAULT;
+
+	PX_UNUSED(attributes0);
+	PX_UNUSED(attributes1);
+	PX_UNUSED(filterData0);
+	PX_UNUSED(filterData1);
+	PX_UNUSED(constantBlockSize);
+	PX_UNUSED(constantBlock);
+
+	// all initial and persisting reports for everything, with per-point data
+	pairFlags = PxPairFlag::eSOLVE_CONTACT | PxPairFlag::eDETECT_DISCRETE_CONTACT
+		| PxPairFlag::eNOTIFY_TOUCH_FOUND
+		| PxPairFlag::eNOTIFY_TOUCH_PERSISTS
+		| PxPairFlag::eNOTIFY_CONTACT_POINTS;
+	return PxFilterFlag::eDEFAULT;
+}
+
 void PhysicsSystem::StartPhysX()
 {  
 	foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocator, defaultErrorCallback);
@@ -33,10 +67,9 @@ void PhysicsSystem::StartPhysX()
 	dispatcher = PxDefaultCpuDispatcherCreate(2);
 
 	sceneDesc.cpuDispatcher = dispatcher;
-	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
 
-	//PxSimulationFilterShader newShader = PhysicsFilterShader;
-
+	sceneDesc.filterShader = PhysicsFilterShader;
+	sceneDesc.simulationEventCallback = &myContactReportCallback;
 
 	scene = physics->createScene(sceneDesc);
 
@@ -55,12 +88,39 @@ void PhysicsSystem::RunPhysX()
 	scene->fetchResults(true);
 }
 
-void PhysicsSystem::AddRB(GameObject* obj, std::string type)
+void PhysicsSystem::CheckColisions()
+{
+	if (myContactReportCallback.colShape1 != NULL && myContactReportCallback.colShape2 != NULL)
+	{
+		std::string collider1 = myContactReportCallback.colShape1->getName();
+		std::string collider2 = myContactReportCallback.colShape2->getName();
+
+		if (collider1 == "Player" && collider2 == "Ground")
+		{
+			if (myPlayer->isGrounded == false)
+			{
+				std::cout << "Player can now jump" << std::endl;
+				myPlayer->isGrounded = true;
+			}
+		}
+
+		else
+		{
+			std::cout << collider1 << " coliding with " << collider2 << std::endl;
+		}
+
+		myContactReportCallback.colShape1 = NULL;
+		myContactReportCallback.colShape2 = NULL;
+	}
+}
+
+void PhysicsSystem::AddRB(GameObject* obj, std::string type, std::string filterType)
 {
 	if(obj->myRB == NULL)
 	{
 		obj->myRB = new Rigidbody(type);
-
+		
+		obj->myRB->filterType = filterType;
 
 		if (type == "static" || type == "Static")
 		{
@@ -97,10 +157,20 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type)
 
 			else
 			{
-				std::cout << "Unknow filter type" << std::endl;
+				std::cout << "Unknown filter type" << std::endl;
 			}
 
 			obj->myRB->staticRB = newRB;
+
+			const PxU32 numShapes = newRB->getNbShapes();
+			PxShape** shapes = (PxShape**)malloc(sizeof(PxShape*) * numShapes);
+			newRB->getShapes(shapes, numShapes);
+
+			for (PxU32 i = 0; i < numShapes; i++)
+			{
+				shapes[i]->setName(obj->myRB->filterType.c_str());
+				std::cout << "Created a " << obj->myRB->filterType << std::endl;
+			}
 			scene->addActor(*newRB);
 
 		}
@@ -137,10 +207,20 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type)
 
 			else
 			{
-				std::cout << "Unknow filter type" << std::endl;
+				std::cout << "Unknown filter type" << std::endl;
 			}
 
 			obj->myRB->dynamicRB = newRB;
+
+			const PxU32 numShapes = newRB->getNbShapes();
+			PxShape** shapes = (PxShape**)malloc(sizeof(PxShape*) * numShapes);
+			newRB->getShapes(shapes, numShapes);
+
+			for (PxU32 i = 0; i < numShapes; i++)
+			{
+				shapes[i]->setName(obj->myRB->filterType.c_str());
+				std::cout << "Created a " << obj->myRB->filterType << std::endl;
+			}
 			scene->addActor(*newRB);
 		}
 
@@ -151,25 +231,7 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type)
 	}
 }
 
-PxFilterFlags PhysicsSystem::PhysicsFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0, PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
-{
-	// let triggers through
-	if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
-	{
-		pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
-		return PxFilterFlag::eDEFAULT;
-	}
 
-	// generate contacts for all that were not filtered above
-	pairFlags = PxPairFlag::eCONTACT_DEFAULT;
-
-	// trigger the contact callback for pairs (A,B) where
-	// the filtermask of A contains the ID of B and vice versa.
-	if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-		pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
-
-	return PxFilterFlag::eDEFAULT;
-}
 
 void PhysicsSystem::setupFiltering(PxRigidActor* actor, PxU32 filterGroup, PxU32 filterMask)
 {
@@ -178,13 +240,16 @@ void PhysicsSystem::setupFiltering(PxRigidActor* actor, PxU32 filterGroup, PxU32
 	filterData.word1 = filterMask;	// word1 = ID mask to filter pairs that trigger a contact callback;
 	const PxU32 numShapes = actor->getNbShapes();
 	
-	PxShape** shapes = (PxShape**)(sizeof(PxShape*) * numShapes);
+	PxShape** shapes = (PxShape**)malloc(sizeof(PxShape*)*numShapes);
 	actor->getShapes(shapes, numShapes);
+
 	for (PxU32 i = 0; i < numShapes; i++)
 	{
 		PxShape* shape = shapes[i];
 		shape->setSimulationFilterData(filterData);
 	}
+
+	free(shapes);
 }
 
 void PhysicsSystem::Start()
@@ -209,7 +274,7 @@ void PhysicsSystem::Update()
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->PHYSSpawn)
 				{
-					AddRB((*engineEventQueue)[i]->myData->targetObject, (*engineEventQueue)[i]->myData->RBType);
+					AddRB((*engineEventQueue)[i]->myData->targetObject, (*engineEventQueue)[i]->myData->RBType, (*engineEventQueue)[i]->myData->CFType);
 				}
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->PlayerMove)
@@ -230,10 +295,9 @@ void PhysicsSystem::Update()
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->PlayerImpulse)
 				{
-
 					PxVec3 force((*engineEventQueue)[i]->myData->myForce->x, (*engineEventQueue)[i]->myData->myForce->y, (*engineEventQueue)[i]->myData->myForce->z);
-
 					(*engineEventQueue)[i]->myData->targetPlayer->myRB->dynamicRB->addForce(force, PxForceMode::eIMPULSE);
+					
 				}
 
 				else
@@ -251,6 +315,7 @@ void PhysicsSystem::Update()
 	//Event Checks
 
 	RunPhysX();
+	CheckColisions();
 }
 
 void PhysicsSystem::Exit()

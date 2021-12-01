@@ -135,7 +135,7 @@ void Engine::Update()
 				if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
 				{
 
-					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType);
+					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
 					delete(eventQueue[i]);
 					eventQueue.erase(eventQueue.begin() + i);
 				}
@@ -184,7 +184,7 @@ void Engine::Update()
 	}
 }
 
-void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType)
+void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType, std::string cfType)
 {
 	std::cout << std::endl << "Instantiating..." << std::endl;
 
@@ -196,7 +196,7 @@ void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 sca
 	objects.push_back(newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
-	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, rbType);
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, rbType, cfType);
 }
 
 void Engine::InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation)
@@ -211,9 +211,10 @@ void Engine::InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVe
 	objects.push_back(newPlayer);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newPlayer, &eventQueue);
-	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newPlayer, "dynamic");
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newPlayer, "dynamic", "Player");
 
 	UI.myPlayer = newPlayer;
+	physics.myPlayer = newPlayer;
 }
 
 void Engine::InstantiateRequest()
@@ -320,7 +321,7 @@ void Engine::InstantiateRequest()
 	objects.push_back(newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
-	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic");
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic", "Player");
 }
 
 void Engine::InstantiateRandom()
@@ -351,5 +352,5 @@ void Engine::InstantiateRandom()
 	objects.push_back(newObject);
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
-	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic");
+	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic", "Player");
 }

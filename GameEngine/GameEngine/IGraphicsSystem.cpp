@@ -157,10 +157,20 @@ void IGraphicsSystem::DrawGUI()
 
 			ImGui::Text("-----");
 
+			ImGui::Text("Colision Filter type:");
+
+			ImGui::RadioButton("Ground", &UICollisionTypeHolder, 0);
+			ImGui::RadioButton("Button", &UICollisionTypeHolder, 1);
+			ImGui::RadioButton("Enemy", &UICollisionTypeHolder, 2);
+
+			ImGui::Text("-----");
+
 			if (ImGui::Button("Instantiate", ImVec2(100, 20)))
 			{
 				std::string rbVal = "";
+				std::string colVal = "";
 
+				//rbType
 				if (UIRBTypeHolder == 0)
 				{
 					rbVal = "static";
@@ -171,7 +181,23 @@ void IGraphicsSystem::DrawGUI()
 					rbVal = "dynamic";
 				}
 
-				Event* instantiateEvent = new Event("InstantiateCustom", engineEventQueue, &UIIDModelHolder, &UIIDTexHolder, &rbVal, &UIPosHolder, &UIScaleHolder, &UIRotHolder);
+				//ColFilterType
+				if (UICollisionTypeHolder == 0)
+				{
+					colVal = "Ground";
+				}
+
+				else if (UICollisionTypeHolder == 1)
+				{
+					colVal = "Button";
+				}
+
+				else if (UICollisionTypeHolder == 2)
+				{
+					colVal = "Enemy";
+				}
+
+				Event* instantiateEvent = new Event("InstantiateCustom", engineEventQueue, &UIIDModelHolder, &UIIDTexHolder, &rbVal, &colVal, &UIPosHolder, &UIScaleHolder, &UIRotHolder);
 			}
 		}
 
