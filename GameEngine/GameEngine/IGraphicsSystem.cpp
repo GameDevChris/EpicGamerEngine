@@ -379,6 +379,11 @@ void IGraphicsSystem::DrawGUI()
 		NetworkEvent* printScoreEvent = new NetworkEvent("BotPrintTop5", UIScore, engineEventQueue);
 	}
 
+	if (ImGui::Button("Load Level", ImVec2(60, 20)))
+	{
+		DataEvent* loadLevelEvent = new DataEvent("DataLoadLevel", engineEventQueue);
+	}
+
 	ImGui::Text("-----");
 	ImGui::Text("Quit");
 	if (ImGui::Button("Exit", ImVec2(40, 20)))

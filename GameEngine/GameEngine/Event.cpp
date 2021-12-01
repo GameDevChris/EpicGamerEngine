@@ -193,6 +193,7 @@ Event::Event(std::string type, std::vector<Event*>* queue, int* modelID, int* te
 	Throw();
 }
 
+
 Event::Event()
 {
 }

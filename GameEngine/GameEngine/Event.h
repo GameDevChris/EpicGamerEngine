@@ -12,6 +12,7 @@ public:
 		AssetSub,
 		NetworkSub,
 		UISub,
+		DataSub,
 		General
 	};
 
@@ -53,6 +54,9 @@ public:
 		//UI
 		CreateHandler,
 		DrawUI,
+
+		//Data
+		DataLoadLevel,
 
 		//Network
 		BotAddScore,

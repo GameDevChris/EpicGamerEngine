@@ -45,17 +45,17 @@ void Engine::Start()
 	lateEventQueue.clear();
 	std::cout << "Engine started, help" << std::endl;
 
-	physics.name = "EpicGamerPhysics";
-	physics.subManager = mainManager;
-	physics.engineEventQueue = &eventQueue;
-	physics.lateEngineEventQueue = &lateEventQueue;
-	physics.Start();
-
 	dataInput.name = "EpicGamerDataInput";
 	dataInput.subManager = mainManager;
 	dataInput.engineEventQueue = &eventQueue;
 	dataInput.lateEngineEventQueue = &lateEventQueue;
 	dataInput.Start();
+
+	physics.name = "EpicGamerPhysics";
+	physics.subManager = mainManager;
+	physics.engineEventQueue = &eventQueue;
+	physics.lateEngineEventQueue = &lateEventQueue;
+	physics.Start();
 
 	graphics.name = "EpicGamerGraphics";
 	graphics.subManager = mainManager;
@@ -132,7 +132,12 @@ void Engine::Update()
 	}
 
 	graphics.Update();
+	dataInput.Update();
+	
 	physics.Update();
+
+
+	
 
 	if (!eventQueue.empty())
 	{
@@ -163,6 +168,7 @@ void Engine::Update()
 	physics.Update();
 
 	network.Update();
+	
 
 	UI.LateUpdate();
 
@@ -184,8 +190,6 @@ void Engine::Update()
 	eventQueue.clear();
 	lateEventQueue.clear();
 
-
-
 	for (int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->SyncTransform();
@@ -195,6 +199,15 @@ void Engine::Update()
 void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType, std::string cfType)
 {
 	std::cout << std::endl << "Instantiating..." << std::endl;
+
+	//modelID = 6;
+	//textureID = 0;
+	//rbType = "static";
+	//cfType = "Ground";
+
+	//position = MyVec3(0, 0, 0);
+	//scale = MyVec3(1, 1, 1);
+	//rotation = MyVec3(0, 0, 0);
 
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 

@@ -11,6 +11,7 @@
 #include "AssetEvent.h"
 #include "PhysEvent.h"
 #include "NetworkEvent.h"
+#include "DataEvent.h"
 #include "GameObject.h"
 #include <sstream>  
 
