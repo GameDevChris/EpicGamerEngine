@@ -27,17 +27,6 @@ int main(int argc, char* args[])
 	
 }
 
-/*#include <PxPhysicsAPI.h>
-
-int main() {
-
-	// declare variables
-	
-
-
-
-}*/
-
 
 
 

@@ -8,6 +8,7 @@
 #include "NetworkSystem.h"
 #include "GameObject.h"
 #include "PhysEvent.h"
+#include "EpicGameManager.h"
 
 #include <random>
 
@@ -28,6 +29,7 @@ private:
 
 
 public:
+	EpicGameManager* mainManager = NULL;
 	bool finished = false;
 	Engine();
 	void UseData();

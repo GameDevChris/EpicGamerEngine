@@ -28,8 +28,8 @@ private:
 
 	bool IsFirstLoop2 = true;
 
-	const int ScreenW = 1280;
-	const int ScreenH = 720;
+	int ScreenW = 1280;
+	int ScreenH = 720;
 
 	IGUIEnvironment* guienv = NULL;
 	vector3df BGColour = vector3df(46, 109, 114);

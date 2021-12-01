@@ -39,31 +39,38 @@ void Engine::ThrowEvent(Event newEvent)
 
 void Engine::Start()
 {
+	mainManager = new EpicGameManager();
+
 	eventQueue.clear();
 	lateEventQueue.clear();
 	std::cout << "Engine started, help" << std::endl;
 
 	physics.name = "EpicGamerPhysics";
+	physics.subManager = mainManager;
 	physics.engineEventQueue = &eventQueue;
 	physics.lateEngineEventQueue = &lateEventQueue;
 	physics.Start();
 
-	graphics.name = "EpicGamerGraphics";
-	graphics.engineEventQueue = &eventQueue;
-	graphics.lateEngineEventQueue = &lateEventQueue;
-	graphics.Start();
-
 	dataInput.name = "EpicGamerDataInput";
+	dataInput.subManager = mainManager;
 	dataInput.engineEventQueue = &eventQueue;
 	dataInput.lateEngineEventQueue = &lateEventQueue;
 	dataInput.Start();
 
+	graphics.name = "EpicGamerGraphics";
+	graphics.subManager = mainManager;
+	graphics.engineEventQueue = &eventQueue;
+	graphics.lateEngineEventQueue = &lateEventQueue;
+	graphics.Start();
+
 	UI.name = "EpicGamerUI";
+	UI.subManager = mainManager;
 	UI.engineEventQueue = &eventQueue;
 	UI.lateEngineEventQueue = &lateEventQueue;
 	UI.Start();
 
 	assets.name = "EpicGamerAssets";
+	assets.subManager = mainManager;
 	assets.engineEventQueue = &eventQueue;
 	assets.lateEngineEventQueue = &lateEventQueue;
 	assets.Start();
@@ -73,6 +80,7 @@ void Engine::Start()
 	assets.smgr = graphics.smgr;
 
 	network.name = "EpicGamerNetwork";
+	network.subManager = mainManager;
 	network.engineEventQueue = &eventQueue;
 	network.lateEngineEventQueue = &lateEventQueue;
 	network.Start();

@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <windows.h>
+#include "EpicGameManager.h"
 //#include <dpp/dpp.h>
 
 #include <thread>
@@ -17,6 +18,8 @@
 class SubSystem
 {
 public:
+	EpicGameManager* subManager = NULL;
+
 	std::string name;
 	void* data;
 

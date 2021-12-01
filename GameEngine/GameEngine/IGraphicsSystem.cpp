@@ -2,6 +2,10 @@
 
 void IGraphicsSystem::StartIrrlicht()
 {
+	ScreenW = subManager->EngineWidth;
+	ScreenH = subManager->EngineHeight;
+
+
 	SIrrlichtCreationParameters IrrlichtParams;
 	IrrlichtParams.DriverType = video::EDT_DIRECT3D9;
 	IrrlichtParams.WindowSize = core::dimension2d<u32>(ScreenW, ScreenH);
@@ -20,7 +24,10 @@ void IGraphicsSystem::StartIrrlicht()
 		std::cout << "Failed to create Irrlicht device!" << std::endl;
 	}
 	
-	device->setWindowCaption(L"Epic Gamer Engine - Extra Gamer Edition");
+
+	std::wstring widestr = std::wstring(subManager->EngineTitle.begin(), subManager->EngineTitle.end());
+	const wchar_t* gameTitle = widestr.c_str();
+	device->setWindowCaption(gameTitle);
 
 	handle = createIMGUI(device, &receiver);
 
