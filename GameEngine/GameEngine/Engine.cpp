@@ -120,6 +120,39 @@ void Engine::Update()
 
 	if (!eventQueue.empty())
 	{
+		
+		/*for (std::vector<Event*>::iterator it = eventQueue.begin(); it != eventQueue.end();)
+		{
+			bool hasErased = false;
+
+			if ((*it)->eventSubsystem == (*it)->General)
+			{
+				if ((*it)->eventType == (*it)->Instantiate)
+				{
+					InstantiateRequest();
+
+					delete(*it);
+					it = eventQueue.erase(it);
+					hasErased = true;
+				}
+
+				else if ((*it)->eventType == (*it)->ChrisLegion)
+				{
+					for (int i = 0; i < 1; i++)
+					{
+						InstantiateRandom();
+					}
+
+					delete(*it);
+					it = eventQueue.erase(it);
+					hasErased = true;
+				}
+			}
+
+			if (hasErased == false)
+				it++;
+		}*/
+
 		for (int i = 0; i < eventQueue.size(); i++)
 		{
 			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
@@ -129,7 +162,7 @@ void Engine::Update()
 					InstantiateRequest();
 					
 					delete(eventQueue[i]);
-					eventQueue.erase(eventQueue.begin() + i);
+				//	eventQueue.erase(eventQueue.begin() + i);
 				}
 
 				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
@@ -140,7 +173,7 @@ void Engine::Update()
 					}
 
 					delete(eventQueue[i]);
-					eventQueue.erase(eventQueue.begin() + i);
+				//	eventQueue.erase(eventQueue.begin() + i);
 				}
 			}
 		}
@@ -167,7 +200,7 @@ void Engine::Update()
 
 					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
 					delete(eventQueue[i]);
-					eventQueue.erase(eventQueue.begin() + i);
+					//	eventQueue.erase(eventQueue.begin() + i);
 				}
 
 				else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
@@ -175,56 +208,137 @@ void Engine::Update()
 
 					InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
 					delete(eventQueue[i]);
-					eventQueue.erase(eventQueue.begin() + i);
+					//	eventQueue.erase(eventQueue.begin() + i);
 				}
 
 				else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
 				{
 					LoadLevel(*(eventQueue[i]->myData->levelNumber));
 					delete(eventQueue[i]);
-					eventQueue.erase(eventQueue.begin() + i);
+					//	eventQueue.erase(eventQueue.begin() + i);
 				}
 			}
 		}
-	}
 
-	graphics.Update();
-	physics.Update();
-
-	network.Update();
-	
-
-	UI.LateUpdate();
-
-	if (!eventQueue.empty())
-	{
-		for (int i = 0; i < eventQueue.size(); i++)
+		/*for (std::vector<Event*>::iterator it = eventQueue.begin(); it != eventQueue.end();)
 		{
-			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
+			bool hasErased = false;
+
+			if ((*it)->eventSubsystem == (*it)->General)
 			{
-				if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
+				if ((*it)->eventType == (*it)->InstantiateCustom)
 				{
 
-					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
-					delete(eventQueue[i]);
-					eventQueue.erase(eventQueue.begin() + i);
+					Instantiate(*((*it)->myData->myModID), *((*it)->myData->myTexID), *((*it)->myData->myPos), *((*it)->myData->myScale),
+						*((*it)->myData->myRot), (*it)->myData->RBType, (*it)->myData->CFType);
+					delete((*it));
+					it = eventQueue.erase(it);
+					hasErased = true;
 				}
 
-				else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
+				else if ((*it)->eventType == (*it)->InstantiatePlayer)
 				{
 
-					InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
-					delete(eventQueue[i]);
-					eventQueue.erase(eventQueue.begin() + i);
+					InstantiatePlayer(*((*it)->myData->myModID), *((*it)->myData->myTexID), *((*it)->myData->myPos),
+						*((*it)->myData->myScale), *((*it)->myData->myRot));
+					delete((*it));
+					it = eventQueue.erase(it);
+					hasErased = true;
 				}
 
-				else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
+				else if ((*it)->eventType == (*it)->LoadLevel)
 				{
-					LoadLevel(*(eventQueue[i]->myData->levelNumber));
-					delete(eventQueue[i]);
-					eventQueue.erase(eventQueue.begin() + i);
+					LoadLevel(*((*it)->myData->levelNumber));
+					delete((*it));
+					it = eventQueue.erase(it);
+					hasErased = true;
+				}
+
+				if (hasErased == false)
+					it++;
+			}
+		}
+	}*/
+
+		graphics.Update();
+		physics.Update();
+
+		network.Update();
+
+
+		UI.LateUpdate();
+
+		if (!eventQueue.empty())
+		{
+			for (int i = 0; i < eventQueue.size(); i++)
+			{
+				if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
+				{
+					if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
+					{
+
+						Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
+						//	eventQueue.erase(eventQueue.begin() + i);
+						delete(eventQueue[i]);
+					}
+
+					else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
+					{
+
+						InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
+						delete(eventQueue[i]);
+						//	eventQueue.erase(eventQueue.begin() + i);
+					}
+
+					else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
+					{
+						LoadLevel(*(eventQueue[i]->myData->levelNumber));
+						delete(eventQueue[i]);
+						//	eventQueue.erase(eventQueue.begin() + i);
+					}
 				}
 			}
+
+			/*for (std::vector<Event*>::iterator it = eventQueue.begin(); it != eventQueue.end();)
+			{
+				bool hasErased = false;
+
+				if ((*it)->eventSubsystem == (*it)->General)
+				{
+					if ((*it)->eventType == (*it)->InstantiateCustom)
+					{
+
+						Instantiate(*((*it)->myData->myModID), *((*it)->myData->myTexID), *((*it)->myData->myPos), *((*it)->myData->myScale),
+							*((*it)->myData->myRot), (*it)->myData->RBType, (*it)->myData->CFType);
+						delete((*it));
+						it = eventQueue.erase(it);
+						hasErased = true;
+					}
+
+					else if ((*it)->eventType == (*it)->InstantiatePlayer)
+					{
+
+						InstantiatePlayer(*((*it)->myData->myModID), *((*it)->myData->myTexID), *((*it)->myData->myPos),
+							*((*it)->myData->myScale), *((*it)->myData->myRot));
+						delete((*it));
+						it = eventQueue.erase(it);
+						hasErased = true;
+						//	eventQueue.erase(eventQueue.begin() + i);
+					}
+
+					else if ((*it)->eventType == (*it)->LoadLevel)
+					{
+						LoadLevel(*((*it)->myData->levelNumber));
+						delete((*it));
+						it = eventQueue.erase(it);
+						hasErased = true;
+						//	eventQueue.erase(eventQueue.begin() + i);
+					}
+				}
+
+				if (hasErased == false)
+					it++;
+			}*/
 		}
 	}
 
@@ -238,10 +352,10 @@ void Engine::Update()
 		graphics.Exit();
 	}
 	
-	//for(int i = 0; i < eventQueue.size(); i++)
-	//{
-	//	delete (eventQueue[i]);
-	//}
+	/*for(int i = 0; i < eventQueue.size(); i++)
+	{ 
+		delete (eventQueue[i]);
+	}*/
 
 	eventQueue.clear();
 	lateEventQueue.clear();
@@ -412,14 +526,15 @@ void Engine::LoadLevel(int number)
 
 	if (success)
 	{
-		//for (int i = 0; i < 1; i++)
-		//{
-		//
-		//	//std::cout << "Instantiating scene element " << i << std::endl;
-		//	//Instantiate(spawnData[i]->modelID, spawnData[i]->textureID, spawnData[i]->position, spawnData[i]->scale, spawnData[i]->rotation, spawnData[i]->rbType, spawnData[i]->cfType);
-		//}
+		for (int i = 0; i < 1; i++)
+		{
+		
+			std::cout << "Instantiating scene element " << i << std::endl;
+			Instantiate(spawnData[i]->modelID, spawnData[i]->textureID, spawnData[i]->position, spawnData[i]->scale, spawnData[i]->rotation, spawnData[i]->rbType, spawnData[i]->cfType);
+		}
 
-		InstantiateTimer(0, spawnData, 0);
+		//InstantiateTimer(1, spawnData, 0);
+		//InstantiateTimer(1, spawnData, 1);
 		//InstantiateTimer(0, spawnData, 0);
 		//InstantiateTimer(1, spawnData, 1);
 

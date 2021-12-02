@@ -24,36 +24,39 @@ GameObject::GameObject()
 
 void GameObject::SyncTransform()
 {
-	if (myRB->myType == "static" || myRB->myType == "Static")
+	if (myRB != NULL)
 	{
-		myModel->myNode->setPosition(vector3df(myRB->staticRB->getGlobalPose().p.x, myRB->staticRB->getGlobalPose().p.y, myRB->staticRB->getGlobalPose().p.z));
+		if (myRB->myType == "static" || myRB->myType == "Static")
+		{
+			myModel->myNode->setPosition(vector3df(myRB->staticRB->getGlobalPose().p.x, myRB->staticRB->getGlobalPose().p.y, myRB->staticRB->getGlobalPose().p.z));
 
-		quaternion myRot(myRB->staticRB->getGlobalPose().q.x, myRB->staticRB->getGlobalPose().q.y, myRB->staticRB->getGlobalPose().q.z, myRB->staticRB->getGlobalPose().q.w);
+			quaternion myRot(myRB->staticRB->getGlobalPose().q.x, myRB->staticRB->getGlobalPose().q.y, myRB->staticRB->getGlobalPose().q.z, myRB->staticRB->getGlobalPose().q.w);
 
-		myRot.normalize();
+			myRot.normalize();
 
-		vector3df myRotEuler;
-		myRot.toEuler(myRotEuler);
+			vector3df myRotEuler;
+			myRot.toEuler(myRotEuler);
 
-		myModel->myNode->setRotation(myRotEuler * RADTODEG);
-	}
+			myModel->myNode->setRotation(myRotEuler * RADTODEG);
+		}
 
-	else if (myRB->myType == "dynamic" || myRB->myType == "Dynamic")
-	{
-		myModel->myNode->setPosition(vector3df(myRB->dynamicRB->getGlobalPose().p.x, myRB->dynamicRB->getGlobalPose().p.y, myRB->dynamicRB->getGlobalPose().p.z));
-		
-		quaternion myRot(myRB->dynamicRB->getGlobalPose().q.x, myRB->dynamicRB->getGlobalPose().q.y, myRB->dynamicRB->getGlobalPose().q.z, myRB->dynamicRB->getGlobalPose().q.w);
-		
-		myRot.normalize();
+		else if (myRB->myType == "dynamic" || myRB->myType == "Dynamic")
+		{
+			myModel->myNode->setPosition(vector3df(myRB->dynamicRB->getGlobalPose().p.x, myRB->dynamicRB->getGlobalPose().p.y, myRB->dynamicRB->getGlobalPose().p.z));
 
-		vector3df myRotEuler;
-		myRot.toEuler(myRotEuler);
-		
-		myModel->myNode->setRotation(myRotEuler * RADTODEG);
-	}
+			quaternion myRot(myRB->dynamicRB->getGlobalPose().q.x, myRB->dynamicRB->getGlobalPose().q.y, myRB->dynamicRB->getGlobalPose().q.z, myRB->dynamicRB->getGlobalPose().q.w);
 
-	else
-	{
-		std::cout << "No RigidBody found!" << std::endl;
+			myRot.normalize();
+
+			vector3df myRotEuler;
+			myRot.toEuler(myRotEuler);
+
+			myModel->myNode->setRotation(myRotEuler * RADTODEG);
+		}
+
+		else
+		{
+			std::cout << "No RigidBody found!" << std::endl;
+		}
 	}
 }
