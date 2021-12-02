@@ -1,5 +1,20 @@
 #include "Engine.h"
 
+void Engine::InstantiateTimer(int cooldown, std::vector<SpawnData*> spawnData, int index)
+{
+	std::cout << "Started instantiation of element " << index << std::endl;
+	clock_t startTime = clock();
+	clock_t cooldownTime = cooldown * CLOCKS_PER_SEC;
+	clock_t elapsed = clock() - startTime;;
+
+	while (elapsed < cooldownTime)
+	{
+		elapsed = clock() - startTime;
+	}
+
+	Instantiate(spawnData[index]->modelID, spawnData[index]->textureID, spawnData[index]->position, spawnData[index]->scale, spawnData[index]->rotation, spawnData[index]->rbType, spawnData[index]->cfType);
+}
+
 Engine::Engine()
 {
 
@@ -181,6 +196,38 @@ void Engine::Update()
 
 	UI.LateUpdate();
 
+	if (!eventQueue.empty())
+	{
+		for (int i = 0; i < eventQueue.size(); i++)
+		{
+			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
+			{
+				if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
+				{
+
+					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
+					delete(eventQueue[i]);
+					eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
+				{
+
+					InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
+					delete(eventQueue[i]);
+					eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
+				{
+					LoadLevel(*(eventQueue[i]->myData->levelNumber));
+					delete(eventQueue[i]);
+					eventQueue.erase(eventQueue.begin() + i);
+				}
+			}
+		}
+	}
+
 	if (graphics.QuitCall)
 	{
 		finished = true;
@@ -207,6 +254,7 @@ void Engine::Update()
 
 void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType, std::string cfType)
 {
+
 	std::cout << std::endl << "Instantiating..." << std::endl;
 
 	//modelID = 6;
@@ -364,20 +412,26 @@ void Engine::LoadLevel(int number)
 
 	if (success)
 	{
-		for (int i = 0; i < spawnData.size(); i++)
-		{
-			std::cout << "Instantiating scene element " << i << std::endl;
-			Instantiate(spawnData[i]->modelID, spawnData[i]->textureID, spawnData[i]->position, spawnData[i]->scale, spawnData[i]->rotation, spawnData[i]->rbType, spawnData[i]->cfType);
-		}
+		//for (int i = 0; i < 1; i++)
+		//{
+		//
+		//	//std::cout << "Instantiating scene element " << i << std::endl;
+		//	//Instantiate(spawnData[i]->modelID, spawnData[i]->textureID, spawnData[i]->position, spawnData[i]->scale, spawnData[i]->rotation, spawnData[i]->rbType, spawnData[i]->cfType);
+		//}
+
+		InstantiateTimer(0, spawnData, 0);
+		//InstantiateTimer(0, spawnData, 0);
+		//InstantiateTimer(1, spawnData, 1);
+
+
+		//Instantiate(spawnData[0]->modelID, spawnData[0]->textureID, spawnData[0]->position, spawnData[0]->scale, spawnData[0]->rotation, spawnData[0]->rbType, spawnData[0]->cfType);
+		//Instantiate(spawnData[1]->modelID, spawnData[1]->textureID, spawnData[1]->position, spawnData[1]->scale, spawnData[1]->rotation, spawnData[1]->rbType, spawnData[1]->cfType);
 	}
 
 	else 
 	{
 		std::cout << "Failed to load level " << number << std::endl;
 	}
-
-	std::vector<std::string> objList = dataInput.loadObjects("gameObjectList", dataInput.lvl1);
-
 }
 
 void Engine::InstantiateRandom()

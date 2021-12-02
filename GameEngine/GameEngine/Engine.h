@@ -9,7 +9,7 @@
 #include "GameObject.h"
 #include "PhysEvent.h"
 #include "EpicGameManager.h"
-
+#include "time.h"
 #include <random>
 
 //using namespace std;
@@ -27,6 +27,7 @@ private:
 	std::vector<Event*> lateEventQueue;
 	std::vector<GameObject*> objects;
 
+	void InstantiateTimer(int cooldown, std::vector<SpawnData*> spawnData, int index);
 
 public:
 	EpicGameManager* mainManager = NULL;

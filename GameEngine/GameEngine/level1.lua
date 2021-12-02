@@ -4,7 +4,7 @@ gameObjectList =
 	{
 		modID= 6,
 		textureID = 0,
-		rigidType = "static",
+		rigidType = "dynamic",
 		filterType = "Ground",
 	
 		objPosition =
@@ -33,13 +33,13 @@ gameObjectList =
 	{
 		modID= 6,
 		textureID = 0,
-		rigidType = "static",
+		rigidType = "dynamic",
 		filterType = "Ground",
 	
 		objPosition =
 		{
 			X=0.0,
-			Y=5.0,
+			Y=100.0,
 			Z=0.0
 		},
 		
