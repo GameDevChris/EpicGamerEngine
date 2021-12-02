@@ -38,16 +38,16 @@ gameObjectList =
 	
 		objPosition =
 		{
-			X=250.0,
+			X=200.0,
 			Y=-50.0,
 			Z=0.0
 		},
 		
 		objScale =
 		{
-			X=0.5,
-			Y=0.5,
-			Z=0.5
+			X=0.3,
+			Y=0.3,
+			Z=0.3
 		},
 
 		objRot =
@@ -67,16 +67,16 @@ gameObjectList =
 	
 		objPosition =
 		{
-			X=-250.0,
+			X=400.0,
 			Y=-50.0,
 			Z=0.0
 		},
 		
 		objScale =
 		{
-			X=0.5,
-			Y=0.5,
-			Z=0.5
+			X=0.3,
+			Y=0.3,
+			Z=0.3
 		},
 
 		objRot =
@@ -96,16 +96,16 @@ gameObjectList =
 	
 		objPosition =
 		{
-			X=0.0,
+			X=-200.0,
 			Y=-50.0,
 			Z=250.0
 		},
 		
 		objScale =
 		{
-			X=0.5,
-			Y=0.5,
-			Z=0.5
+			X=0.3,
+			Y=0.3,
+			Z=0.3
 		},
 
 		objRot =
@@ -125,16 +125,16 @@ gameObjectList =
 	
 		objPosition =
 		{
-			X=0.0,
+			X=-400.0,
 			Y=-50.0,
 			Z=-250.0
 		},
 		
 		objScale =
 		{
-			X=0.5,
-			Y=0.5,
-			Z=0.5
+			X=0.3,
+			Y=0.3,
+			Z=0.3
 		},
 
 		objRot =

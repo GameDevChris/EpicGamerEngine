@@ -4,44 +4,44 @@ void UserInterfaceSystem::Start()
 {
 	std::cout << "Subsystem " << name << " -started!" << std::endl;
 
-	std::vector<std::string> textures;
-	textures.clear();
-	textures.push_back("./Models/Dragon/DragonTextureBlue.png");
-	textures.push_back("./Models/Dragon/DragonTextureGreen.png");
-	textures.push_back("./Models/Dragon/DragonTextureRed.png");
-	AssetEvent* newAsset0 = new AssetEvent("ASSETLoad","./Models/Dragon/DragonModel.obj", &textures , 0, "Dragon", engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Chris/ChrisTex.png");
-	AssetEvent* newAsset1 = new AssetEvent("ASSETLoad", "./Models/Chris/ChrisModel.obj", &textures, 1, "Chris", engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Kermit/KermitTex.png");
-	AssetEvent* newAsset2 = new AssetEvent("ASSETLoad", "./Models/Kermit/KermitModel.obj", &textures, 2, "Kermit", engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Trump/TrumpTex.jpeg");
-	AssetEvent* newAsset3 = new AssetEvent("ASSETLoad", "./Models/Trump/TrumpModel.obj", &textures, 3, "Trump", engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Sword/SwordTex.png");
-	AssetEvent* newAsset4 = new AssetEvent("ASSETLoad", "./Models/Sword/SwordModel.obj", &textures, 4, "Sword", engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Floor/FloorTex.jpg");
-	AssetEvent* newAsset5 = new AssetEvent("ASSETLoad", "./Models/Floor/FloorModel.obj", &textures, 5, "Floor", engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Platform/PlatformTex.png");
-	AssetEvent* newAsset6 = new AssetEvent("ASSETLoad", "./Models/Platform/PlatformModel.obj", &textures, 6, "Platform", engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Hat/HatTex.png");
-	AssetEvent* newAsset7 = new AssetEvent("ASSETLoad", "./Models/Hat/HatModel.obj", &textures, 7, "Hat", engineEventQueue);
-
-	textures.clear();
-	textures.push_back("./Models/Doge/dogeTex.jpg");
-	AssetEvent* newAsset8 = new AssetEvent("ASSETLoad", "./Models/Doge/dogeModel.obj", &textures, 8, "Doge", engineEventQueue);
+	//std::vector<std::string> textures;
+	//textures.clear();
+	//textures.push_back("./Models/Dragon/DragonTextureBlue.png");
+	//textures.push_back("./Models/Dragon/DragonTextureGreen.png");
+	//textures.push_back("./Models/Dragon/DragonTextureRed.png");
+	//AssetEvent* newAsset0 = new AssetEvent("ASSETLoad","./Models/Dragon/DragonModel.obj", &textures , 0, "Dragon", engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Chris/ChrisTex.png");
+	//AssetEvent* newAsset1 = new AssetEvent("ASSETLoad", "./Models/Chris/ChrisModel.obj", &textures, 1, "Chris", engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Kermit/KermitTex.png");
+	//AssetEvent* newAsset2 = new AssetEvent("ASSETLoad", "./Models/Kermit/KermitModel.obj", &textures, 2, "Kermit", engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Trump/TrumpTex.jpeg");
+	//AssetEvent* newAsset3 = new AssetEvent("ASSETLoad", "./Models/Trump/TrumpModel.obj", &textures, 3, "Trump", engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Sword/SwordTex.png");
+	//AssetEvent* newAsset4 = new AssetEvent("ASSETLoad", "./Models/Sword/SwordModel.obj", &textures, 4, "Sword", engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Floor/FloorTex.jpg");
+	//AssetEvent* newAsset5 = new AssetEvent("ASSETLoad", "./Models/Floor/FloorModel.obj", &textures, 5, "Floor", engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Platform/PlatformTex.png");
+	//AssetEvent* newAsset6 = new AssetEvent("ASSETLoad", "./Models/Platform/PlatformModel.obj", &textures, 6, "Platform", engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Hat/HatTex.png");
+	//AssetEvent* newAsset7 = new AssetEvent("ASSETLoad", "./Models/Hat/HatModel.obj", &textures, 7, "Hat", engineEventQueue);
+	//
+	//textures.clear();
+	//textures.push_back("./Models/Doge/dogeTex.jpg");
+	//AssetEvent* newAsset8 = new AssetEvent("ASSETLoad", "./Models/Doge/dogeModel.obj", &textures, 8, "Doge", engineEventQueue);
 }
 
 void UserInterfaceSystem::Update()
@@ -181,8 +181,10 @@ void UserInterfaceSystem::Update()
 			InputCooldown(canInstantiate, 1);
 		}
 	}
+}
 
-
+void UserInterfaceSystem::ProcessEvents()
+{
 	if (!(*engineEventQueue).empty())
 	{
 		for (int i = 0; i < (*engineEventQueue).size(); i++)
@@ -190,11 +192,9 @@ void UserInterfaceSystem::Update()
 			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->UISub)
 			{
 				delete((*engineEventQueue)[i]);
-				engineEventQueue->erase(engineEventQueue->begin() + i);
 			}
 		}
 	}
-
 }
 
 void UserInterfaceSystem::LateUpdate()

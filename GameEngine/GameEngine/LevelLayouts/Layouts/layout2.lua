@@ -40,7 +40,7 @@ gameObjectList =
 		{
 			X=250.0,
 			Y=-50.0,
-			Z=0.0
+			Z=100.0
 		},
 		
 		objScale =
@@ -69,7 +69,7 @@ gameObjectList =
 		{
 			X=-250.0,
 			Y=-50.0,
-			Z=0.0
+			Z=-100.0
 		},
 		
 		objScale =
@@ -96,7 +96,7 @@ gameObjectList =
 	
 		objPosition =
 		{
-			X=0.0,
+			X=200.0,
 			Y=-50.0,
 			Z=250.0
 		},
@@ -125,7 +125,7 @@ gameObjectList =
 	
 		objPosition =
 		{
-			X=0.0,
+			X=-200.0,
 			Y=-50.0,
 			Z=-250.0
 		},

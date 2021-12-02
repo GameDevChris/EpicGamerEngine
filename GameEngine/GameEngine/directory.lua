@@ -1,5 +1,6 @@
 window = {
     title = "Epic Gamer Engine",
-    width = 1280,
-    height = 720
+    modelFolder = "./Models",
+    width = 1920,
+    height = 1080
 }

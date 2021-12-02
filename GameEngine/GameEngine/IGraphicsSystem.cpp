@@ -40,14 +40,6 @@ void IGraphicsSystem::StartIrrlicht()
 
 	WriteStaticText(gameTitle, 0, 0, 100, 100);
 
-	//const IGeometryCreator* geoCreator = smgr->getGeometryCreator();
-	//
-	//SMaterial* floorMat = new SMaterial();
-	//floorMat->DiffuseColor = SColor(u32(255), u32(255), u32(255), u32(255));
-	//IMesh* plane = geoCreator->createHillPlaneMesh(dimension2d<f32>(10, 10), dimension2d<u32>(100, 100), floorMat, 0, dimension2d<f32>(2, 2), dimension2d<f32>(1, 1));
-	//ISceneNode* ground = smgr->addMeshSceneNode(plane);
-	//plane->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-
 }
 
 void IGraphicsSystem::RunIrrlicht()
@@ -417,6 +409,19 @@ void IGraphicsSystem::Start()
 
 void IGraphicsSystem::Update()
 {
+	if (myPlayer != NULL) 
+	{
+		vector3df offset(0, 200, -200);
+		cam->setPosition(myPlayer->myModel->myNode->getAbsolutePosition() + offset);
+		cam->setTarget(myPlayer->myModel->myNode->getAbsolutePosition());
+	}
+	
+
+	RunIrrlicht();
+}
+
+void IGraphicsSystem::ProcessEvents()
+{
 	if (!(*engineEventQueue).empty())
 	{
 		for (int i = 0; i < (*engineEventQueue).size(); i++)
@@ -524,14 +529,14 @@ void IGraphicsSystem::Update()
 						newNode->setScale(vector3df((*engineEventQueue)[i]->myData->targetObject->Scale.x,
 							(*engineEventQueue)[i]->myData->targetObject->Scale.y,
 							(*engineEventQueue)[i]->myData->targetObject->Scale.z));
-					
+
 						newNode->setRotation(vector3df((*engineEventQueue)[i]->myData->targetObject->Rotation.x,
 							(*engineEventQueue)[i]->myData->targetObject->Rotation.y,
 							(*engineEventQueue)[i]->myData->targetObject->Rotation.z));
-					
+
 						newNode->setMaterialFlag(EMF_LIGHTING, false);
 						newNode->setMaterialTexture(0, driver->getTexture((*engineEventQueue)[i]->myData->targetObject->myModel->texturePath.c_str()));
-					
+
 
 						vector3d<f32>* edges = new core::vector3d<f32>[8];
 						aabbox3d<f32> boundingbox = newNode->getTransformedBoundingBox();
@@ -552,22 +557,20 @@ void IGraphicsSystem::Update()
 
 						(*engineEventQueue)[i]->myData->targetObject->myModel->myNode = newNode;
 						nodes.push_back(newNode);
-					}			
+					}
 				}
 
 				else
 				{
-				std::cout << "ERROR! Unrecognised Graphics event" << std::endl;
+					std::cout << "ERROR! Unrecognised Graphics event" << std::endl;
 				}
 
 				delete((*engineEventQueue)[i]);
 				engineEventQueue->erase(engineEventQueue->begin() + i);
 			}
-			
+
 		}
 	}
-
-	RunIrrlicht();
 }
 
 void IGraphicsSystem::Exit()

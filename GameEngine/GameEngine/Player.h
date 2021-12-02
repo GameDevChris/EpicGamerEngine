@@ -8,10 +8,10 @@ public:
 
 	float score = 0;
 
-	float linearSpeed = 30;
+	float linearSpeed = 20;
 	float angularSpeed = 10;
 
-	float jumpHeight = 3;
+	float jumpHeight = 100;
 
 	Player(Model* mod, MyVec3 pos, MyVec3 rot, MyVec3 sca);
 

@@ -27,6 +27,7 @@ public:
 	SubSystem();
 	virtual void Start();
 	virtual void Update();
+	virtual void ProcessEvents();
 	virtual void LateUpdate();
 	virtual void Exit();
 	std::vector<Event*>* engineEventQueue;

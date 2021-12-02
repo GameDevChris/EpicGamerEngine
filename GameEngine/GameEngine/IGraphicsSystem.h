@@ -58,7 +58,7 @@ private:
 	MyVec3 UIScaleHolder;
 
 public:
-
+	Player* myPlayer = NULL;
 	std::vector<Model*> loadedModels;
 
 
@@ -73,6 +73,7 @@ public:
 	bool QuitCall = false;
 	virtual void Start();
 	virtual void Update();
+	virtual void ProcessEvents();
 	virtual void Exit();
 };
 

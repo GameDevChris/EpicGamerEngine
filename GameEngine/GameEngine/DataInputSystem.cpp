@@ -15,7 +15,7 @@ void DataInputSystem::GetDirectories()
 	lua_pcall(dir, 0, 0, 0);
 
 	lvl1 = luaL_newstate();
-	luaL_dofile(lvl1, lvl1Path.c_str());
+	luaL_dofile(lvl1, lvl1Settings.c_str());
 	luaL_openlibs(lvl1);
 	lua_pcall(lvl1, 0, 0, 0);
 }
@@ -30,6 +30,48 @@ void DataInputSystem::GetData()
 	//ScreenDimensions
 	ScreenWidth = windowData["width"].cast<int>();
 	ScreenHeight = windowData["height"].cast<int>();
+
+	//GetModelFolders
+	modelFolder = windowData["modelFolder"].cast<std::string>();
+
+	modelPaths.clear();
+	for (const auto& entry : fs::directory_iterator(modelFolder))
+		std::cout << entry.path().string() << std::endl,
+		modelPaths.push_back(entry.path().string());
+
+	std::vector<std::string> textures;
+	
+	for (int i = 0; i < modelPaths.size(); i++)
+	{
+		std::string objPath = "";
+		textures.clear();
+		for (const auto& entry : fs::directory_iterator(modelPaths[i]))
+	
+			if ((entry.path().string().substr(entry.path().string().find_last_of(".") + 1) == "png")
+				|| (entry.path().string().substr(entry.path().string().find_last_of(".") + 1) == "PNG")
+				|| (entry.path().string().substr(entry.path().string().find_last_of(".") + 1) == "jpg")
+				|| (entry.path().string().substr(entry.path().string().find_last_of(".") + 1) == "jpeg"))
+			{
+				textures.push_back(entry.path().string());
+			}
+			
+			else if (entry.path().string().substr(entry.path().string().find_last_of(".") + 1) == "obj")
+			{
+				objPath = entry.path().string();
+			}
+	
+		AssetEvent* newAsset = new AssetEvent("ASSETLoad", objPath, &textures, i, modelPaths[i], engineEventQueue);
+	}
+
+
+	LuaRef lvl1Data = getGlobal(lvl1, "settings");
+	Lvl1LayoutChoice = lvl1Data["layoutChoice"].cast<int>();
+
+	lvl1LayoutFolder = lvl1Data["layoutFolder"].cast<std::string>();
+	layout1Paths.clear();
+	for (const auto& entry : fs::directory_iterator(lvl1LayoutFolder))
+		layout1Paths.push_back(entry.path().string());
+
 }
 
 
@@ -105,27 +147,47 @@ void DataInputSystem::Start()
 
 void DataInputSystem::Update()
 {
-	//if (!(*engineEventQueue).empty())
-	//{
-	//	for (int i = 0; i < (*engineEventQueue).size(); i++)
-	//	{
-	//		if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->DataSub)
-	//		{
-	//
-	//			delete((*engineEventQueue)[i]);
-	//			engineEventQueue->erase(engineEventQueue->begin() + i);
-	//		}
-	//	}
-	//}
+	
+}
+
+void DataInputSystem::ProcessEvents()
+{
+	if (!(*engineEventQueue).empty())
+	{
+		for (int i = 0; i < (*engineEventQueue).size(); i++)
+		{
+			if ((*engineEventQueue)[i]->eventSubsystem == (*engineEventQueue)[i]->DataSub)
+			{
+
+				delete((*engineEventQueue)[i]);
+				engineEventQueue->erase(engineEventQueue->begin() + i);
+			}
+		}
+	}
 }
 
 void DataInputSystem::LoadDataObjects(std::vector<SpawnData*>* myData, int levelNum, bool* flag)
 {
 	if (levelNum == 1)
 	{
+		lua_State*  layout = luaL_newstate();
+
+		if (Lvl1LayoutChoice > layout1Paths.size())
+		{
+			luaL_dofile(layout, layout1Paths[0].c_str());
+		}
+
+		else
+		{
+			luaL_dofile(layout, layout1Paths[Lvl1LayoutChoice].c_str());
+		}
+
+		luaL_openlibs(layout);
+		lua_pcall(layout, 0, 0, 0);
+
 		myData->clear();
-		std::vector<std::string> objList = loadObjects("gameObjectList", lvl1);
-		LuaRef objectsData = getGlobal(lvl1, "gameObjectList");
+		std::vector<std::string> objList = loadObjects("gameObjectList", layout);
+		LuaRef objectsData = getGlobal(layout, "gameObjectList");
 	
 		for (int i = 0; i < objList.size(); i++)
 		{

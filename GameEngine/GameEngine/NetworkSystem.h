@@ -14,6 +14,7 @@ public:
 
 	virtual void Start();
 	virtual void Update();
+	virtual void ProcessEvents();
 	virtual void Exit();
 };
 

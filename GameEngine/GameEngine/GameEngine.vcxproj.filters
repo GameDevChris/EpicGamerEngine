@@ -114,9 +114,6 @@
     <ClCompile Include="lib_source\IrrIMGUI\UnitTest.cpp">
       <Filter>Source Files\IrrIMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="UIEvent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lib_includes\IMGUI\imgui.cpp">
       <Filter>Source Files\IMGUI</Filter>
     </ClCompile>
@@ -126,23 +123,26 @@
     <ClCompile Include="lib_includes\IMGUI\imgui_draw.cpp">
       <Filter>Source Files\IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="PhysEvent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ContactCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkEvent.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkSystem.cpp">
+      <Filter>Source Files\Subsystems</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysEvent.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
     <ClCompile Include="DataEvent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEvent.cpp">
+      <Filter>Source Files\Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,9 +172,6 @@
     </ClInclude>
     <ClInclude Include="AssetEvent.h">
       <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="EventData.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssetManagerSystem.h">
       <Filter>Header Files\Subsystems</Filter>
@@ -206,9 +203,6 @@
     <ClInclude Include="lib_source\IrrIMGUI\private\IrrIMGUIInject_priv.h">
       <Filter>Header Files\IrrIMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="UIEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="lib_includes\IMGUI\imconfig.h">
       <Filter>Header Files\IMGUI</Filter>
     </ClInclude>
@@ -227,22 +221,10 @@
     <ClInclude Include="lib_includes\IMGUI\stb_truetype.h">
       <Filter>Header Files\IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="MyVec3.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="Rigidbody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PhysEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ContactCallback.h">
@@ -251,11 +233,29 @@
     <ClInclude Include="EpicGameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SpawnData.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkSystem.h">
+      <Filter>Header Files\Subsystems</Filter>
+    </ClInclude>
+    <ClInclude Include="DataEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="MyVec3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventData.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="UIEvent.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

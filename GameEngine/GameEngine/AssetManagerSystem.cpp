@@ -21,6 +21,11 @@ Model* AssetManagerSystem::LoadModel(std::string modelPath, std::vector<std::str
 
 void AssetManagerSystem::Update()
 {
+	
+}
+
+void AssetManagerSystem::ProcessEvents()
+{
 	if (!(*engineEventQueue).empty())
 	{
 		for (int i = 0; i < (*engineEventQueue).size(); i++)
@@ -35,7 +40,7 @@ void AssetManagerSystem::Update()
 					models.push_back(newModel);
 				}
 
-				//delete((*engineEventQueue)[i]);
+				delete((*engineEventQueue)[i]);
 				//engineEventQueue->erase(engineEventQueue->begin() + i);
 			}
 		}

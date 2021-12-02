@@ -180,7 +180,11 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type, std::string filterT
 			material = physics->createMaterial(0.5f, 0.5f, 0.6f);
 
 			PxRigidDynamic* newRB = physics->createRigidDynamic(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
+
+			PxRigidBodyExt::updateMassAndInertia(*newRB, 10.0f, &PxVec3(0, 0, 0));
 			PxRigidActorExt::createExclusiveShape(*newRB, PxBoxGeometry(obj->myModel->sizeX, obj->myModel->sizeY, obj->myModel->sizeZ), *material);
+			
+			
 
 			//newRB->setMass(50.0f);
 			newRB->setGlobalPose(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
@@ -261,6 +265,12 @@ void PhysicsSystem::Start()
 
 void PhysicsSystem::Update()
 {
+	RunPhysX();
+	CheckColisions();
+}
+
+void PhysicsSystem::ProcessEvents()
+{
 	if (!(*engineEventQueue).empty())
 	{
 		for (int i = 0; i < (*engineEventQueue).size(); i++)
@@ -296,8 +306,8 @@ void PhysicsSystem::Update()
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->PlayerImpulse)
 				{
 					PxVec3 force((*engineEventQueue)[i]->myData->myForce->x, (*engineEventQueue)[i]->myData->myForce->y, (*engineEventQueue)[i]->myData->myForce->z);
-					(*engineEventQueue)[i]->myData->targetPlayer->myRB->dynamicRB->addForce(force, PxForceMode::eIMPULSE);
-					
+					(*engineEventQueue)[i]->myData->targetPlayer->myRB->dynamicRB->addForce(force);
+
 				}
 
 				else
@@ -311,11 +321,6 @@ void PhysicsSystem::Update()
 
 		}
 	}
-
-	//Event Checks
-
-	RunPhysX();
-	CheckColisions();
 }
 
 void PhysicsSystem::Exit()

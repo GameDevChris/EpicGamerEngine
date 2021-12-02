@@ -15,6 +15,63 @@ void Engine::InstantiateTimer(int cooldown, std::vector<SpawnData*> spawnData, i
 	Instantiate(spawnData[index]->modelID, spawnData[index]->textureID, spawnData[index]->position, spawnData[index]->scale, spawnData[index]->rotation, spawnData[index]->rbType, spawnData[index]->cfType);
 }
 
+void Engine::ProcessEngineEvent()
+{
+	if (!eventQueue.empty())
+	{
+		for (int i = 0; i < eventQueue.size(); i++)
+		{
+			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
+			{
+				if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
+				{
+
+					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
+					delete(eventQueue[i]);
+					//eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
+				{
+
+					InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
+					delete(eventQueue[i]);
+					//eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
+				{
+					LoadLevel(*(eventQueue[i]->myData->levelNumber));
+					delete(eventQueue[i]);
+					//eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
+				{
+					for (int i = 0; i < 1; i++)
+					{
+						InstantiateRandom();
+					}
+
+					delete(eventQueue[i]);
+					//eventQueue.erase(eventQueue.begin() + i);
+				}
+			}
+		}
+	}
+}
+
+void Engine::ProcessSubsystemEvents()
+{
+	ProcessEngineEvent();
+	UI.ProcessEvents();
+	assets.ProcessEvents();
+	graphics.ProcessEvents();
+	dataInput.ProcessEvents();
+	physics.ProcessEvents();
+	network.ProcessEvents();
+}
+
 Engine::Engine()
 {
 
@@ -107,240 +164,37 @@ void Engine::Update()
 {
 	graphics.loadedModels = assets.models;
 
-	if (!eventQueue.empty())
-	{
-		for (int i = 0; i < eventQueue.size(); i++)
-		{
-			std::cout << "Event to happen in subsystem " << eventQueue[i]->ReturnSubsystem() << std::endl;
-		}
-	}
-	
 	UI.Update();
+	//UI.ProcessEvents();
+
 	assets.Update();
+	//assets.ProcessEvents();
 
-	if (!eventQueue.empty())
-	{
-		
-		/*for (std::vector<Event*>::iterator it = eventQueue.begin(); it != eventQueue.end();)
-		{
-			bool hasErased = false;
-
-			if ((*it)->eventSubsystem == (*it)->General)
-			{
-				if ((*it)->eventType == (*it)->Instantiate)
-				{
-					InstantiateRequest();
-
-					delete(*it);
-					it = eventQueue.erase(it);
-					hasErased = true;
-				}
-
-				else if ((*it)->eventType == (*it)->ChrisLegion)
-				{
-					for (int i = 0; i < 1; i++)
-					{
-						InstantiateRandom();
-					}
-
-					delete(*it);
-					it = eventQueue.erase(it);
-					hasErased = true;
-				}
-			}
-
-			if (hasErased == false)
-				it++;
-		}*/
-
-		for (int i = 0; i < eventQueue.size(); i++)
-		{
-			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
-			{
-				if (eventQueue[i]->eventType == eventQueue[i]->Instantiate)
-				{
-					InstantiateRequest();
-					
-					delete(eventQueue[i]);
-				//	eventQueue.erase(eventQueue.begin() + i);
-				}
-
-				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
-				{
-					for (int i = 0; i < 1; i++)
-					{
-						InstantiateRandom();
-					}
-
-					delete(eventQueue[i]);
-				//	eventQueue.erase(eventQueue.begin() + i);
-				}
-			}
-		}
-	}
+	//ProcessEngineEvent();
 
 	graphics.Update();
+	//graphics.ProcessEvents();
 
-	//dataInput.Update();
-	
-	
+	dataInput.Update();
+	//dataInput.ProcessEvents();
+
 	physics.Update();
+	//physics.ProcessEvents();
 
+	//ProcessEngineEvent();
 
-	
+	//graphics.ProcessEvents();
 
-	if (!eventQueue.empty())
-	{
-		for (int i = 0; i < eventQueue.size(); i++)
-		{
-			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
-			{
-				if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
-				{
+	//physics.ProcessEvents();
 
-					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
-					delete(eventQueue[i]);
-					//	eventQueue.erase(eventQueue.begin() + i);
-				}
+	network.Update();
+	//network.ProcessEvents();
 
-				else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
-				{
+	ProcessSubsystemEvents();
+	ProcessSubsystemEvents();
+	ProcessSubsystemEvents();
 
-					InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
-					delete(eventQueue[i]);
-					//	eventQueue.erase(eventQueue.begin() + i);
-				}
-
-				else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
-				{
-					LoadLevel(*(eventQueue[i]->myData->levelNumber));
-					delete(eventQueue[i]);
-					//	eventQueue.erase(eventQueue.begin() + i);
-				}
-			}
-		}
-
-		/*for (std::vector<Event*>::iterator it = eventQueue.begin(); it != eventQueue.end();)
-		{
-			bool hasErased = false;
-
-			if ((*it)->eventSubsystem == (*it)->General)
-			{
-				if ((*it)->eventType == (*it)->InstantiateCustom)
-				{
-
-					Instantiate(*((*it)->myData->myModID), *((*it)->myData->myTexID), *((*it)->myData->myPos), *((*it)->myData->myScale),
-						*((*it)->myData->myRot), (*it)->myData->RBType, (*it)->myData->CFType);
-					delete((*it));
-					it = eventQueue.erase(it);
-					hasErased = true;
-				}
-
-				else if ((*it)->eventType == (*it)->InstantiatePlayer)
-				{
-
-					InstantiatePlayer(*((*it)->myData->myModID), *((*it)->myData->myTexID), *((*it)->myData->myPos),
-						*((*it)->myData->myScale), *((*it)->myData->myRot));
-					delete((*it));
-					it = eventQueue.erase(it);
-					hasErased = true;
-				}
-
-				else if ((*it)->eventType == (*it)->LoadLevel)
-				{
-					LoadLevel(*((*it)->myData->levelNumber));
-					delete((*it));
-					it = eventQueue.erase(it);
-					hasErased = true;
-				}
-
-				if (hasErased == false)
-					it++;
-			}
-		}
-	}*/
-
-		graphics.Update();
-		physics.Update();
-
-		network.Update();
-
-
-		UI.LateUpdate();
-
-		if (!eventQueue.empty())
-		{
-			for (int i = 0; i < eventQueue.size(); i++)
-			{
-				if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
-				{
-					if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
-					{
-
-						Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
-						//	eventQueue.erase(eventQueue.begin() + i);
-						delete(eventQueue[i]);
-					}
-
-					else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
-					{
-
-						InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
-						delete(eventQueue[i]);
-						//	eventQueue.erase(eventQueue.begin() + i);
-					}
-
-					else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
-					{
-						LoadLevel(*(eventQueue[i]->myData->levelNumber));
-						delete(eventQueue[i]);
-						//	eventQueue.erase(eventQueue.begin() + i);
-					}
-				}
-			}
-
-			/*for (std::vector<Event*>::iterator it = eventQueue.begin(); it != eventQueue.end();)
-			{
-				bool hasErased = false;
-
-				if ((*it)->eventSubsystem == (*it)->General)
-				{
-					if ((*it)->eventType == (*it)->InstantiateCustom)
-					{
-
-						Instantiate(*((*it)->myData->myModID), *((*it)->myData->myTexID), *((*it)->myData->myPos), *((*it)->myData->myScale),
-							*((*it)->myData->myRot), (*it)->myData->RBType, (*it)->myData->CFType);
-						delete((*it));
-						it = eventQueue.erase(it);
-						hasErased = true;
-					}
-
-					else if ((*it)->eventType == (*it)->InstantiatePlayer)
-					{
-
-						InstantiatePlayer(*((*it)->myData->myModID), *((*it)->myData->myTexID), *((*it)->myData->myPos),
-							*((*it)->myData->myScale), *((*it)->myData->myRot));
-						delete((*it));
-						it = eventQueue.erase(it);
-						hasErased = true;
-						//	eventQueue.erase(eventQueue.begin() + i);
-					}
-
-					else if ((*it)->eventType == (*it)->LoadLevel)
-					{
-						LoadLevel(*((*it)->myData->levelNumber));
-						delete((*it));
-						it = eventQueue.erase(it);
-						hasErased = true;
-						//	eventQueue.erase(eventQueue.begin() + i);
-					}
-				}
-
-				if (hasErased == false)
-					it++;
-			}*/
-		}
-	}
+	//ProcessEngineEvent();
 
 	if (graphics.QuitCall)
 	{
@@ -351,11 +205,6 @@ void Engine::Update()
 	{
 		graphics.Exit();
 	}
-	
-	/*for(int i = 0; i < eventQueue.size(); i++)
-	{ 
-		delete (eventQueue[i]);
-	}*/
 
 	eventQueue.clear();
 	lateEventQueue.clear();
@@ -370,15 +219,6 @@ void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 sca
 {
 
 	std::cout << std::endl << "Instantiating..." << std::endl;
-
-	//modelID = 6;
-	//textureID = 0;
-	//rbType = "static";
-	//cfType = "Ground";
-
-	//position = MyVec3(0, 0, 0);
-	//scale = MyVec3(1, 1, 1);
-	//rotation = MyVec3(0, 0, 0);
 
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
@@ -407,6 +247,7 @@ void Engine::InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVe
 
 	UI.myPlayer = newPlayer;
 	physics.myPlayer = newPlayer;
+	graphics.myPlayer = newPlayer;
 }
 
 void Engine::InstantiateRequest()
@@ -526,21 +367,11 @@ void Engine::LoadLevel(int number)
 
 	if (success)
 	{
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < spawnData.size(); i++)
 		{
-		
 			std::cout << "Instantiating scene element " << i << std::endl;
 			Instantiate(spawnData[i]->modelID, spawnData[i]->textureID, spawnData[i]->position, spawnData[i]->scale, spawnData[i]->rotation, spawnData[i]->rbType, spawnData[i]->cfType);
 		}
-
-		//InstantiateTimer(1, spawnData, 0);
-		//InstantiateTimer(1, spawnData, 1);
-		//InstantiateTimer(0, spawnData, 0);
-		//InstantiateTimer(1, spawnData, 1);
-
-
-		//Instantiate(spawnData[0]->modelID, spawnData[0]->textureID, spawnData[0]->position, spawnData[0]->scale, spawnData[0]->rotation, spawnData[0]->rbType, spawnData[0]->cfType);
-		//Instantiate(spawnData[1]->modelID, spawnData[1]->textureID, spawnData[1]->position, spawnData[1]->scale, spawnData[1]->rotation, spawnData[1]->rbType, spawnData[1]->cfType);
 	}
 
 	else 

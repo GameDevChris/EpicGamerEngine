@@ -21,6 +21,7 @@ public:
 
 	virtual void Start();
 	virtual void Update();
+	virtual void ProcessEvents();
 	virtual void LateUpdate();
 
 	void InputCooldown(bool value, int cooldown);

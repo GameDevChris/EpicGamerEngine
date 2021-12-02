@@ -15,6 +15,10 @@ void SubSystem::Update()
 	
 }
 
+void SubSystem::ProcessEvents()
+{
+}
+
 void SubSystem::LateUpdate()
 {
 	std::cout << name << "Late updated" << std::endl;

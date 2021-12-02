@@ -19,5 +19,6 @@ public:
 	Model* LoadModel(std::string modelPath, std::vector<std::string>* myTexturePaths, int modelType, std::string modelName);
 
 	virtual void Update();
+	virtual void ProcessEvents();
 };
 

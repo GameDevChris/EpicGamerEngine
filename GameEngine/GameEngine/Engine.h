@@ -28,6 +28,8 @@ private:
 	std::vector<GameObject*> objects;
 
 	void InstantiateTimer(int cooldown, std::vector<SpawnData*> spawnData, int index);
+	void ProcessEngineEvent();
+	void ProcessSubsystemEvents();
 
 public:
 	EpicGameManager* mainManager = NULL;

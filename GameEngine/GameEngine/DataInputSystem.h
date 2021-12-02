@@ -3,6 +3,9 @@
 #include "MyVec3.h"
 #include "SpawnData.h" 
 
+#include <filesystem>
+namespace fs = std::filesystem;
+
 extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
@@ -20,12 +23,22 @@ public:
 	std::string dirPath = "directory.lua";
 	lua_State* dir;
 
-	std::string lvl1Path = "level1.lua";
+	std::string lvl1Settings = "./LevelLayouts/level1Settings.lua";
 	lua_State* lvl1;
 
 	std::string gameTitle = "";
 	int ScreenWidth = 0;
 	int ScreenHeight = 0;
+
+	int Lvl1LayoutChoice = 0;
+
+	std::string lvl1LayoutFolder = "";
+	std::vector<std::string> layout1Paths;
+
+	std::string modelFolder = "";
+	std::vector<std::string> modelPaths;
+
+	
 
 	void StartLua();
 	void GetDirectories();
@@ -41,5 +54,6 @@ public:
 	void ShowData();
 	virtual void Start();
 	virtual void Update();
+	virtual void ProcessEvents();
 };
 

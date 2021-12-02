@@ -25,6 +25,11 @@ void NetworkSystem::Start()
 
 void NetworkSystem::Update()
 {
+	
+}
+
+void NetworkSystem::ProcessEvents()
+{
 	if (!(*engineEventQueue).empty())
 	{
 		for (int i = 0; i < (*engineEventQueue).size(); i++)
@@ -34,11 +39,11 @@ void NetworkSystem::Update()
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->BotAddScore)
 				{
 					std::ofstream score_file(scoreFilePath);
-					
+
 					int score = (*engineEventQueue)[i]->myData->myScore;
 					score_file << score;
 					score_file.close();
-					
+
 					std::ofstream job_file(jobFilePath);
 					job_file << "printNewScore";
 					job_file.close();

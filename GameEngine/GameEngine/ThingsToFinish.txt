@@ -1,0 +1,6 @@
+Things for chris to do:
+-Data driven
+	->Add settings to lua
+-Audio
+-AI
+-Game win/loss conditions
