@@ -18,7 +18,7 @@ private:
 	PxPhysics* physics = NULL;
 	PxCooking* cooking;
 
-	PxScene* scene = NULL;
+	
 	PxMaterial* material = NULL;
 
 	PxPvd* pvd = NULL;
@@ -32,6 +32,7 @@ private:
 
 
 public:
+	PxScene* scene = NULL;
 	Player* myPlayer = NULL;
 
 	ContactCallback myContactReportCallback;

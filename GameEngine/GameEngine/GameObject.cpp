@@ -22,6 +22,28 @@ GameObject::GameObject()
 	
 }
 
+void GameObject::Delete()
+{
+	if (myRB != NULL)
+	{
+		if (myRB->dynamicRB != NULL)
+		{
+			myRB->dynamicRB->release();
+		}
+
+		if (myRB->staticRB != NULL)
+		{
+			myRB->staticRB->release();
+		}
+	}
+	
+
+	if (myModel->myNode != NULL)
+	{
+		myModel->myNode->remove();
+	}
+}
+
 void GameObject::SyncTransform()
 {
 	if (myRB != NULL)

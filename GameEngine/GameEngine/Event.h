@@ -51,6 +51,10 @@ public:
 		InstantiatePlayer,
 		LoadLevel,
 		ChrisLegion,
+		DeleteAll,
+		PlayerLost,
+		GameStart,
+		ButtonCheck,
 
 		//UI
 		CreateHandler,

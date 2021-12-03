@@ -129,6 +129,30 @@ Event::Event(std::string type, std::vector<Event*>* queue)
 		eventSubsystem = General;
 	}
 
+	else if (type == "DeleteAll")
+	{
+		eventType = DeleteAll;
+		eventSubsystem = General;
+	}
+
+	else if (type == "PlayerLost")
+	{
+		eventType = PlayerLost;
+		eventSubsystem = General;
+	}
+
+	else if (type == "GameStart")
+	{
+		eventType = GameStart;
+		eventSubsystem = General;
+	}
+
+	else if (type == "ButtonCheck")
+	{
+		eventType = ButtonCheck;
+		eventSubsystem = General;
+	}
+	
 	else
 	{
 		std::cout << "ERROR, unknown event type!" << std::endl;

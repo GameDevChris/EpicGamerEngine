@@ -102,11 +102,22 @@ void PhysicsSystem::CheckColisions()
 				std::cout << "Player can now jump" << std::endl;
 				myPlayer->isGrounded = true;
 			}
+
+			if (!(subManager->levelStarted))
+			{
+				Event* startGame = new Event("GameStart", engineEventQueue);
+				subManager->levelStarted = true;
+			}
+		}
+
+		if (collider1 == "Player" && collider2 == "Button")
+		{
+			Event* buttonEvent = new Event("ButtonCheck", engineEventQueue);
 		}
 
 		else
 		{
-			std::cout << collider1 << " coliding with " << collider2 << std::endl;
+			//std::cout << collider1 << " coliding with " << collider2 << std::endl;
 		}
 
 		myContactReportCallback.colShape1 = NULL;
@@ -129,8 +140,6 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type, std::string filterT
 
 			PxRigidStatic* newRB = physics->createRigidStatic(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
 			PxRigidActorExt::createExclusiveShape(*newRB, PxBoxGeometry(obj->myModel->sizeX, obj->myModel->sizeY, obj->myModel->sizeZ), *material);
-
-			//PxRigidActorExt::createExclusiveShape(*newRB, PxBoxGeometry(1, 1, 1), *material);
 			
 			newRB->setGlobalPose(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
 			
@@ -183,8 +192,6 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type, std::string filterT
 
 			PxRigidBodyExt::updateMassAndInertia(*newRB, 10.0f, &PxVec3(0, 0, 0));
 			PxRigidActorExt::createExclusiveShape(*newRB, PxBoxGeometry(obj->myModel->sizeX, obj->myModel->sizeY, obj->myModel->sizeZ), *material);
-			
-			
 
 			//newRB->setMass(50.0f);
 			newRB->setGlobalPose(PxTransform(PxVec3(obj->Position.x, obj->Position.y, obj->Position.z)));
@@ -267,6 +274,10 @@ void PhysicsSystem::Update()
 {
 	RunPhysX();
 	CheckColisions();
+	if (myPlayer != NULL && myPlayer->myRB->dynamicRB->getGlobalPose().p.y < -500)
+	{
+		Event* endGame = new Event("PlayerLost", engineEventQueue);
+	}
 }
 
 void PhysicsSystem::ProcessEvents()

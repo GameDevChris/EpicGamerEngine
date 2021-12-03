@@ -20,7 +20,7 @@ class DataInputSystem :
 	public SubSystem
 {
 public:
-	std::string dirPath = "directory.lua";
+	std::string dirPath = "./Game Parameters/directory.lua";
 	lua_State* dir;
 
 	std::string lvl1Settings = "./LevelLayouts/level1Settings.lua";
@@ -44,7 +44,6 @@ public:
 	void GetDirectories();
 	void GetData();
 	void LoadDataObjects(std::vector<SpawnData*>* myData, int levelNum, bool* flag);
-	void DataToManager();
 
 	std::vector<std::string> loadObjects(const std::string& table, lua_State* state);
 

@@ -2,25 +2,7 @@
 
 void NetworkSystem::Start()
 {
-	//cout << "Subsystem " << name << " -started!" << endl;
-	//
-	//dpp::cluster epicGamerBot(botToken);
-	//epicGamerBotPointer = &epicGamerBot;
-	//
-	//epicGamerBot.on_ready([&epicGamerBot](const dpp::ready_t& event) 
-	//{
-	//	cout << "Logged in as " << epicGamerBot.me.username << endl;
-	//});
-	//
-	//epicGamerBot.on_message_create([&epicGamerBot](const dpp::message_create_t& event) 
-	//{
-	//	if (event.msg->content == "!ping") 
-	//	{
-	//		epicGamerBot.message_create(dpp::message(event.msg->channel_id, "Pong!"));
-	//	}
-	//});
-	//
-	//epicGamerBot.start(false);
+
 }
 
 void NetworkSystem::Update()
@@ -38,13 +20,13 @@ void NetworkSystem::ProcessEvents()
 			{
 				if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->BotAddScore)
 				{
-					std::ofstream score_file(scoreFilePath);
+					std::ofstream score_file(subManager->botScoreTextPath);
 
 					int score = (*engineEventQueue)[i]->myData->myScore;
 					score_file << score;
 					score_file.close();
 
-					std::ofstream job_file(jobFilePath);
+					std::ofstream job_file(subManager->botJobTextPath);
 					job_file << "printNewScore";
 					job_file.close();
 
@@ -53,7 +35,7 @@ void NetworkSystem::ProcessEvents()
 
 				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->BotPrintTop5)
 				{
-					std::ofstream job_file(jobFilePath);
+					std::ofstream job_file(subManager->botJobTextPath);
 					job_file << "printTop5";
 					job_file.close();
 

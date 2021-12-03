@@ -10,6 +10,8 @@ public:
 	GameObject(Model* mod, Rigidbody* rb, MyVec3 pos, MyVec3 rot, MyVec3 sca);
 	GameObject();
 
+	void Delete();
+
 	void SyncTransform();
 
 	Model* myModel = NULL;

@@ -26,10 +26,14 @@ private:
 	std::vector<Event*> eventQueue;
 	std::vector<Event*> lateEventQueue;
 	std::vector<GameObject*> objects;
+	std::vector<GameObject*> buttons;
 
 	void InstantiateTimer(int cooldown, std::vector<SpawnData*> spawnData, int index);
 	void ProcessEngineEvent();
 	void ProcessSubsystemEvents();
+	void ClearScene();
+	void GetTargetColour();
+	void CheckButtonColor();
 
 public:
 	EpicGameManager* mainManager = NULL;

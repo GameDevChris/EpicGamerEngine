@@ -1,5 +1,6 @@
 #pragma once
 #include "irrlicht.h";
+#include "MyVec3.h"
 #include <vector>;
 #include <iostream>;
 using namespace irr;
@@ -10,6 +11,7 @@ using namespace scene;
 struct Model
 {
 public:
+	MyVec3 myColour;
 
 	std::string modelName = "";
 

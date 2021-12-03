@@ -15,6 +15,104 @@ void Engine::InstantiateTimer(int cooldown, std::vector<SpawnData*> spawnData, i
 	Instantiate(spawnData[index]->modelID, spawnData[index]->textureID, spawnData[index]->position, spawnData[index]->scale, spawnData[index]->rotation, spawnData[index]->rbType, spawnData[index]->cfType);
 }
 
+void Engine::ClearScene()
+{
+	for (int j = 0; j < objects.size(); j++)
+	{
+		objects[j]->Delete();
+	}
+
+	objects.clear();
+
+	UI.myPlayer = NULL;
+	physics.myPlayer = NULL;
+	graphics.myPlayer = NULL;
+
+	graphics.AddCamera(0, 200, -200, 0, 0, 0);
+}
+
+void Engine::GetTargetColour()
+{
+	buttons.clear();
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->myModel->type == mainManager->buttonID)
+		{
+			buttons.push_back(objects[i]);
+		}
+	}
+
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_int_distribution<std::mt19937::result_type> randCol(0, buttons.size() - 1);
+
+	int choice = randCol(rng);
+
+	MyVec3 colourChosen = buttons[choice]->myModel->myColour;
+
+	mainManager->targetColor = colourChosen;
+
+	buttons.clear();
+}
+
+void Engine::CheckButtonColor()
+{
+	buttons.clear();
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->myModel->type == mainManager->buttonID)
+		{
+			buttons.push_back(objects[i]);
+		}
+	}
+
+	GameObject* targetObj = new GameObject();
+	float currentShortestDistance = 1000;
+
+	for(int i = 0; i<buttons.size(); i++)
+	{
+		float xdist=0, ydist=0, zdist=0;
+		if (buttons[i]->myRB->myType == "static" || buttons[i]->myRB->myType == "Static")
+		{
+			float xdist = buttons[i]->myRB->staticRB->getGlobalPose().p.x - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.x;
+			float ydist = buttons[i]->myRB->staticRB->getGlobalPose().p.y - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.y;
+			float zdist = buttons[i]->myRB->staticRB->getGlobalPose().p.z - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.z;
+		}
+
+		else
+		{
+			float xdist = buttons[i]->myRB->dynamicRB->getGlobalPose().p.x - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.x;
+			float ydist = buttons[i]->myRB->dynamicRB->getGlobalPose().p.y - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.y;
+			float zdist = buttons[i]->myRB->dynamicRB->getGlobalPose().p.z - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.z;
+
+		}
+
+		float distance = sqrt((xdist * xdist) + (ydist * ydist) + (zdist * zdist));
+
+		if (distance < currentShortestDistance)
+		{
+			currentShortestDistance = distance;
+			targetObj = buttons[i];
+		}
+	}
+
+	if (targetObj->myModel->myColour.x == mainManager->targetColor.x
+		&& targetObj->myModel->myColour.y == mainManager->targetColor.y
+		&& targetObj->myModel->myColour.z == mainManager->targetColor.z)
+	{
+		mainManager->score++;
+		dataInput.Lvl1LayoutChoice++;
+		LoadLevel(1);
+	}
+
+	else 
+	{
+		std::cout << "Wrong colour!" << std::endl;
+	}
+
+	buttons.clear();
+}
+
 void Engine::ProcessEngineEvent()
 {
 	if (!eventQueue.empty())
@@ -44,6 +142,15 @@ void Engine::ProcessEngineEvent()
 					LoadLevel(*(eventQueue[i]->myData->levelNumber));
 					delete(eventQueue[i]);
 					//eventQueue.erase(eventQueue.begin() + i);
+
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->PlayerLost)
+				{
+					ClearScene();
+					mainManager->currentScene = mainManager->End;
+					delete(eventQueue[i]);
+					//eventQueue.erase(eventQueue.begin() + i);
 				}
 
 				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
@@ -52,6 +159,28 @@ void Engine::ProcessEngineEvent()
 					{
 						InstantiateRandom();
 					}
+
+					delete(eventQueue[i]);
+					//eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->GameStart)
+				{
+					mainManager->score = 0;
+					GetTargetColour();
+					delete(eventQueue[i]);
+					//eventQueue.erase(eventQueue.begin() + i);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->ButtonCheck)
+				{
+					CheckButtonColor();
+					delete(eventQueue[i]);
+				}
+
+				else if (eventQueue[i]->eventType == eventQueue[i]->DeleteAll)
+				{
+					ClearScene();
 
 					delete(eventQueue[i]);
 					//eventQueue.erase(eventQueue.begin() + i);
@@ -71,6 +200,8 @@ void Engine::ProcessSubsystemEvents()
 	physics.ProcessEvents();
 	network.ProcessEvents();
 }
+
+
 
 Engine::Engine()
 {
@@ -165,36 +296,16 @@ void Engine::Update()
 	graphics.loadedModels = assets.models;
 
 	UI.Update();
-	//UI.ProcessEvents();
-
 	assets.Update();
-	//assets.ProcessEvents();
-
-	//ProcessEngineEvent();
-
 	graphics.Update();
-	//graphics.ProcessEvents();
-
 	dataInput.Update();
-	//dataInput.ProcessEvents();
-
 	physics.Update();
-	//physics.ProcessEvents();
-
-	//ProcessEngineEvent();
-
-	//graphics.ProcessEvents();
-
-	//physics.ProcessEvents();
-
 	network.Update();
-	//network.ProcessEvents();
 
 	ProcessSubsystemEvents();
 	ProcessSubsystemEvents();
 	ProcessSubsystemEvents();
-
-	//ProcessEngineEvent();
+	ProcessSubsystemEvents();
 
 	if (graphics.QuitCall)
 	{
@@ -217,8 +328,7 @@ void Engine::Update()
 
 void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType, std::string cfType)
 {
-
-	std::cout << std::endl << "Instantiating..." << std::endl;
+	std::cout << std::endl << "Instantiating... ID: " << modelID << std::endl;
 
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
@@ -229,6 +339,7 @@ void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 sca
 
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
 	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, rbType, cfType);
+
 }
 
 void Engine::InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation)
@@ -359,6 +470,12 @@ void Engine::InstantiateRequest()
 
 void Engine::LoadLevel(int number)
 {
+	if (!(objects.empty()))
+	{
+		ClearScene();
+	}
+
+
 	number = 1;
 	std::vector<SpawnData*> spawnData;
 	bool success = false;
@@ -367,17 +484,33 @@ void Engine::LoadLevel(int number)
 
 	if (success)
 	{
+		bool firstPlatformSpawned = false;
 		for (int i = 0; i < spawnData.size(); i++)
 		{
+			if ((spawnData[i]->modelID == mainManager->platformID) && firstPlatformSpawned)
+			{
+				std::cout << "Spawning button" << std::endl;
+				Instantiate(mainManager->buttonID, 0, MyVec3(spawnData[i]->position.x, spawnData[i]->position.y + 10, spawnData[i]->position.z), MyVec3(0.1, 0.1, 0.1), spawnData[i]->rotation, spawnData[i]->rbType, "Button");
+			}
+
+			if ((spawnData[i]->modelID == mainManager->platformID) && !firstPlatformSpawned)
+			{
+				std::cout << "Spawning player" << std::endl;
+				firstPlatformSpawned = true;
+				InstantiatePlayer(mainManager->playerID, 2, MyVec3(spawnData[i]->position.x, spawnData[i]->position.y + 100, spawnData[i]->position.z), mainManager->PlayerSize, spawnData[i]->rotation);
+			}
+
+			std::cout << "Spawning platform" << std::endl;
 			std::cout << "Instantiating scene element " << i << std::endl;
 			Instantiate(spawnData[i]->modelID, spawnData[i]->textureID, spawnData[i]->position, spawnData[i]->scale, spawnData[i]->rotation, spawnData[i]->rbType, spawnData[i]->cfType);
 		}
 	}
-
-	else 
+	else
 	{
 		std::cout << "Failed to load level " << number << std::endl;
 	}
+
+	
 }
 
 void Engine::InstantiateRandom()

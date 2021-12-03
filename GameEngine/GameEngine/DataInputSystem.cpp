@@ -4,7 +4,6 @@ void DataInputSystem::StartLua()
 {
 	GetDirectories();
 	GetData();
-	DataToManager();
 }
 
 void DataInputSystem::GetDirectories()
@@ -24,12 +23,44 @@ void DataInputSystem::GetData()
 {
 	LuaRef windowData = getGlobal(dir, "window");
 
-	//Title
-	gameTitle = windowData["title"].cast<std::string>();
+	//Graphic Settings
+		//Title
+		subManager->EngineTitle = windowData["title"].cast<std::string>();
 
-	//ScreenDimensions
-	ScreenWidth = windowData["width"].cast<int>();
-	ScreenHeight = windowData["height"].cast<int>();
+		//ScreenDimensions
+		subManager->EngineWidth = windowData["width"].cast<int>();
+		subManager->EngineHeight = windowData["height"].cast<int>();
+
+		//BG Colour
+		MyVec3 BG(windowData["bgColourR"].cast<float>(), windowData["bgColourG"].cast<float>(), windowData["bgColourB"].cast<float>());
+		subManager->BGColour = BG;
+
+		//Graphics Parameters
+		subManager->BitPerPixel = windowData["BitPerPixel"].cast<int>();
+		subManager->Fullscreen = windowData["Fullscreen"].cast<bool>();
+		subManager->StencilBuffer = windowData["StencilBuffer"].cast<bool>();
+		subManager->AntiAlias = windowData["AntiAlias"].cast<int>();
+		subManager->VSync = windowData["VSync"].cast<bool>();
+
+	//Gameplay Settings
+		//Model IDs
+		subManager->platformID = windowData["platformID"].cast<int>();
+		subManager->buttonID = windowData["buttonID"].cast<int>();
+		subManager->playerID = windowData["playerID"].cast<int>();
+
+		//Player Settings
+		subManager->PlayerLinearSpeed = windowData["PlayerLinearSpeed"].cast<int>();
+		subManager->PlayerAngularSpeed = windowData["PlayerAngularSpeed"].cast<int>();
+		subManager->PlayerJumpHeight = windowData["PlayerJumpHeight"].cast<int>();
+
+		subManager->PlayerSize.x = windowData["PlayerSizeX"].cast<int>();
+		subManager->PlayerSize.y = windowData["PlayerSizeY"].cast<int>();
+		subManager->PlayerSize.z = windowData["PlayerSizeZ"].cast<int>();
+
+	//Network Settings
+		//Bot text paths
+		subManager->botScoreTextPath = windowData["botScoreTextPath"].cast<std::string>();
+		subManager->botJobTextPath = windowData["botJobTextPath"].cast<std::string>();
 
 	//GetModelFolders
 	modelFolder = windowData["modelFolder"].cast<std::string>();
@@ -72,15 +103,6 @@ void DataInputSystem::GetData()
 	for (const auto& entry : fs::directory_iterator(lvl1LayoutFolder))
 		layout1Paths.push_back(entry.path().string());
 
-}
-
-
-
-void DataInputSystem::DataToManager()
-{
-	subManager->EngineTitle = gameTitle;
-	subManager->EngineWidth = ScreenWidth;
-	subManager->EngineHeight = ScreenHeight;
 }
 
 std::vector<std::string> DataInputSystem::loadObjects(const std::string& table, lua_State* state)
@@ -174,7 +196,7 @@ void DataInputSystem::LoadDataObjects(std::vector<SpawnData*>* myData, int level
 
 		if (Lvl1LayoutChoice > layout1Paths.size())
 		{
-			luaL_dofile(layout, layout1Paths[0].c_str());
+			Lvl1LayoutChoice = 0;
 		}
 
 		else
@@ -196,7 +218,9 @@ void DataInputSystem::LoadDataObjects(std::vector<SpawnData*>* myData, int level
 			LuaRef Scale = object["objScale"];
 			LuaRef Rot = object["objRot"];
 	
-			int modelID = object["modID"].cast<int>();
+			//int modelID = object["modID"].cast<int>();
+			int modelID = subManager->platformID;
+
 			int textureID = object["textureID"].cast<int>();
 			std::string rbType = object["rigidType"].cast<std::string>();
 			std::string cfType = object["filterType"].cast<std::string>();

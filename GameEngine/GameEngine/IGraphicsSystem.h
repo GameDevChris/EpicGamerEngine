@@ -28,24 +28,30 @@ private:
 
 	bool IsFirstLoop2 = true;
 
+	bool StartFirstLoop = true;
+
+	bool GameFirstLoop = true;
+
+	bool EndFirstLoop = true;
+
 	int ScreenW = 1280;
 	int ScreenH = 720;
 
 	IGUIEnvironment* guienv = NULL;
-	vector3df BGColour = vector3df(46, 109, 114);
 
-	std::vector<IAnimatedMeshSceneNode*> nodes;
-	ICameraSceneNode* cam;
+	
 
 	void StartIrrlicht();
 	
 	void WriteStaticText(const wchar_t* text, int startPosX, int startPosY, int endPosX, int endPosY);
-	void AddCamera(float PosX, float PosY, float PosZ, float LookX, float LookY, float LookZ);
+	
 	void DrawGUI();
 
 	int UIScore = 0;
 
 	int UIState = 0;
+
+	int UICamTypeHolder; 
 
 	int UIIDTexHolder;
 	int UIIDModelHolder;
@@ -57,11 +63,15 @@ private:
 	MyVec3 UIRotHolder;
 	MyVec3 UIScaleHolder;
 
+	void WriteTextCentered(std::string content);
+
 public:
+	std::vector<IAnimatedMeshSceneNode*> nodes;
 	Player* myPlayer = NULL;
 	std::vector<Model*> loadedModels;
 
-
+	void AddCamera(float PosX, float PosY, float PosZ, float LookX, float LookY, float LookZ);
+	ICameraSceneNode* cam;
 
 	IrrlichtDevice* device;
 	IVideoDriver* driver;
@@ -69,6 +79,7 @@ public:
 	IIMGUIHandle* handle;
 	CIMGUIEventReceiver receiver;
 
+	void SetColor(IAnimatedMeshSceneNode* target, MyVec3 targetColor);
 	void RunIrrlicht();
 	bool QuitCall = false;
 	virtual void Start();
