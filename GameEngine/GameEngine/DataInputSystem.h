@@ -20,7 +20,7 @@ class DataInputSystem :
 	public SubSystem
 {
 public:
-	std::string dirPath = "./Game Parameters/directory.lua";
+	std::string dirPath = ".\\Game Parameters\\directory.lua";
 	lua_State* dir;
 
 	std::string lvl1Settings = "./LevelLayouts/level1Settings.lua";
@@ -38,6 +38,8 @@ public:
 	std::string modelFolder = "";
 	std::vector<std::string> modelPaths;
 
+	std::string musicFolder = "";
+
 	
 
 	void StartLua();
@@ -46,11 +48,9 @@ public:
 	void LoadDataObjects(std::vector<SpawnData*>* myData, int levelNum, bool* flag);
 
 	std::vector<std::string> loadObjects(const std::string& table, lua_State* state);
-
-	void ParseTextData(std::vector<char>* dataVector);
-
+	
 	std::vector<char> dataVector;
-	void ShowData();
+
 	virtual void Start();
 	virtual void Update();
 	virtual void ProcessEvents();

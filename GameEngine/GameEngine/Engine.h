@@ -5,14 +5,15 @@
 #include "DataInputSystem.h"
 #include "UserInterfaceSystem.h"
 #include "AssetManagerSystem.h"
+#include "SoundSystem.h"
 #include "NetworkSystem.h"
 #include "GameObject.h"
+#include "SoundEvent.h"
 #include "PhysEvent.h"
 #include "EpicGameManager.h"
 #include "time.h"
 #include <random>
 
-//using namespace std;
 class Engine
 {
 private:
@@ -22,6 +23,7 @@ private:
 	UserInterfaceSystem UI;
 	AssetManagerSystem assets;
 	NetworkSystem network;
+	SoundSystem sounds;
 
 	std::vector<Event*> eventQueue;
 	std::vector<Event*> lateEventQueue;
@@ -38,9 +40,7 @@ private:
 public:
 	EpicGameManager* mainManager = NULL;
 	bool finished = false;
-	Engine();
-	void UseData();
-	void ThrowEvent(Event newEvent);
+
 	void Start();
 	void Update();
 

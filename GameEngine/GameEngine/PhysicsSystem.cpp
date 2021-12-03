@@ -2,31 +2,13 @@
 
 PxFilterFlags PhysicsFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0, PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
 {
-	//// let triggers through
-	//if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
-	//{
-	//	pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
-	//	return PxFilterFlag::eDEFAULT;
-	//}
-	//
-	//// generate contacts for all that were not filtered above
-	//pairFlags = PxPairFlag::eCONTACT_DEFAULT;
-	//
-	//// trigger the contact callback for pairs (A,B) where
-	//// the filtermask of A contains the ID of B and vice versa.
-	//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-	//	pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
-	//
-	//return PxFilterFlag::eDEFAULT;
-
-	PX_UNUSED(attributes0);
+PX_UNUSED(attributes0);
 	PX_UNUSED(attributes1);
 	PX_UNUSED(filterData0);
 	PX_UNUSED(filterData1);
 	PX_UNUSED(constantBlockSize);
 	PX_UNUSED(constantBlock);
 
-	// all initial and persisting reports for everything, with per-point data
 	pairFlags = PxPairFlag::eSOLVE_CONTACT | PxPairFlag::eDETECT_DISCRETE_CONTACT
 		| PxPairFlag::eNOTIFY_TOUCH_FOUND
 		| PxPairFlag::eNOTIFY_TOUCH_PERSISTS
@@ -112,12 +94,83 @@ void PhysicsSystem::CheckColisions()
 
 		if (collider1 == "Player" && collider2 == "Button")
 		{
-			Event* buttonEvent = new Event("ButtonCheck", engineEventQueue);
-		}
+			GameObject* obj1;
+			GameObject* obj2;
 
-		else
-		{
-			//std::cout << collider1 << " coliding with " << collider2 << std::endl;
+			for (int i = 0; i < allObjects->size(); i++)
+			{
+				for (int j = 0; j < allObjects->size(); j++)
+				{
+					obj1 = (*allObjects)[i];
+					obj2 = (*allObjects)[j];
+
+					if (obj1->myRB->myType == "static" && obj2->myRB->myType == "static")
+					{
+					
+						if (obj1->myRB->staticRB == myContactReportCallback.colShape1->getActor() && obj2->myRB->staticRB == myContactReportCallback.colShape2->getActor())
+						{
+
+							if (obj2->myModel->myColour.x == subManager->targetColor.x
+								&& obj2->myModel->myColour.y == subManager->targetColor.y
+								&& obj2->myModel->myColour.z == subManager->targetColor.z)
+
+							{
+								Event* buttonEvent = new Event("ButtonCheck", engineEventQueue);
+							}
+							break;
+						}
+					}
+
+					else if (obj1->myRB->myType == "static" && obj2->myRB->myType == "dynamic")
+					{
+					
+						if (obj1->myRB->staticRB == myContactReportCallback.colShape1->getActor() && obj2->myRB->dynamicRB == myContactReportCallback.colShape2->getActor())
+						{
+
+							if (obj2->myModel->myColour.x == subManager->targetColor.x
+								&& obj2->myModel->myColour.y == subManager->targetColor.y
+								&& obj2->myModel->myColour.z == subManager->targetColor.z)
+
+							{
+								Event* buttonEvent = new Event("ButtonCheck", engineEventQueue);
+							}
+							break;
+						}
+					}
+
+					else if (obj1->myRB->myType == "dynamic" && obj2->myRB->myType == "static")
+					{
+						if (obj1->myRB->dynamicRB == myContactReportCallback.colShape1->getActor() && obj2->myRB->staticRB == myContactReportCallback.colShape2->getActor())
+						{
+
+							if (obj2->myModel->myColour.x == subManager->targetColor.x
+								&& obj2->myModel->myColour.y == subManager->targetColor.y
+								&& obj2->myModel->myColour.z == subManager->targetColor.z)
+
+							{
+								Event* buttonEvent = new Event("ButtonCheck", engineEventQueue);
+							}
+							break;
+						}
+					}
+
+					else if (obj1->myRB->myType == "dynamic" && obj2->myRB->myType == "dynamic")
+					{
+						if (obj1->myRB->dynamicRB == myContactReportCallback.colShape1->getActor() && obj2->myRB->dynamicRB == myContactReportCallback.colShape2->getActor())
+						{
+
+							if (obj2->myModel->myColour.x == subManager->targetColor.x
+								&& obj2->myModel->myColour.y == subManager->targetColor.y
+								&& obj2->myModel->myColour.z == subManager->targetColor.z)
+
+							{
+								Event* buttonEvent = new Event("ButtonCheck", engineEventQueue);
+							}
+							break;
+						}
+					}
+				}
+			}
 		}
 
 		myContactReportCallback.colShape1 = NULL;
@@ -241,8 +294,6 @@ void PhysicsSystem::AddRB(GameObject* obj, std::string type, std::string filterT
 		}
 	}
 }
-
-
 
 void PhysicsSystem::setupFiltering(PxRigidActor* actor, PxU32 filterGroup, PxU32 filterMask)
 {

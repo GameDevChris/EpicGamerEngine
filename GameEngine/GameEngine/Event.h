@@ -11,6 +11,7 @@ public:
 		PhysicsSub,
 		AssetSub,
 		NetworkSub,
+		SoundSub,
 		UISub,
 		DataSub,
 		General
@@ -55,6 +56,10 @@ public:
 		PlayerLost,
 		GameStart,
 		ButtonCheck,
+		OpenLuaFile,
+		OpenModelFile,
+		OpenLayoutFile,
+		OpenMusicFile,
 
 		//UI
 		CreateHandler,
@@ -65,7 +70,12 @@ public:
 
 		//Network
 		BotAddScore,
-		BotPrintTop5
+		BotPrintTop5,
+		DiscordInvite,
+
+		//Sounds
+		PlayBGMusic
+
 	};
 
 	EventData* myData;

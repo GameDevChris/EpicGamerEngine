@@ -1,8 +1,8 @@
 #include "Engine.h"
 
+//Function to instantiate with a delay
 void Engine::InstantiateTimer(int cooldown, std::vector<SpawnData*> spawnData, int index)
 {
-	std::cout << "Started instantiation of element " << index << std::endl;
 	clock_t startTime = clock();
 	clock_t cooldownTime = cooldown * CLOCKS_PER_SEC;
 	clock_t elapsed = clock() - startTime;;
@@ -15,6 +15,7 @@ void Engine::InstantiateTimer(int cooldown, std::vector<SpawnData*> spawnData, i
 	Instantiate(spawnData[index]->modelID, spawnData[index]->textureID, spawnData[index]->position, spawnData[index]->scale, spawnData[index]->rotation, spawnData[index]->rbType, spawnData[index]->cfType);
 }
 
+//Fully clear sceme of all GFX and PHYS elements
 void Engine::ClearScene()
 {
 	for (int j = 0; j < objects.size(); j++)
@@ -31,6 +32,7 @@ void Engine::ClearScene()
 	graphics.AddCamera(0, 200, -200, 0, 0, 0);
 }
 
+//Choose a random colour from all button colours
 void Engine::GetTargetColour()
 {
 	buttons.clear();
@@ -50,69 +52,20 @@ void Engine::GetTargetColour()
 
 	MyVec3 colourChosen = buttons[choice]->myModel->myColour;
 
-	mainManager->targetColor = colourChosen;
+	mainManager->targetColor = MyVec3(colourChosen.x, colourChosen.y, colourChosen.z);
 
 	buttons.clear();
 }
 
+//If player selects correct button
 void Engine::CheckButtonColor()
 {
-	buttons.clear();
-	for (int i = 0; i < objects.size(); i++)
-	{
-		if (objects[i]->myModel->type == mainManager->buttonID)
-		{
-			buttons.push_back(objects[i]);
-		}
-	}
-
-	GameObject* targetObj = new GameObject();
-	float currentShortestDistance = 1000;
-
-	for(int i = 0; i<buttons.size(); i++)
-	{
-		float xdist=0, ydist=0, zdist=0;
-		if (buttons[i]->myRB->myType == "static" || buttons[i]->myRB->myType == "Static")
-		{
-			float xdist = buttons[i]->myRB->staticRB->getGlobalPose().p.x - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.x;
-			float ydist = buttons[i]->myRB->staticRB->getGlobalPose().p.y - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.y;
-			float zdist = buttons[i]->myRB->staticRB->getGlobalPose().p.z - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.z;
-		}
-
-		else
-		{
-			float xdist = buttons[i]->myRB->dynamicRB->getGlobalPose().p.x - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.x;
-			float ydist = buttons[i]->myRB->dynamicRB->getGlobalPose().p.y - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.y;
-			float zdist = buttons[i]->myRB->dynamicRB->getGlobalPose().p.z - physics.myPlayer->myRB->dynamicRB->getGlobalPose().p.z;
-
-		}
-
-		float distance = sqrt((xdist * xdist) + (ydist * ydist) + (zdist * zdist));
-
-		if (distance < currentShortestDistance)
-		{
-			currentShortestDistance = distance;
-			targetObj = buttons[i];
-		}
-	}
-
-	if (targetObj->myModel->myColour.x == mainManager->targetColor.x
-		&& targetObj->myModel->myColour.y == mainManager->targetColor.y
-		&& targetObj->myModel->myColour.z == mainManager->targetColor.z)
-	{
-		mainManager->score++;
-		dataInput.Lvl1LayoutChoice++;
-		LoadLevel(1);
-	}
-
-	else 
-	{
-		std::cout << "Wrong colour!" << std::endl;
-	}
-
-	buttons.clear();
+	mainManager->score++;
+	dataInput.Lvl1LayoutChoice++;
+	LoadLevel(1);
 }
 
+//Process all events that are for the engine (General)
 void Engine::ProcessEngineEvent()
 {
 	if (!eventQueue.empty())
@@ -121,75 +74,90 @@ void Engine::ProcessEngineEvent()
 		{
 			if (eventQueue[i]->eventSubsystem == eventQueue[i]->General)
 			{
+				//Instantiate object based on values
 				if (eventQueue[i]->eventType == eventQueue[i]->InstantiateCustom)
 				{
-
 					Instantiate(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot), eventQueue[i]->myData->RBType, eventQueue[i]->myData->CFType);
 					delete(eventQueue[i]);
-					//eventQueue.erase(eventQueue.begin() + i);
 				}
 
+				//Instantiate Player
 				else if (eventQueue[i]->eventType == eventQueue[i]->InstantiatePlayer)
 				{
-
 					InstantiatePlayer(*(eventQueue[i]->myData->myModID), *(eventQueue[i]->myData->myTexID), *(eventQueue[i]->myData->myPos), *(eventQueue[i]->myData->myScale), *(eventQueue[i]->myData->myRot));
 					delete(eventQueue[i]);
-					//eventQueue.erase(eventQueue.begin() + i);
 				}
 
+				//Load Level based on level number
 				else if (eventQueue[i]->eventType == eventQueue[i]->LoadLevel)
 				{
 					LoadLevel(*(eventQueue[i]->myData->levelNumber));
 					delete(eventQueue[i]);
-					//eventQueue.erase(eventQueue.begin() + i);
-
 				}
 
+				//End of play session
 				else if (eventQueue[i]->eventType == eventQueue[i]->PlayerLost)
 				{
 					ClearScene();
 					mainManager->currentScene = mainManager->End;
 					delete(eventQueue[i]);
-					//eventQueue.erase(eventQueue.begin() + i);
 				}
 
-				else if (eventQueue[i]->eventType == eventQueue[i]->ChrisLegion)
-				{
-					for (int i = 0; i < 1; i++)
-					{
-						InstantiateRandom();
-					}
-
-					delete(eventQueue[i]);
-					//eventQueue.erase(eventQueue.begin() + i);
-				}
-
+				//Beginning of play session
 				else if (eventQueue[i]->eventType == eventQueue[i]->GameStart)
 				{
 					mainManager->score = 0;
 					GetTargetColour();
 					delete(eventQueue[i]);
-					//eventQueue.erase(eventQueue.begin() + i);
 				}
 
+				//Player has selected correct button
 				else if (eventQueue[i]->eventType == eventQueue[i]->ButtonCheck)
 				{
 					CheckButtonColor();
 					delete(eventQueue[i]);
 				}
 
+				//Called from menu, opens lua directory file
+				else if (eventQueue[i]->eventType == eventQueue[i]->OpenLuaFile)
+				{
+					ShellExecuteA(NULL, "open", (dataInput.dirPath).c_str(), NULL, NULL, SW_SHOWDEFAULT);
+					delete(eventQueue[i]);
+				}
+
+				//Called from menu, opens model directory (user can add as many model folders as wanted)
+				else if (eventQueue[i]->eventType == eventQueue[i]->OpenModelFile)
+				{
+					ShellExecuteA(NULL, "open", (dataInput.modelFolder).c_str(), NULL, NULL, SW_SHOWDEFAULT);
+					delete(eventQueue[i]);
+				}
+
+				//Called from menu, opens music directory
+				else if (eventQueue[i]->eventType == eventQueue[i]->OpenMusicFile)
+				{
+					ShellExecuteA(NULL, "open", (dataInput.musicFolder).c_str(), NULL, NULL, SW_SHOWDEFAULT);
+					delete(eventQueue[i]);
+				}
+
+				//Called from menu, opens layout directory file (user can add as many layout files as wanted)
+				else if (eventQueue[i]->eventType == eventQueue[i]->OpenLayoutFile)
+				{
+					ShellExecuteA(NULL, "open", (dataInput.lvl1LayoutFolder).c_str(), NULL, NULL, SW_SHOWDEFAULT);
+					delete(eventQueue[i]);
+				}
+				
+				//Delete all scene elements
 				else if (eventQueue[i]->eventType == eventQueue[i]->DeleteAll)
 				{
 					ClearScene();
-
 					delete(eventQueue[i]);
-					//eventQueue.erase(eventQueue.begin() + i);
 				}
 			}
 		}
 	}
 }
 
+//Process events for each subsystem
 void Engine::ProcessSubsystemEvents()
 {
 	ProcessEngineEvent();
@@ -199,47 +167,10 @@ void Engine::ProcessSubsystemEvents()
 	dataInput.ProcessEvents();
 	physics.ProcessEvents();
 	network.ProcessEvents();
+	sounds.ProcessEvents();
 }
 
-
-
-Engine::Engine()
-{
-
-}
-
-void Engine::UseData()
-{
-	std::cout << std::endl;
-	for (int i = 0; i < dataInput.dataVector.size(); i++) 
-	{
-		switch (dataInput.dataVector[i])
-		{
-			case '0':
-			{
-				std::cout << "adding physics event" << std::endl;
-				Event newPhysEvent("PHYSDefault");
-				ThrowEvent(newPhysEvent);
-			}
-			break;
-			
-
-			case '1':
-			{
-				std::cout << "adding graphics event" << std::endl;
-				Event newGraphEvent("GFXDefault");
-				ThrowEvent(newGraphEvent);
-			}
-			break;
-		}
-	}
-}
-
-void Engine::ThrowEvent(Event newEvent)
-{
-	eventQueue.push_back(&newEvent);
-}
-
+//Setup values for each subsystem
 void Engine::Start()
 {
 	mainManager = new EpicGameManager();
@@ -258,6 +189,7 @@ void Engine::Start()
 	physics.subManager = mainManager;
 	physics.engineEventQueue = &eventQueue;
 	physics.lateEngineEventQueue = &lateEventQueue;
+	physics.allObjects = &objects;
 	physics.Start();
 
 	graphics.name = "EpicGamerGraphics";
@@ -288,20 +220,30 @@ void Engine::Start()
 	network.lateEngineEventQueue = &lateEventQueue;
 	network.Start();
 
-	UseData();
+	sounds.name = "EpicGamerSounds";
+	sounds.subManager = mainManager;
+	sounds.engineEventQueue = &eventQueue;
+	sounds.lateEngineEventQueue = &lateEventQueue;
+	sounds.Start();
+
+	SoundEvent* bgMusic = new SoundEvent("PlayBGMusic", &eventQueue);
 }
 
+//Main engine update
 void Engine::Update()
 {
 	graphics.loadedModels = assets.models;
 
+	//Perform updates
 	UI.Update();
 	assets.Update();
 	graphics.Update();
 	dataInput.Update();
 	physics.Update();
 	network.Update();
+	sounds.Update();
 
+	//Process events (repeated to not miss events)
 	ProcessSubsystemEvents();
 	ProcessSubsystemEvents();
 	ProcessSubsystemEvents();
@@ -320,28 +262,33 @@ void Engine::Update()
 	eventQueue.clear();
 	lateEventQueue.clear();
 
+	//Sync gfx with physics
 	for (int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->SyncTransform();
 	}
 }
 
+//Instantiate function
 void Engine::Instantiate(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation, std::string rbType, std::string cfType)
 {
 	std::cout << std::endl << "Instantiating... ID: " << modelID << std::endl;
 
+	//Grabs model from asset manager
 	Model* newModel = new Model(assets.models[modelID]->mesh, assets.models[modelID]->texturePaths, assets.models[modelID]->modelPath, assets.models[modelID]->type, assets.models[modelID]->modelName);
 
 	newModel->texturePath = (*newModel->texturePaths)[textureID];
 
+	//Creates Object
 	GameObject* newObject = new GameObject(newModel, position, rotation, scale);
 	objects.push_back(newObject);
 
+	//Create graphical and physical representations
 	GFXEvent* newGFX = new GFXEvent("GFXSpawn", newObject, &eventQueue);
 	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, rbType, cfType);
-
 }
 
+//Instantiate and assign player
 void Engine::InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVec3 scale, MyVec3 rotation)
 {
 	std::cout << std::endl << "Instantiating Player..." << std::endl;
@@ -361,6 +308,7 @@ void Engine::InstantiatePlayer(int modelID, int textureID, MyVec3 position, MyVe
 	graphics.myPlayer = newPlayer;
 }
 
+//Instantiate via console (deprecated)
 void Engine::InstantiateRequest()
 {
 	int modelID; int textureID; MyVec3 position; MyVec3 scale; MyVec3 rotation;
@@ -468,13 +416,13 @@ void Engine::InstantiateRequest()
 	PhysEvent* newPhys = new PhysEvent("PHYSSpawn", &eventQueue, newObject, "dynamic", "Player");
 }
 
+//Load Level
 void Engine::LoadLevel(int number)
 {
 	if (!(objects.empty()))
 	{
 		ClearScene();
 	}
-
 
 	number = 1;
 	std::vector<SpawnData*> spawnData;
@@ -487,12 +435,14 @@ void Engine::LoadLevel(int number)
 		bool firstPlatformSpawned = false;
 		for (int i = 0; i < spawnData.size(); i++)
 		{
+			//Spawn Buttons
 			if ((spawnData[i]->modelID == mainManager->platformID) && firstPlatformSpawned)
 			{
 				std::cout << "Spawning button" << std::endl;
 				Instantiate(mainManager->buttonID, 0, MyVec3(spawnData[i]->position.x, spawnData[i]->position.y + 10, spawnData[i]->position.z), MyVec3(0.1, 0.1, 0.1), spawnData[i]->rotation, spawnData[i]->rbType, "Button");
 			}
 
+			//Spawn Player
 			if ((spawnData[i]->modelID == mainManager->platformID) && !firstPlatformSpawned)
 			{
 				std::cout << "Spawning player" << std::endl;
@@ -500,6 +450,7 @@ void Engine::LoadLevel(int number)
 				InstantiatePlayer(mainManager->playerID, 2, MyVec3(spawnData[i]->position.x, spawnData[i]->position.y + 100, spawnData[i]->position.z), mainManager->PlayerSize, spawnData[i]->rotation);
 			}
 
+			//Spawn platform
 			std::cout << "Spawning platform" << std::endl;
 			std::cout << "Instantiating scene element " << i << std::endl;
 			Instantiate(spawnData[i]->modelID, spawnData[i]->textureID, spawnData[i]->position, spawnData[i]->scale, spawnData[i]->rotation, spawnData[i]->rbType, spawnData[i]->cfType);
@@ -513,6 +464,7 @@ void Engine::LoadLevel(int number)
 	
 }
 
+//Instantiate a large amount of random objects (deprecated)
 void Engine::InstantiateRandom()
 {
 	int modelID = 1;

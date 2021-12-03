@@ -50,6 +50,10 @@ struct EpicGameManager
 	//Network Settings
 	std::string botScoreTextPath = "";
 	std::string	botJobTextPath = "";
+	std::string	discordLink = "";
+
+	//Sound Settings
+	std::string backgroundMusic = "";
 
 	MyVec3 AssignColour() 
 	{

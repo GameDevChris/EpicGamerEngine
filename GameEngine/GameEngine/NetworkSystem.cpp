@@ -42,6 +42,11 @@ void NetworkSystem::ProcessEvents()
 					ShellExecute(NULL, "open", "..\\..\\EngineBot.exe", NULL, NULL, SW_SHOWDEFAULT);
 				}
 
+				else if ((*engineEventQueue)[i]->eventType == (*engineEventQueue)[i]->DiscordInvite)
+				{
+					ShellExecute(0, 0, (subManager->discordLink).c_str(), 0, 0, SW_SHOWDEFAULT);
+				}
+
 
 				delete((*engineEventQueue)[i]);
 				engineEventQueue->erase(engineEventQueue->begin() + i);

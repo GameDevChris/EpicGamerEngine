@@ -61,9 +61,14 @@ void DataInputSystem::GetData()
 		//Bot text paths
 		subManager->botScoreTextPath = windowData["botScoreTextPath"].cast<std::string>();
 		subManager->botJobTextPath = windowData["botJobTextPath"].cast<std::string>();
+		subManager->discordLink = windowData["discordLink"].cast<std::string>();
 
 	//GetModelFolders
 	modelFolder = windowData["modelFolder"].cast<std::string>();
+
+	//Sound Settings
+	subManager->backgroundMusic = windowData["BgMusicPath"].cast<std::string>();
+	musicFolder = windowData["musicFolder"].cast<std::string>();
 
 	modelPaths.clear();
 	for (const auto& entry : fs::directory_iterator(modelFolder))
@@ -139,26 +144,6 @@ std::vector<std::string> DataInputSystem::loadObjects(const std::string& table, 
 	lua_pop(state, 1);
 
 	return objects;
-}
-
-void DataInputSystem::ParseTextData(std::vector<char>* dataVector)
-{
-	char dataValue;
-	std::ifstream dataFile;
-	dataFile.open("data.txt");
-	while (dataFile >> dataValue)
-	{
-		dataVector->push_back(dataValue);
-	}
-	dataFile.close();
-}
-
-void DataInputSystem::ShowData()
-{
-	for (int i = 0; i < dataVector.size(); i++) 
-	{
-		std::cout << dataVector[i] << std::endl;
-	}
 }
 
 void DataInputSystem::Start()

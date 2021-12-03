@@ -1,5 +1,5 @@
 settings =
 {
 	layoutChoice = 0,
-	layoutFolder = "./LevelLayouts/Layouts"
+	layoutFolder = ".\\LevelLayouts\\Layouts"
 }

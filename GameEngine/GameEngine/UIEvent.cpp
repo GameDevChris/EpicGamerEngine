@@ -32,7 +32,6 @@ UIEvent::UIEvent(std::string type, std::vector<Event*>* queue)
 	if (type == "DrawUI")
 	{
 		eventType = DrawUI;
-		//cout << "Draw time gamers!" << endl;
 	}
 	else
 	{

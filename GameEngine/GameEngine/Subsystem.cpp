@@ -6,7 +6,6 @@ SubSystem::SubSystem()
 
 void SubSystem::Start()
 {
-	//eventQueue.clear();
 	std::cout << "Subsystem " << name << " -started!" << std::endl;
 }
 

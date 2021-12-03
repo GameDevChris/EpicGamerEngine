@@ -16,6 +16,11 @@ NetworkEvent::NetworkEvent(std::string type, int newScore, std::vector<Event*>* 
 		eventType = BotPrintTop5;
 	}
 
+	else if (type == "DiscordInvite")
+	{
+		eventType = DiscordInvite;
+	}
+
 	else
 	{
 		std::cout << "ERROR, unknown Network event type!" << std::endl;

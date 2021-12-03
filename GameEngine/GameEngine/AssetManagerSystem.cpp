@@ -41,7 +41,6 @@ void AssetManagerSystem::ProcessEvents()
 				}
 
 				delete((*engineEventQueue)[i]);
-				//engineEventQueue->erase(engineEventQueue->begin() + i);
 			}
 		}
 	}

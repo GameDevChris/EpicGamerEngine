@@ -32,6 +32,9 @@ private:
 
 
 public:
+
+	std::vector<GameObject*>* allObjects;
+
 	PxScene* scene = NULL;
 	Player* myPlayer = NULL;
 

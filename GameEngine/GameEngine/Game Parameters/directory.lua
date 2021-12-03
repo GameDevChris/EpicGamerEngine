@@ -1,6 +1,7 @@
 window = {
     title = "Epic Gamer Engine",
-    modelFolder = "./Models",
+    modelFolder = ".\\Models",
+    musicFolder = ".\\Music",
     width = 1280,
     height = 720,
 
@@ -20,6 +21,7 @@ window = {
 
     botScoreTextPath = "./scoreData.txt",
     botJobTextPath = "./jobData.txt",
+    discordLink = "https://discord.gg/ne68Ndjq9V",
 
     PlayerLinearSpeed = 20,
     PlayerAngularSpeed = 10,
@@ -27,5 +29,7 @@ window = {
 
     PlayerSizeX = 10,
     PlayerSizeY = 10,
-    PlayerSizeZ = 10
+    PlayerSizeZ = 10,
+
+    BgMusicPath = "./Music/bg.mp3"
 }

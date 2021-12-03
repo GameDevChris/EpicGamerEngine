@@ -1,7 +1,8 @@
 #include "IGraphicsSystem.h"
 
 void IGraphicsSystem::StartIrrlicht()
-{
+{	
+	//Grab all settings from game manager
 	ScreenW = subManager->EngineWidth;
 	ScreenH = subManager->EngineHeight;
 
@@ -43,6 +44,7 @@ void IGraphicsSystem::StartIrrlicht()
 
 void IGraphicsSystem::SetColor(IAnimatedMeshSceneNode* target, MyVec3 targetColor)
 {
+	//Create a new texture with specific colour and apply
 	video::ITexture* newTexture = driver->addTexture(dimension2du(1, 1), "customTexture", ECF_A8R8G8B8);
 	s32* point = (s32*)newTexture->lock();
 
@@ -63,6 +65,7 @@ void IGraphicsSystem::RunIrrlicht()
 
 		driver->beginScene(true, true, irr::video::SColor(255, r, g, b));
 
+		//Draw square of target colour
 		if (subManager->currentScene == subManager->Game)
 		{
 			driver->draw2DRectangle(irr::video::SColor(255, subManager->targetColor.x, subManager->targetColor.y, subManager->targetColor.z), irr::core::recti(vector2di(10, ScreenH / 4), vector2di(110, ScreenH / 4 + 100)), NULL);
@@ -70,14 +73,11 @@ void IGraphicsSystem::RunIrrlicht()
 		
 		smgr->drawAll();
 
-
-
 		DrawGUI();
 
 		driver->endScene();
 
 	}
-
 
 	else 
 	{
@@ -87,6 +87,7 @@ void IGraphicsSystem::RunIrrlicht()
 
 void IGraphicsSystem::WriteStaticText(const wchar_t* text, int startPosX, int startPosY, int endPosX, int endPosY)
 {
+	//Write text using irrlicht GUI (deprecated)
 	IGUISkin* skin = guienv->getSkin();
 	IGUIFont* font = guienv->getFont("./Fonts/myfont.xml");
 
@@ -114,6 +115,8 @@ void IGraphicsSystem::DrawGUI()
 {
 	handle->startGUI();
 
+	//Change UI Based on current scene
+
 	if (subManager->currentScene == subManager->Start)
 	{
 		if (StartFirstLoop)
@@ -126,7 +129,6 @@ void IGraphicsSystem::DrawGUI()
 		ImGui::Begin("Start Screen", NULL, ImGuiWindowFlags_ShowBorders);
 
 		ImGui::BeginGroup();
-
 
 		WriteTextCentered("Welcome to the Epic Gamer Engine!");
 		WriteTextCentered("-----");
@@ -149,6 +151,60 @@ void IGraphicsSystem::DrawGUI()
 			subManager->levelStarted = false;
 			subManager->currentScene = subManager->Game;
 			Event* loadLevelEvent = new Event("LoadLevel", engineEventQueue, 1);
+		}
+
+		windowWidth = ImGui::GetWindowSize().x;
+		textWidth = 100;
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+		if (ImGui::Button("Join Discord", ImVec2(100, 20)))
+		{
+			NetworkEvent* inviteEvent = new NetworkEvent("DiscordInvite", 0, engineEventQueue);
+		}
+
+		windowWidth = ImGui::GetWindowSize().x;
+		textWidth = 100;
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+		if (ImGui::Button("Settings", ImVec2(100, 20)))
+		{
+			Event* openLuaEvent = new Event("OpenLuaFile", engineEventQueue);
+		}
+
+		windowWidth = ImGui::GetWindowSize().x;
+		textWidth = 100;
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+		if (ImGui::Button("Model File", ImVec2(100, 20)))
+		{
+			Event* openLuaEvent = new Event("OpenModelFile", engineEventQueue);
+		}
+
+		windowWidth = ImGui::GetWindowSize().x;
+		textWidth = 100;
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+		if (ImGui::Button("Layout File", ImVec2(100, 20)))
+		{
+			Event* openLuaEvent = new Event("OpenLayoutFile", engineEventQueue);
+		}
+
+		windowWidth = ImGui::GetWindowSize().x;
+		textWidth = 100;
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+		if (ImGui::Button("Sound File", ImVec2(100, 20)))
+		{
+			Event* openLuaEvent = new Event("OpenMusicFile", engineEventQueue);
+		}
+
+		windowWidth = ImGui::GetWindowSize().x;
+		textWidth = 100;
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+		if (ImGui::Button("Exit", ImVec2(100, 20)))
+		{
+			Exit();
 		}
 
 		ImGui::EndGroup();
@@ -640,10 +696,6 @@ void IGraphicsSystem::Start()
 	std::cout << "Subsystem " << name << " -started!" << std::endl;
 
 	StartIrrlicht();
-
-
-
-	
 
 	AddCamera(0, 200, -200, 0, 0, 0);
 }

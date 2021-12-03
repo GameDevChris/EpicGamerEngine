@@ -94,16 +94,6 @@ void UserInterfaceSystem::Update()
 
 				myPlayer->isGrounded = false;
 			}
-			
-			else
-			{
-				//std::cout << "Player isn't grounded!" << std::endl;
-			}
-		}
-
-		else
-		{
-			//std::cout << "No Player Set!" << std::endl;
 		}
 	}
 

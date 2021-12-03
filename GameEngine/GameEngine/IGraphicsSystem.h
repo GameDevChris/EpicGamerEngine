@@ -24,14 +24,11 @@ class IGraphicsSystem :
 	public SubSystem
 {
 private:
+	//Bool for first loop ui positions
 	bool IsFirstLoop1 = true;
-
 	bool IsFirstLoop2 = true;
-
 	bool StartFirstLoop = true;
-
 	bool GameFirstLoop = true;
-
 	bool EndFirstLoop = true;
 
 	int ScreenW = 1280;
@@ -40,24 +37,20 @@ private:
 	IGUIEnvironment* guienv = NULL;
 
 	
-
 	void StartIrrlicht();
 	
 	void WriteStaticText(const wchar_t* text, int startPosX, int startPosY, int endPosX, int endPosY);
 	
 	void DrawGUI();
 
+	//All UI Values
 	int UIScore = 0;
-
 	int UIState = 0;
-
 	int UICamTypeHolder; 
-
 	int UIIDTexHolder;
 	int UIIDModelHolder;
 	int UIRBTypeHolder = 0;
 	int UICollisionTypeHolder = 0;
-
 	float UIGeneralScale = 0;
 	MyVec3 UIPosHolder;
 	MyVec3 UIRotHolder;
