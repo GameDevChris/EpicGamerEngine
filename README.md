@@ -1,5 +1,6 @@
 # GameEngine
 Advanced Programming Coursework
+C++ Game Engine created in 3rd year of University by Chris Bodsworth
 
 Middleware used:
 -Graphics: Irrlicht
